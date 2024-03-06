@@ -12,6 +12,9 @@ export class findUsersFilters {
   readonly cpf?: string;
 
   @IsString()
+  readonly email: string;
+
+  @IsString()
   readonly user_name?: string;
 
   @IsArray()

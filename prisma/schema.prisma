@@ -14,11 +14,13 @@ model User {
   id String @id
   name String
   last_name String
-  birth_date Int
+  birth_date String
   cpf String
+  email String
   password String
   user_name String
   roles UserRole[]
+  franchise Franchise[]
 }
 
 enum UserRole {
@@ -30,4 +32,22 @@ enum UserRole {
   RECEPTIONIST
   CASHIER
   DELIVERY_ATTENDANT
+}
+
+model Franchise {
+  id String @id
+  name String
+  cnpj String
+  address String
+  number Int
+  complement String
+  neighborhood String
+  city String
+  state String
+  country String
+  zip_code String
+  phone String
+  email String
+  adm_id String
+  adm User @relation(fields: [adm_id], references: [id])
 }

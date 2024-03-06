@@ -16,13 +16,17 @@ export class CreateUserBody {
   @IsNotEmpty({ message: 'The user last name should not be empty.' })
   readonly last_name: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty({ message: 'The user birth date should not be empty.' })
-  readonly birth_date: number;
+  readonly birth_date: string;
 
   @IsString()
   @IsNotEmpty({ message: 'The user cpf should not be empty.' })
   readonly cpf: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'The user email should not be empty.' })
+  readonly email: string;
 
   @IsString()
   @Length(8, 50)
