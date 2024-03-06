@@ -33,14 +33,23 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() body: CreateUserBody, @Res() res: any) {
-    const { name, last_name, birth_date, cpf, password, user_name, roles } =
-      body;
+    const {
+      name,
+      last_name,
+      birth_date,
+      cpf,
+      email,
+      password,
+      user_name,
+      roles,
+    } = body;
 
     const user = await this.usersRepository.createUser(
       name,
       last_name,
       birth_date,
       cpf,
+      email,
       password,
       user_name,
       roles,
@@ -55,14 +64,24 @@ export class UsersController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    const { name, last_name, birth_date, cpf, password, user_name, roles } =
-      body;
+    const {
+      name,
+      last_name,
+      birth_date,
+      cpf,
+      email,
+      password,
+      user_name,
+      roles,
+    } = body;
+
     const user = await this.usersRepository.updateUser(
       id,
       name,
       last_name,
       birth_date,
       cpf,
+      email,
       password,
       user_name,
       roles,
