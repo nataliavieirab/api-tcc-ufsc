@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
 import { UsersRepository } from '../users-repository';
-import { findUsersFilters } from 'src/modules/admin/dtos/find-users-filter';
+import { findUsersFilters } from 'src/modules/admin/dtos/users-dtos/find-users-filter';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -12,7 +12,7 @@ export class PrismaUsersRepository implements UsersRepository {
   async createUser(
     name: string,
     last_name: string,
-    birth_date: string,
+    birth_date: Date,
     cpf: string,
     email: string,
     password: string,
@@ -60,7 +60,7 @@ export class PrismaUsersRepository implements UsersRepository {
     id: string,
     name: string,
     last_name: string,
-    birth_date: string,
+    birth_date: Date,
     cpf: string,
     email: string,
     password: string,
