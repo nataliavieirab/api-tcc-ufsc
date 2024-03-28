@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { Franchise } from '@prisma/client';
 import { FranchiseRepository } from 'src/repositories/franchise-repository';
 import { findFranchisesFilters } from '../dtos/franchise_dtos/find-franchises-filters';
@@ -102,5 +111,13 @@ export class FranchiseController {
 
     const status = franchise ? 200 : 404;
     res.status(status).send(franchise);
+  }
+
+  @Delete('/:id')
+  async deleteFranchise(@Param('id') id: string, @Res() res: any) {
+    const franchise = await this.franchiseRepository.deleteFranchise(id);
+
+    const status = franchise ? 200 : 404;
+    res.status(status).send();
   }
 }
