@@ -1,4 +1,4 @@
-import { CreateUserBody } from '../dtos/create-user-body';
+import { CreateUserBody } from '../dtos/users-dtos/create-user-body';
 import { User } from '@prisma/client';
 import { UsersRepository } from '../../../repositories/users-repository';
 import {
@@ -11,8 +11,8 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { findUsersFilters } from '../dtos/find-users-filter';
-import { UpdateUserBody } from '../dtos/update-user-body';
+import { findUsersFilters } from '../dtos/users-dtos/find-users-filter';
+import { UpdateUserBody } from '../dtos/users-dtos/update-user-body';
 
 @Controller('users')
 export class UsersController {

@@ -11,6 +11,7 @@ services:
       PG_PASSWORD: root
     volumes:
       - postgres107:/var/lib/postgres3/data2
-      
+
 volumes:
   postgres107:
+  

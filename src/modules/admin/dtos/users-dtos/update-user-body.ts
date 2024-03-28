@@ -1,11 +1,7 @@
 import { UserRole } from '.prisma/client';
-import { IsArray, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsArray, IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
 
-export class CreateUserBody {
-  @IsString()
-  @IsNotEmpty({ message: 'The user id should not be empty.' })
-  readonly id: string;
-
+export class UpdateUserBody {
   @IsString()
   @Length(2, 30)
   @IsNotEmpty({ message: 'The user name should not be empty.' })
@@ -16,16 +12,16 @@ export class CreateUserBody {
   @IsNotEmpty({ message: 'The user last name should not be empty.' })
   readonly last_name: string;
 
-  @IsString()
+  @IsDate()
   @IsNotEmpty({ message: 'The user birth date should not be empty.' })
-  readonly birth_date: string;
+  readonly birth_date: Date;
 
   @IsString()
   @IsNotEmpty({ message: 'The user cpf should not be empty.' })
   readonly cpf: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'The user email should not be empty.' })
+  @IsNotEmpty({ message: 'The user cpf should not be empty.' })
   readonly email: string;
 
   @IsString()
