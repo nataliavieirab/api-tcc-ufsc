@@ -2,7 +2,7 @@ import { UserRole } from '.prisma/client';
 import {
   IsArray,
   IsDate,
-  IsDateString,
+  IsEmail,
   IsNotEmpty,
   IsString,
   Length,
@@ -31,7 +31,7 @@ export class CreateUserBody {
   @IsNotEmpty({ message: 'The user cpf should not be empty.' })
   readonly cpf: string;
 
-  @IsString()
+  @IsEmail()
   @IsNotEmpty({ message: 'The user email should not be empty.' })
   readonly email: string;
 

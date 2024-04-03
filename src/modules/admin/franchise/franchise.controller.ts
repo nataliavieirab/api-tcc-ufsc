@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { Franchise } from '@prisma/client';
 import { FranchiseRepository } from 'src/repositories/franchise-repository';
-import { findFranchisesFilters } from '../dtos/franchise_dtos/find-franchises-filters';
-import { CreateFranchiseBody } from '../dtos/franchise_dtos/create-franchise-body';
-import { UpdateFranchiseBody } from '../dtos/franchise_dtos/update-franchise-body';
+import { findFranchisesFilters } from './dtos/find-franchises-filters';
+import { CreateFranchiseBody } from './dtos/create-franchise-body';
+import { UpdateFranchiseBody } from './dtos/update-franchise-body';
 
 @Controller('franchises')
 export class FranchiseController {
