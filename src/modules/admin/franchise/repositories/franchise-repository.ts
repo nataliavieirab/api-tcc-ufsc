@@ -1,5 +1,5 @@
 import { Franchise } from '@prisma/client';
-import { findFranchisesFilters } from 'src/modules/admin/dtos/franchise_dtos/find-franchises-filters';
+import { findFranchisesFilters } from 'src/franchise/dtos/find-franchises-filters';
 
 export abstract class FranchiseRepository {
   abstract findAllFranchises(

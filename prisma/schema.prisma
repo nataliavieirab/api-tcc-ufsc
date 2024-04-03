@@ -16,7 +16,7 @@ model User {
   last_name String
   birth_date DateTime
   cpf String
-  email String
+  email String @unique
   password String
   user_name String
   roles UserRole[]
