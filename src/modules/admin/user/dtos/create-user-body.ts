@@ -1,18 +1,15 @@
 import { UserRole } from '.prisma/client';
 import {
   IsArray,
-  IsDate,
+  IsDateString,
   IsEmail,
   IsNotEmpty,
   IsString,
   Length,
+  Matches,
 } from 'class-validator';
 
 export class CreateUserBody {
-  @IsString()
-  @IsNotEmpty({ message: 'The user id should not be empty.' })
-  readonly id: string;
-
   @IsString()
   @Length(2, 30)
   @IsNotEmpty({ message: 'The user name should not be empty.' })
@@ -23,7 +20,7 @@ export class CreateUserBody {
   @IsNotEmpty({ message: 'The user last name should not be empty.' })
   readonly last_name: string;
 
-  @IsDate()
+  @IsDateString()
   @IsNotEmpty({ message: 'The user birth date should not be empty.' })
   readonly birth_date: Date;
 
@@ -36,8 +33,11 @@ export class CreateUserBody {
   readonly email: string;
 
   @IsString()
-  @Length(8, 50)
+  @Length(8, 24)
   @IsNotEmpty({ message: 'The user password should not be empty.' })
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
   readonly password: string;
 
   @IsString()

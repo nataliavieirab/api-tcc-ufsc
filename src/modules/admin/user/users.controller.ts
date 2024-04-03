@@ -1,6 +1,6 @@
 import { CreateUserBody } from './dtos/create-user-body';
 import { User } from '@prisma/client';
-import { UsersRepository } from './repositories/users-repository';
+import { UsersRepository } from './repositories/user-repository';
 import {
   Body,
   Controller,
@@ -55,7 +55,7 @@ export class UsersController {
       roles,
     );
 
-    res.status(201).send(user);
+    res.status(201).send({ ...user, password: undefined });
   }
 
   @Put('/:id')
@@ -88,7 +88,7 @@ export class UsersController {
     );
 
     const status = user ? 200 : 404;
-    res.status(status).send(user);
+    res.status(status).send({ ...user, password: undefined });
   }
 
   @Delete('/:id')
