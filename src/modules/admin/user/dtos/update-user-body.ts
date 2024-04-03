@@ -1,40 +1,50 @@
 import { UserRole } from '.prisma/client';
-import { IsArray, IsDate, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 
 export class UpdateUserBody {
   @IsString()
   @Length(2, 30)
-  @IsNotEmpty({ message: 'The user name should not be empty.' })
+  @IsOptional()
   readonly name: string;
 
   @IsString()
   @Length(5, 100)
-  @IsNotEmpty({ message: 'The user last name should not be empty.' })
+  @IsOptional()
   readonly last_name: string;
 
-  @IsDate()
-  @IsNotEmpty({ message: 'The user birth date should not be empty.' })
+  @IsDateString()
+  @IsOptional()
   readonly birth_date: Date;
 
   @IsString()
-  @IsNotEmpty({ message: 'The user cpf should not be empty.' })
+  @IsOptional()
   readonly cpf: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'The user cpf should not be empty.' })
+  @IsOptional()
   readonly email: string;
 
   @IsString()
-  @Length(8, 50)
-  @IsNotEmpty({ message: 'The user password should not be empty.' })
+  @Length(8, 24)
+  @IsOptional()
   readonly password: string;
 
   @IsString()
   @Length(5, 50)
-  @IsNotEmpty({ message: 'The user user_name should not be empty.' })
+  @IsOptional()
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'password too weak',
+  })
   readonly user_name: string;
 
   @IsArray()
-  @IsNotEmpty({ message: 'The user roles should not be empty.' })
+  @IsOptional()
   readonly roles: UserRole[];
 }

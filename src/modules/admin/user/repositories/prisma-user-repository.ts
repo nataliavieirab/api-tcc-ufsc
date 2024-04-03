@@ -3,7 +3,8 @@ import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
 import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
-import { UsersRepository } from './users-repository';
+import { UsersRepository } from './user-repository';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -27,7 +28,7 @@ export class PrismaUsersRepository implements UsersRepository {
         birth_date,
         cpf,
         email,
-        password,
+        password: await bcrypt.hash(password, 10),
         user_name,
         roles,
       },
@@ -72,6 +73,8 @@ export class PrismaUsersRepository implements UsersRepository {
     if (!existingUser) {
       return null;
     }
+
+    if (password) password = await bcrypt.hash(password, 10);
 
     const updatedUser = await this.prisma.user.update({
       where: { id },
