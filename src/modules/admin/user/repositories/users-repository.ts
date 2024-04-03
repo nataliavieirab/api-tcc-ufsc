@@ -1,5 +1,5 @@
 import { User, UserRole } from '@prisma/client';
-import { findUsersFilters } from '../modules/admin/dtos/users-dtos/find-users-filter';
+import { findUsersFilters } from '../dtos/find-users-filter';
 
 export abstract class UsersRepository {
   abstract findAllUsers(findUsersFilters: findUsersFilters): Promise<User[]>;

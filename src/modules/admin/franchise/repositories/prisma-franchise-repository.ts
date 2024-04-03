@@ -2,8 +2,8 @@ import { PrismaService } from 'src/database/prisma.service';
 import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Franchise, Prisma } from '@prisma/client';
-import { FranchiseRepository } from '../franchise-repository';
-import { findFranchisesFilters } from 'src/modules/admin/dtos/franchise_dtos/find-franchises-filters';
+import { FranchiseRepository } from './franchise-repository';
+import { findFranchisesFilters } from 'src/franchise/dtos/find-franchises-filters';
 
 @Injectable()
 export class PrismaFranchiseRepository implements FranchiseRepository {

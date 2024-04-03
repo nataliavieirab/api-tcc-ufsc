@@ -2,8 +2,8 @@ import { PrismaService } from 'src/database/prisma.service';
 import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
-import { UsersRepository } from '../users-repository';
-import { findUsersFilters } from 'src/modules/admin/dtos/users-dtos/find-users-filter';
+import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
+import { UsersRepository } from './users-repository';
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {

@@ -5,8 +5,4 @@ import { PrismaService } from '../database/prisma.service';
   providers: [PrismaService],
   exports: [PrismaService],
 })
-@Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
-})
 export class PrismaModule {}
