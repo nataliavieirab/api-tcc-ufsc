@@ -3,7 +3,7 @@ import { UsersController } from './user/users.controller';
 import { UsersRepository } from './user/repositories/user-repository'; // Importe o repositório
 import { PrismaService } from 'src/database/prisma.service';
 import { FranchiseController } from './franchise/franchise.controller';
-import { PrismaUsersRepository } from './user/repositories/prisma-user-repository';
+import { PrismaUsersRepository } from './user/repositories/prisma/prisma-user-repository';
 import { FranchiseRepository } from './franchise/repositories/franchise-repository';
 import { PrismaFranchiseRepository } from './franchise/repositories/prisma-franchise-repository';
 

@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
 import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
-import { UsersRepository } from './user-repository';
+import { UsersRepository } from '../user-repository';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
