@@ -105,3 +105,5 @@ export class PrismaUsersRepository implements UsersRepository {
     return deletedUser;
   }
 }
+
+// findbyemail

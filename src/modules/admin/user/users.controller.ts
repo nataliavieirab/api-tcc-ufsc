@@ -1,6 +1,6 @@
 import { CreateUserBody } from './dtos/create-user-body';
 import { User } from '@prisma/client';
-import { UsersRepository } from './repositories/user-repository';
+import { UsersRepository } from '../../../repositories/user-repository';
 import {
   Body,
   Controller,
@@ -31,6 +31,7 @@ export class UsersController {
     res.status(status).send(user);
   }
 
+  @Get()
   @Post()
   async createUser(@Body() body: CreateUserBody, @Res() res: any) {
     const {
