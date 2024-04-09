@@ -1,12 +1,16 @@
 import { User, UserRole } from '@prisma/client';
 import { findUsersFilters } from '../modules/admin/user/dtos/find-users-filter';
 
-export abstract class UsersRepository {
-  abstract findAllUsers(findUsersFilters: findUsersFilters): Promise<User[]>;
+export abstract class UserRepository {
+  abstract findAll(findUsersFilters: findUsersFilters): Promise<User[]>;
 
-  abstract findUserById(id: string): Promise<User | null>;
+  abstract findById(id: string): Promise<User | null>;
 
-  abstract createUser(
+  abstract findByEmail(email: string): Promise<User | null>;
+
+  abstract findByUserName(user_name: string): Promise<User | null>;
+
+  abstract create(
     name: string,
     last_name: string,
     birth_date: Date,
@@ -17,7 +21,7 @@ export abstract class UsersRepository {
     roles: UserRole[],
   ): Promise<User>;
 
-  abstract updateUser(
+  abstract update(
     id: string,
     name: string,
     last_name: string,
@@ -29,5 +33,5 @@ export abstract class UsersRepository {
     roles: UserRole[],
   ): Promise<User | null>;
 
-  abstract deleteUser(id: string): Promise<User | null>;
+  abstract delete(id: string): Promise<User | null>;
 }
