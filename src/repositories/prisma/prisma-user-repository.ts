@@ -1,16 +1,16 @@
-import { PrismaService } from 'src/database/prisma.service';
 import { randomUUID } from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
-import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
-import { UsersRepository } from '../user-repository';
 import * as bcrypt from 'bcrypt';
+import { UserRepository } from '../user-repository';
+import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 
 @Injectable()
-export class PrismaUsersRepository implements UsersRepository {
+export class PrismaUsersRepository implements UserRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(
+  async create(
     name: string,
     last_name: string,
     birth_date: Date,
@@ -35,7 +35,7 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
-  async findAllUsers(filters: findUsersFilters): Promise<User[]> {
+  async findAll(filters: findUsersFilters): Promise<User[]> {
     const { name, last_name, cpf, user_name, roles } = filters;
 
     const prismaFilters: Prisma.UserWhereInput = {
@@ -51,13 +51,25 @@ export class PrismaUsersRepository implements UsersRepository {
     });
   }
 
-  async findUserById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     const params = { where: { id } };
 
     return await this.prisma.user.findUnique(params);
   }
 
-  async updateUser(
+  async findByEmail(email: string): Promise<User | null> {
+    const params = { where: { email } };
+
+    return await this.prisma.user.findUnique(params);
+  }
+
+  async findByUserName(user_name: string): Promise<User | null> {
+    const params = { where: { user_name } };
+
+    return await this.prisma.user.findUnique(params);
+  }
+
+  async update(
     id: string,
     name: string,
     last_name: string,
@@ -92,7 +104,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return updatedUser;
   }
 
-  async deleteUser(id: string): Promise<User | null> {
+  async delete(id: string): Promise<User | null> {
     const existingUser = await this.prisma.user.findUnique({ where: { id } });
 
     if (!existingUser) {
@@ -105,5 +117,3 @@ export class PrismaUsersRepository implements UsersRepository {
     return deletedUser;
   }
 }
-
-// findbyemail

@@ -1,24 +1,26 @@
 import { Module } from '@nestjs/common';
+import { UserRepository } from 'src/repositories/user-repository';
 import { UsersController } from './user/users.controller';
-import { UsersRepository } from '../../repositories/user-repository'; // Importe o repositório
-import { PrismaService } from 'src/database/prisma.service';
-import { FranchiseController } from './franchise/franchise.controller';
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-user-repository';
-import { FranchiseRepository } from '../../repositories/franchise-repository';
-import { PrismaFranchiseRepository } from '../../repositories/prisma/prisma-franchise-repository';
+import { PrismaUsersRepository } from 'src/repositories/prisma/prisma-user-repository';
+import { PrismaFranchiseRepository } from 'src/repositories/prisma/prisma-franchise-repository';
+import { FranchiseRepository } from 'src/repositories/franchise-repository';
+import { PrismaModule } from 'src/infra/database/prisma/prisma.module';
+import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 
 @Module({
-  controllers: [UsersController, FranchiseController],
+  imports: [PrismaModule],
+  controllers: [UsersController],
   providers: [
     PrismaService,
     {
-      provide: UsersRepository,
+      provide: UserRepository,
       useClass: PrismaUsersRepository,
     },
     {
       provide: FranchiseRepository,
       useClass: PrismaFranchiseRepository,
     },
-  ], // Adicione o repositório aos providers
+  ],
+  exports: [UserRepository],
 })
 export class AdminModule {}
