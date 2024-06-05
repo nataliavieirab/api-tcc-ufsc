@@ -34,14 +34,19 @@ export class UpdateUserBody {
   @IsString()
   @Length(8, 24)
   @IsOptional()
+  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message:
+      'Password too weak.\n' +
+      'The password must contain at least one digit or special character.\n' +
+      'Cannot include dots or line breaks.\n' +
+      'Must have at least one uppercase and one lowercase letter.\n' +
+      'Should be between 5 and 50 characters in length.',
+  })
   readonly password: string;
 
   @IsString()
   @Length(5, 50)
   @IsOptional()
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'password too weak',
-  })
   readonly user_name: string;
 
   @IsArray()

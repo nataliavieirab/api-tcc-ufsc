@@ -8,7 +8,9 @@ import {
   Length,
   Matches,
 } from 'class-validator';
+import { IsArrayWithValidValues } from 'src/validators/array-values.validator';
 
+const modulePermittedRoles: UserRole[] = ['GENERAL_ADM', 'FRANCH_ADM'];
 export class CreateUserBody {
   @IsString()
   @Length(2, 30)
@@ -47,5 +49,8 @@ export class CreateUserBody {
 
   @IsArray()
   @IsNotEmpty({ message: 'The user roles should not be empty.' })
+  @IsArrayWithValidValues(modulePermittedRoles, {
+    message: 'Invalid roles.',
+  })
   readonly roles: UserRole[];
 }
