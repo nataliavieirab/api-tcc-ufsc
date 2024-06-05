@@ -13,27 +13,35 @@ import {
 import { findUsersFilters } from './dtos/find-users-filter';
 import { UpdateUserBody } from './dtos/update-user-body';
 import { UserRepository } from '../../../repositories/user-repository';
+import { AdminController } from '../admin.controller';
+import { CurrentUser } from 'src/modules/auth/decorators/current-users.decorator';
 
-@Controller('users')
-export class UsersController {
-  constructor(private userRepository: UserRepository) {}
+@Controller('admin/users')
+export class UsersController extends AdminController {
+  constructor(private userRepository: UserRepository) {
+    super();
+  }
 
   @Get()
-  async findAllUsers(@Body() body: findUsersFilters): Promise<User[]> {
+  async findAll(@Body() body: findUsersFilters): Promise<User[]> {
     return this.userRepository.findAll(body);
   }
 
   @Get('/:id')
-  async findUserById(@Param('id') id: string, @Res() res: any) {
+  async findById(@Param('id') id: string, @Res() res: any) {
     const user = this.userRepository.findById(id);
 
     const status = user ? 200 : 404;
     res.status(status).send(user);
   }
 
-  @Get()
   @Post()
-  async createUser(@Body() body: CreateUserBody, @Res() res: any) {
+  async create(
+    @Body() body: CreateUserBody,
+    @Res() res: any,
+    // @CurrentUser() currentUser: User,
+  ) {
+    //this.validateUserAccess(currentUser, 'createUser');
     const {
       name,
       last_name,
@@ -60,7 +68,7 @@ export class UsersController {
   }
 
   @Put('/:id')
-  async updateUser(
+  async update(
     @Body() body: UpdateUserBody,
     @Param('id') id: string,
     @Res() res: any,
@@ -93,7 +101,7 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  async deleteUser(@Param('id') id: string, @Res() res: any) {
+  async delete(@Param('id') id: string, @Res() res: any) {
     const user = await this.userRepository.delete(id);
 
     const status = user ? 204 : 404;

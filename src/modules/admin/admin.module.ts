@@ -6,10 +6,11 @@ import { PrismaFranchiseRepository } from 'src/repositories/prisma/prisma-franch
 import { FranchiseRepository } from 'src/repositories/franchise-repository';
 import { PrismaModule } from 'src/infra/database/prisma/prisma.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import { FranchiseController } from './franchise/franchise.controller';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [UsersController],
+  controllers: [UsersController, FranchiseController],
   providers: [
     PrismaService,
     {
