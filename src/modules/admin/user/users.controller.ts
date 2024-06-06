@@ -14,8 +14,8 @@ import { findUsersFilters } from './dtos/find-users-filter';
 import { UpdateUserBody } from './dtos/update-user-body';
 import { UserRepository } from '../../../repositories/user-repository';
 import { AdminController } from '../admin.controller';
-import { CurrentUser } from 'src/modules/auth/decorators/current-users.decorator';
-
+import { AccessValidator } from 'src/modules/auth/decorators/access-validator.decorator';
+import { actions } from 'src/services/permissions/permissions';
 @Controller('admin/users')
 export class UsersController extends AdminController {
   constructor(private userRepository: UserRepository) {
@@ -37,11 +37,11 @@ export class UsersController extends AdminController {
 
   @Post()
   async create(
+    @AccessValidator() validateUserAccess: (action: actions) => void,
     @Body() body: CreateUserBody,
     @Res() res: any,
-    // @CurrentUser() currentUser: User,
   ) {
-    //this.validateUserAccess(currentUser, 'createUser');
+    validateUserAccess('createUser');
     const {
       name,
       last_name,
