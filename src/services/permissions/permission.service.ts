@@ -13,8 +13,8 @@ export class PermissionService {
   validateAction(action: actions): boolean {
     const permitted_roles = roles_permissions[action];
 
-    const hasPermittedRoles = this.user_roles.some(function (role) {
-      return permitted_roles.includes(role);
+    const hasPermittedRoles = this.user_roles.some((role) => {
+      permitted_roles.includes(role);
     });
 
     return hasPermittedRoles;
@@ -23,8 +23,8 @@ export class PermissionService {
   validateModuleAccess(module: string): boolean {
     const permitted_roles = module_permissions[module];
 
-    const hasPermittedRoles = this.user_roles.some(function (role) {
-      return permitted_roles.includes(role);
+    const hasPermittedRoles = this.user_roles.some((role) => {
+      permitted_roles.includes(role);
     });
 
     return hasPermittedRoles;
