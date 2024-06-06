@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserPayload } from '../models/UserPayload';
 import { UserRepository } from 'src/repositories/user-repository';
 import { User } from '@prisma/client';
+import { UnauthorizedError } from '../errors/unauthorized.error';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -17,6 +18,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: UserPayload): Promise<User> {
     const user = this.userRepository.findById(payload.sub);
+
+    if (!user) {
+      throw new UnauthorizedError('User not found');
+    }
+
     return user;
   }
 }
