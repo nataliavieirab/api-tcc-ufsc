@@ -1,4 +1,8 @@
-import { IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsString, Length } from 'class-validator';
+import { UserRole } from '.prisma/client';
+import { IsArrayWithValidValues } from 'src/validators/array-values.validator';
+
+const modulePermittedRoles: UserRole[] = ['GENERAL_ADM'];
 
 export class CreateFranchiseBody {
   @IsString()
@@ -60,4 +64,11 @@ export class CreateFranchiseBody {
   @IsString()
   @IsNotEmpty({ message: 'The franchise adm_id should not be empty.' })
   readonly adm_id: string;
+
+  @IsArray()
+  @IsNotEmpty({ message: 'The user roles should not be empty.' })
+  @IsArrayWithValidValues(modulePermittedRoles, {
+    message: 'Invalid roles.',
+  })
+  readonly roles: UserRole[];
 }

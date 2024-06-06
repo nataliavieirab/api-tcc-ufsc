@@ -5,7 +5,6 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from 'class-validator';
-import { UserRole } from '.prisma/client';
 import { registerDecorator } from 'class-validator';
 
 export function IsArrayWithValidValues(
@@ -14,15 +13,17 @@ export function IsArrayWithValidValues(
 ) {
   return function (object: Record<string, any>, propertyName: string) {
     registerDecorator({
-      name: 'isArrayValidRoles',
+      name: 'isArrayValid',
       target: object.constructor,
       propertyName: propertyName,
       constraints: [values],
       options: validationOptions,
       validator: {
-        validate(value: any, args: ValidationArguments) {
-          const valuess = args.constraints[0];
-          return value.every((role: UserRole) => valuess.includes(role));
+        validate(inputedValues: any, args: ValidationArguments) {
+          const permittedValues = args.constraints[0];
+          return inputedValues.every((value: string) =>
+            permittedValues.includes(value),
+          );
         },
         defaultMessage(args: ValidationArguments) {
           return `Invalid roles. Valid roles are: ${args.constraints[0].join(
