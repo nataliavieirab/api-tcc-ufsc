@@ -28,4 +28,8 @@ const roles_permissions = {
   deleteFranchise: ['MANAGER'],
 };
 
-export { actions, roles, roles_permissions };
+const module_permissions = {
+  admin: ['GENERAL_ADM'],
+};
+
+export { actions, roles, roles_permissions, module_permissions };
