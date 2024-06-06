@@ -36,11 +36,8 @@ export class AuthService {
       user = await this.userRepository.findByUserName(userIdentification);
     }
 
-    console.log('user: ', user);
-
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
-      console.log('isPasswordValid: ', isPasswordValid);
 
       if (isPasswordValid) {
         return {
