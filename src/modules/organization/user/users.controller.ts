@@ -13,14 +13,11 @@ import {
 import { findUsersFilters } from './dtos/find-users-filter';
 import { UpdateUserBody } from './dtos/update-user-body';
 import { UserRepository } from '../../../repositories/user-repository';
-import { AdminController } from '../admin.controller';
 import { AccessValidator } from 'src/modules/auth/decorators/access-validator.decorator';
 import { actions } from 'src/services/permissions/permissions';
-@Controller('admin/users')
-export class UsersController extends AdminController {
-  constructor(private userRepository: UserRepository) {
-    super();
-  }
+@Controller('organizations/users')
+export class UsersController {
+  constructor(private userRepository: UserRepository) {}
 
   @Get()
   async findAll(@Body() body: findUsersFilters): Promise<User[]> {
