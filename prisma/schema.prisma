@@ -19,12 +19,13 @@ model User {
   email String @unique
   password String
   user_name String @unique
-  roles UserRole[]
+  role UserRole
   franchise Franchise?
 }
 
 enum UserRole {
   GENERAL_ADM
+  ORGANIZATION_ADM
   FRANCH_ADM
   BRANCH_ADM
   WAITER
@@ -32,6 +33,23 @@ enum UserRole {
   RECEPTIONIST
   CASHIER
   DELIVERY_ATTENDANT
+}
+model Organization {
+  id String @id
+  name String
+  cnpj String
+  address String
+  number Int
+  complement String
+  neighborhood String
+  city String
+  state String
+  country String
+  zip_code String
+  phone String
+  email String
+  adm_id String @unique
+  franchises Franchise[]
 }
 
 model Franchise {
@@ -50,4 +68,6 @@ model Franchise {
   email String
   adm_id String @unique
   adm User @relation(fields: [adm_id], references: [id])
+  organization_id String @unique
+  organization Organization @relation(fields: [organization_id], references: [id])
 }
