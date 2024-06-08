@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../user-repository';
-import { findUsersFilters } from 'src/modules/admin/user/dtos/find-users-filter';
+import { findUsersFilters } from 'src/modules/organization/user/dtos/find-users-filter';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 
 @Injectable()
