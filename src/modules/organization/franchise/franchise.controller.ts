@@ -49,6 +49,7 @@ export class FranchiseController {
       phone,
       email,
       adm_id,
+      organization_id,
     } = body;
 
     const franchise = await this.franchiseRepository.createFranchise(
@@ -65,6 +66,7 @@ export class FranchiseController {
       phone,
       email,
       adm_id,
+      organization_id,
     );
 
     res.status(201).send(franchise);
@@ -90,6 +92,7 @@ export class FranchiseController {
       phone,
       email,
       adm_id,
+      organization_id,
     } = body;
 
     const franchise = await this.franchiseRepository.updateFranchise(
@@ -107,6 +110,7 @@ export class FranchiseController {
       phone,
       email,
       adm_id,
+      organization_id,
     );
 
     const status = franchise ? 200 : 404;

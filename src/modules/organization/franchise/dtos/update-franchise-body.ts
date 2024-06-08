@@ -56,4 +56,8 @@ export class UpdateFranchiseBody {
   @IsString()
   @IsNotEmpty({ message: 'The franchise adm_id should not be empty.' })
   readonly adm_id: string;
+
+  @IsString()
+  @IsNotEmpty({ message: 'The organization_id should not be empty.' })
+  readonly organization_id: string;
 }
