@@ -1,5 +1,6 @@
 type roles = {
   GENERAL_ADM: 'GENERAL_ADM';
+  ORGANIZATION_ADM: 'ORGANIZATION_ADM';
   FRANCH_ADM: 'FRANCH_ADM';
   BRANCH_ADM: 'BRANCH_ADM';
   WAITER: 'WAITER';
@@ -19,7 +20,7 @@ type actions =
   | 'deleteFranchise';
 
 const roles_permissions = {
-  createUser: ['GENERAL_ADM', 'FRANCH_ADM'],
+  createUser: ['GENERAL_ADM', 'ORGANIZATION_ADM', 'FRANCH_ADM'],
   updateUser: ['GENERAL_ADM'],
   deleteUser: ['GENERAL_ADM'],
   findUserById: ['GENERAL_ADM'],
@@ -29,7 +30,7 @@ const roles_permissions = {
 };
 
 const module_permissions = {
-  organization: ['GENERAL_ADM'],
+  organizations: ['GENERAL_ADM', 'ORGANIZATION_ADM'],
 };
 
 export { actions, roles, roles_permissions, module_permissions };
