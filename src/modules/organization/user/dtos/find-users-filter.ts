@@ -1,5 +1,5 @@
 import { UserRole } from '.prisma/client';
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class findUsersFilters {
   @IsOptional()
@@ -23,6 +23,5 @@ export class findUsersFilters {
   readonly user_name?: string;
 
   @IsOptional()
-  @IsArray()
-  readonly roles?: UserRole[];
+  readonly role?: UserRole;
 }
