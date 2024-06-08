@@ -4,29 +4,23 @@ import { actions, roles_permissions, module_permissions } from './permissions';
 
 @Injectable()
 export class PermissionService {
-  user_roles: string[];
+  user_role: string;
 
   constructor(user: User) {
-    this.user_roles = user.roles;
+    this.user_role = user.role;
   }
 
   validateAction(action: actions): boolean {
     const permitted_roles = roles_permissions[action];
 
-    const hasPermittedRoles = this.user_roles.some((role) => {
-      permitted_roles.includes(role);
-    });
-
-    return hasPermittedRoles;
+    return permitted_roles.includes(this.user_role);
   }
 
   validateModuleAccess(module: string): boolean {
     const permitted_roles = module_permissions[module];
 
-    const hasPermittedRoles = this.user_roles.some((role) => {
-      permitted_roles.includes(role);
-    });
+    if (!permitted_roles) return false;
 
-    return hasPermittedRoles;
+    return permitted_roles.includes(this.user_role);
   }
 }
