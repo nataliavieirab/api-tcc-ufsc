@@ -18,7 +18,7 @@ export class PrismaUsersRepository implements UserRepository {
     email: string,
     password: string,
     user_name: string,
-    roles: UserRole[],
+    role: UserRole,
   ): Promise<User> {
     return await this.prisma.user.create({
       data: {
@@ -30,20 +30,20 @@ export class PrismaUsersRepository implements UserRepository {
         email,
         password: await bcrypt.hash(password, 10),
         user_name,
-        roles,
+        role,
       },
     });
   }
 
   async findAll(filters: findUsersFilters): Promise<User[]> {
-    const { name, last_name, cpf, user_name, roles } = filters;
+    const { name, last_name, cpf, user_name, role } = filters;
 
     const prismaFilters: Prisma.UserWhereInput = {
       name: name ? { contains: name } : undefined,
       last_name: last_name ? { contains: last_name } : undefined,
       cpf: cpf ? { equals: cpf } : undefined,
       user_name: user_name ? { equals: user_name } : undefined,
-      roles: roles ? { hasSome: roles } : undefined,
+      role: role ? { equals: role } : undefined,
     };
 
     return await this.prisma.user.findMany({
@@ -78,7 +78,7 @@ export class PrismaUsersRepository implements UserRepository {
     email: string,
     password: string,
     user_name: string,
-    roles: UserRole[],
+    role: UserRole,
   ): Promise<User | null> {
     const existingUser = await this.prisma.user.findUnique({ where: { id } });
 
@@ -97,7 +97,7 @@ export class PrismaUsersRepository implements UserRepository {
         cpf,
         password,
         user_name,
-        roles,
+        role,
       },
     });
 

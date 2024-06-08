@@ -1,6 +1,5 @@
 import { UserRole } from '.prisma/client';
 import {
-  IsArray,
   IsDateString,
   IsOptional,
   IsString,
@@ -49,7 +48,6 @@ export class UpdateUserBody {
   @IsOptional()
   readonly user_name: string;
 
-  @IsArray()
   @IsOptional()
-  readonly roles: UserRole[];
+  readonly role: UserRole;
 }
