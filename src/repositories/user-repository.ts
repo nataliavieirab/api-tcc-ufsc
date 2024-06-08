@@ -18,7 +18,7 @@ export abstract class UserRepository {
     email: string,
     password: string,
     user_name: string,
-    roles: UserRole[],
+    role: UserRole,
   ): Promise<User>;
 
   abstract update(
@@ -30,7 +30,7 @@ export abstract class UserRepository {
     email: string,
     password: string,
     user_name: string,
-    roles: UserRole[],
+    role: UserRole,
   ): Promise<User | null>;
 
   abstract delete(id: string): Promise<User | null>;
