@@ -29,7 +29,7 @@ const roles_permissions = {
 };
 
 const module_permissions = {
-  admin: ['GENERAL_ADM'],
+  organization: ['GENERAL_ADM'],
 };
 
 export { actions, roles, roles_permissions, module_permissions };

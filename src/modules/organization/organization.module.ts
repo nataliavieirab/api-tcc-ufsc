@@ -24,4 +24,4 @@ import { FranchiseController } from './franchise/franchise.controller';
   ],
   exports: [UserRepository],
 })
-export class AdminModule {}
+export class OrganizationModule {}

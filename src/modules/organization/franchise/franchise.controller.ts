@@ -14,7 +14,7 @@ import { CreateFranchiseBody } from './dtos/create-franchise-body';
 import { UpdateFranchiseBody } from './dtos/update-franchise-body';
 import { FranchiseRepository } from '../../../repositories/franchise-repository';
 
-@Controller('franchises')
+@Controller('organizations/franchises')
 export class FranchiseController {
   constructor(private franchiseRepository: FranchiseRepository) {}
 
