@@ -22,6 +22,7 @@ export abstract class FranchiseRepository {
     phone: string,
     email: string,
     adm_id: string,
+    organization_id: string,
   );
 
   abstract updateFranchise(
@@ -39,6 +40,7 @@ export abstract class FranchiseRepository {
     phone: string,
     email: string,
     adm_id: string,
+    organization_id: string,
   ): Promise<Franchise | null>;
 
   abstract deleteFranchise(id: string): Promise<Franchise | null>;

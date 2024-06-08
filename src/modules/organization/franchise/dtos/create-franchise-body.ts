@@ -65,10 +65,14 @@ export class CreateFranchiseBody {
   @IsNotEmpty({ message: 'The franchise adm_id should not be empty.' })
   readonly adm_id: string;
 
+  @IsString()
+  @IsNotEmpty({ message: 'The franchise organization_id should not be empty.' })
+  readonly organization_id: string;
+
   @IsArray()
   @IsNotEmpty({ message: 'The user roles should not be empty.' })
   @IsArrayWithValidValues(modulePermittedRoles, {
     message: 'Invalid roles.',
   })
-  readonly roles: UserRole[];
+  readonly role: UserRole;
 }

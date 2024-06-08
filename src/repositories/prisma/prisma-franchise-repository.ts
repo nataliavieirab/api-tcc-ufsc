@@ -23,6 +23,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
     phone: string,
     email: string,
     adm_id: string,
+    organization_id: string,
   ): Promise<Franchise> {
     return await this.prisma.franchise.create({
       data: {
@@ -40,6 +41,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
         phone,
         email,
         adm_id,
+        organization_id,
       },
     });
   }
@@ -86,6 +88,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
     phone: string,
     email: string,
     adm_id: string,
+    organization_id: string,
   ): Promise<Franchise | null> {
     const existingFranchise = await this.prisma.franchise.findUnique({
       where: { id },
@@ -111,6 +114,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
         phone,
         email,
         adm_id,
+        organization_id,
       },
     });
 
