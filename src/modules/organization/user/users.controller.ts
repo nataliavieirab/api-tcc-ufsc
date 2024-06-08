@@ -47,7 +47,7 @@ export class UsersController {
       email,
       password,
       user_name,
-      roles,
+      role,
     } = body;
 
     const user = await this.userRepository.create(
@@ -58,7 +58,7 @@ export class UsersController {
       email,
       password,
       user_name,
-      roles,
+      role,
     );
 
     res.status(201).send({ ...user, password: undefined });
@@ -78,7 +78,7 @@ export class UsersController {
       email,
       password,
       user_name,
-      roles,
+      role,
     } = body;
 
     const user = await this.userRepository.update(
@@ -90,7 +90,7 @@ export class UsersController {
       email,
       password,
       user_name,
-      roles,
+      role,
     );
 
     const status = user ? 200 : 404;

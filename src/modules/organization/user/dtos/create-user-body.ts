@@ -1,6 +1,5 @@
 import { UserRole } from '.prisma/client';
 import {
-  IsArray,
   IsDateString,
   IsEmail,
   IsNotEmpty,
@@ -8,9 +7,9 @@ import {
   Length,
   Matches,
 } from 'class-validator';
-import { IsArrayWithValidValues } from 'src/validators/array-values.validator';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
-const modulePermittedRoles: UserRole[] = ['GENERAL_ADM', 'FRANCH_ADM'];
+const modulePermittedRoles: UserRole[] = ['FRANCH_ADM'];
 export class CreateUserBody {
   @IsString()
   @Length(2, 30)
@@ -47,10 +46,9 @@ export class CreateUserBody {
   @IsNotEmpty({ message: 'The user user_name should not be empty.' })
   readonly user_name: string;
 
-  @IsArray()
-  @IsNotEmpty({ message: 'The user roles should not be empty.' })
-  @IsArrayWithValidValues(modulePermittedRoles, {
-    message: 'Invalid roles.',
+  @IsNotEmpty({ message: 'The user role should not be empty.' })
+  @HasValidValue(modulePermittedRoles, {
+    message: 'Invalid role.',
   })
-  readonly roles: UserRole[];
+  readonly role: UserRole;
 }

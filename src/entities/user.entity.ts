@@ -9,6 +9,6 @@ export class User {
   email: string;
   password: string;
   user_name: string;
-  roles: UserRole[];
+  role: UserRole;
   franchise?: Franchise;
 }
