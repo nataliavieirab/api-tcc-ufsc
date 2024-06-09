@@ -1,7 +1,10 @@
 type roles = {
   GENERAL_ADM: 'GENERAL_ADM';
+  GENERAL_ASSISTANT: 'GENERAL_ASSISTANT';
   ORGANIZATION_ADM: 'ORGANIZATION_ADM';
+  ORGANIZATION_ASSISTANT: 'ORGANIZATION_ASSISTANT';
   FRANCH_ADM: 'FRANCH_ADM';
+  FRANCH_ASSISTANT: 'FRANCH_ASSISTANT';
   BRANCH_ADM: 'BRANCH_ADM';
   WAITER: 'WAITER';
   MANAGER: 'MANAGER';
@@ -23,19 +26,54 @@ type actions =
   | 'updateFranchise';
 
 const roles_permissions = {
-  createUser: ['GENERAL_ADM', 'ORGANIZATION_ADM', 'FRANCH_ADM'],
-  updateUser: ['GENERAL_ADM'],
-  deleteUser: ['GENERAL_ADM'],
-  findUserById: ['GENERAL_ADM'],
-  findAllUsers: ['GENERAL_ADM'],
-  createFranchise: ['GENERAL_ADM'],
-  deleteFranchise: ['MANAGER'],
+  createUser: [
+    'GENERAL_ADM',
+    'GENERAL_ASSISTANT',
+    'ORGANIZATION_ADM',
+    'ORGANIZATION_ASSISTANT',
+    'FRANCH_ADM',
+    'FRANCH_ASSISTANT',
+  ],
+  updateUser: [
+    'GENERAL_ADM',
+    'GENERAL_ASSISTANT',
+    'ORGANIZATION_ADM',
+    'ORGANIZATION_ASSISTANT',
+    'FRANCH_ADM',
+    'FRANCH_ASSISTANT',
+  ],
+  deleteUser: [
+    'GENERAL_ADM',
+    'GENERAL_ASSISTANT',
+    'ORGANIZATION_ADM',
+    'ORGANIZATION_ASSISTANT',
+    'FRANCH_ADM',
+    'FRANCH_ASSISTANT',
+  ],
+  findUserById: [
+    'GENERAL_ADM',
+    'GENERAL_ASSISTANT',
+    'ORGANIZATION_ADM',
+    'ORGANIZATION_ASSISTANT',
+    'FRANCH_ADM',
+    'FRANCH_ASSISTANT',
+  ],
+  findAllUsers: [
+    'GENERAL_ADM',
+    'GENERAL_ASSISTANT',
+    'ORGANIZATION_ADM',
+    'ORGANIZATION_ASSISTANT',
+    'FRANCH_ADM',
+    'FRANCH_ASSISTANT',
+  ],
+  createFranchise: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  deleteFranchise: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
 };
 
 const module_permissions = {
-  organizations: ['GENERAL_ADM', 'ORGANIZATION_ADM'],
-  admin: ['GENERAL_ADM'],
-  franchise: ['FRANCH_ADM'],
+  organizations: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADM'],
+  admin: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  franchise: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
 };
 
 export { actions, roles, roles_permissions, module_permissions };

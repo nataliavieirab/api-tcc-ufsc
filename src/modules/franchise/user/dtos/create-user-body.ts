@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
-const modulePermittedRoles: UserRole[] = ['BRANCH_ADM', 'MANAGER'];
+const modulePermittedRoles: UserRole[] = ['BRANCH_ADM'];
 export class CreateUserBody {
   @IsString()
   @Length(2, 30)

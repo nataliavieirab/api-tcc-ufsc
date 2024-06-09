@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
-const modulePermittedRoles: UserRole[] = ['FRANCH_ADM'];
+const modulePermittedRoles: UserRole[] = ['FRANCH_ADM', 'FRANCH_ASSISTANT'];
 
 export class UpdateUserBody {
   @IsString()
