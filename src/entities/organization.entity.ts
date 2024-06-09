@@ -1,7 +1,7 @@
-import { Organization, User } from '@prisma/client';
+import { Franchise } from '@prisma/client';
 import { IsInt } from 'class-validator';
 
-export class Franchise {
+export class Organization {
   id: string;
   name: string;
   cnpj: string;
@@ -17,6 +17,5 @@ export class Franchise {
   phone: string;
   email: string;
   adm_id: string;
-  adm: User;
-  organization: Organization;
+  franchise: Franchise;
 }
