@@ -22,6 +22,5 @@ import { FranchiseController } from './franchise/franchise.controller';
       useClass: PrismaFranchiseRepository,
     },
   ],
-  exports: [UserRepository],
 })
 export class OrganizationModule {}
