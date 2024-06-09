@@ -6,6 +6,9 @@ import {
   Length,
   Matches,
 } from 'class-validator';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
+
+const modulePermittedRoles: UserRole[] = ['FRANCH_ADM'];
 
 export class UpdateUserBody {
   @IsString()
@@ -49,5 +52,8 @@ export class UpdateUserBody {
   readonly user_name: string;
 
   @IsOptional()
+  @HasValidValue(modulePermittedRoles, {
+    message: 'Invalid role.',
+  })
   readonly role: UserRole;
 }
