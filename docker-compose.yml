@@ -10,7 +10,7 @@ services:
       PG_USER: root
       PG_PASSWORD: root
     volumes:
-      - postgres107:/var/lib/postgres3/data2
+      - postgres107:/var/lib/postgres3/data3
 
 volumes:
   postgres107:
