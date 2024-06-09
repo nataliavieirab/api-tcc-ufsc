@@ -33,11 +33,14 @@ export class UsersController {
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
     this.validateAccess('findUserById');
+    try {
+      const user = await this.userRepository.findById(id);
 
-    const user = this.userRepository.findById(id);
-
-    const status = user ? 200 : 404;
-    res.status(status).send(user);
+      const status = user ? 200 : 404;
+      res.status(status).send(user);
+    } catch (error) {
+      res.status(500).send({ message: 'Erro ao buscar usuário por ID.' });
+    }
   }
 
   @Post()
