@@ -17,7 +17,10 @@ type actions =
   | 'findUserById'
   | 'findAllUsers'
   | 'createFranchise'
-  | 'deleteFranchise';
+  | 'deleteFranchise'
+  | 'findAllFranchises'
+  | 'findFranchiseById'
+  | 'updateFranchise';
 
 const roles_permissions = {
   createUser: ['GENERAL_ADM', 'ORGANIZATION_ADM', 'FRANCH_ADM'],
@@ -31,6 +34,8 @@ const roles_permissions = {
 
 const module_permissions = {
   organizations: ['GENERAL_ADM', 'ORGANIZATION_ADM'],
+  admin: ['GENERAL_ADM'],
+  franchise: ['FRANCH_ADM'],
 };
 
 export { actions, roles, roles_permissions, module_permissions };
