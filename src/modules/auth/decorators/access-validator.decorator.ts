@@ -4,9 +4,9 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthRequest } from '../models/AuthRequest';
 import { PermissionService } from 'src/services/permissions/permission.service';
 import { actions } from 'src/services/permissions/permissions';
+import { AuthRequest } from '../models/AuthRequest';
 
 export const AccessValidator = createParamDecorator(
   (data: unknown, context: ExecutionContext): ((action: actions) => void) => {
