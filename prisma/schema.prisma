@@ -39,7 +39,7 @@ enum UserRole {
   CASHIER
   DELIVERY_ATTENDANT
 }
-model Organization {organization_id
+model Organization {
   id String @id
   name String
   cnpj String
