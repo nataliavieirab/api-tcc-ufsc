@@ -21,6 +21,7 @@ model User {
   user_name String @unique
   role UserRole
   franchise Franchise?
+  branch Branch?
   organization_id String? @unique
   organization Organization? @relation(fields: [organization_id], references: [id])
 }
@@ -75,4 +76,25 @@ model Franchise {
   adm User @relation(fields: [adm_id], references: [id])
   organization_id String? @unique
   organization Organization? @relation(fields: [organization_id], references: [id])
+  branches Branch[]
+}
+
+model Branch {
+  id String @id
+  name String
+  cnpj String
+  address String
+  number Int
+  complement String
+  neighborhood String
+  city String
+  state String
+  country String
+  zip_code String
+  phone String
+  email String
+  franchise_id String? @unique
+  franchise Franchise? @relation(fields: [franchise_id], references: [id])
+  manager_id String? @unique
+  manager User? @relation(fields: [manager_id], references: [id])
 }
