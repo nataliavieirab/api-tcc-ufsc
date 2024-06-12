@@ -4,15 +4,22 @@ import { PrismaUsersRepository } from 'src/repositories/prisma/prisma-user-repos
 import { PrismaModule } from 'src/infra/database/prisma/prisma.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { UsersController } from './user/users.controller';
+import { OrganizationController } from './organization/organization.controller';
+import { OrganizationRepository } from 'src/repositories/organization-repository';
+import { PrismaOrganizationRepository } from 'src/repositories/prisma/prisma-organization-repository';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [UsersController],
+  controllers: [UsersController, OrganizationController],
   providers: [
     PrismaService,
     {
       provide: UserRepository,
       useClass: PrismaUsersRepository,
+    },
+    {
+      provide: OrganizationRepository,
+      useClass: PrismaOrganizationRepository,
     },
   ],
 })
