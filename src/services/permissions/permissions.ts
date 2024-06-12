@@ -28,7 +28,12 @@ type actions =
   | 'updateOrganization'
   | 'findAllOrganizations'
   | 'findOrganizationById'
-  | 'deleteOrganization';
+  | 'deleteOrganization'
+  | 'createBranch'
+  | 'updateBranch'
+  | 'deleteBranch'
+  | 'findAllBranches'
+  | 'findBranchById';
 
 const roles_permissions = {
   createUser: [
@@ -81,6 +86,11 @@ const roles_permissions = {
   deleteOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findOrganizationById: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findAllOrganizations: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  createBranch: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
+  updateBranch: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
+  deleteBranch: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
+  findAllBranches: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
+  findBranchById: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
 };
 
 const module_permissions = {
