@@ -23,7 +23,12 @@ type actions =
   | 'deleteFranchise'
   | 'findAllFranchises'
   | 'findFranchiseById'
-  | 'updateFranchise';
+  | 'updateFranchise'
+  | 'createOrganization'
+  | 'updateOrganization'
+  | 'findAllOrganizations'
+  | 'findOrganizationById'
+  | 'deleteOrganization';
 
 const roles_permissions = {
   createUser: [
@@ -67,7 +72,15 @@ const roles_permissions = {
     'FRANCH_ASSISTANT',
   ],
   createFranchise: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  updateFranchise: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
   deleteFranchise: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findFranchiseById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findAllFranchises: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  createOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  updateOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  deleteOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  findOrganizationById: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  findAllOrganizations: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
 };
 
 const module_permissions = {
