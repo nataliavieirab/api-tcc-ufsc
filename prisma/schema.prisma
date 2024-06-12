@@ -21,6 +21,8 @@ model User {
   user_name String @unique
   role UserRole
   franchise Franchise?
+  organization_id String? @unique
+  organization Organization? @relation(fields: [organization_id], references: [id])
 }
 
 enum UserRole {
@@ -37,7 +39,7 @@ enum UserRole {
   CASHIER
   DELIVERY_ATTENDANT
 }
-model Organization {
+model Organization {organization_id
   id String @id
   name String
   cnpj String
@@ -51,7 +53,7 @@ model Organization {
   zip_code String
   phone String
   email String
-  adm_id String @unique
+  users User[]
   franchises Franchise[]
 }
 
@@ -71,6 +73,6 @@ model Franchise {
   email String
   adm_id String @unique
   adm User @relation(fields: [adm_id], references: [id])
-  organization_id String @unique
-  organization Organization @relation(fields: [organization_id], references: [id])
+  organization_id String? @unique
+  organization Organization? @relation(fields: [organization_id], references: [id])
 }
