@@ -73,7 +73,7 @@ const roles_permissions = {
 const module_permissions = {
   organizations: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADM'],
   admin: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  franchise: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
+  franchises: ['FRANCH_ADM', 'FRANCH_ASSISTANT'],
 };
 
 export { actions, roles, roles_permissions, module_permissions };
