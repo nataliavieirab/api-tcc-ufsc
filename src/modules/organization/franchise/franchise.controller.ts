@@ -38,7 +38,7 @@ export class FranchiseController {
     @Res() res: any,
   ) {
     validateAccess('findFranchiseById');
-    const franchise = this.franchiseRepository.findFranchiseById(id);
+    const franchise = await this.franchiseRepository.findFranchiseById(id);
 
     const status = franchise ? 200 : 404;
     res.status(status).send(franchise);
