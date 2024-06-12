@@ -37,7 +37,7 @@ export class UsersController {
     @Res() res: any,
   ) {
     validateAccess('findUserById');
-    const user = this.userRepository.findById(id);
+    const user = await this.userRepository.findById(id);
 
     const status = user ? 200 : 404;
     res.status(status).send(user);
