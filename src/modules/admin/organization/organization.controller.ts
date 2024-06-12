@@ -87,7 +87,7 @@ export class OrganizationController {
   }
 
   @Put('/:id')
-  async updatePOrganization(
+  async updateOrganization(
     @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateOrganizationBody,
     @Param('id') id: string,
