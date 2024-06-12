@@ -26,3 +26,5 @@ export const AccessValidator = createParamDecorator(
     };
   },
 );
+
+export type accessValidator = (action: actions) => void;
