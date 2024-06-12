@@ -13,30 +13,31 @@ import { findFranchisesFilters } from './dtos/find-franchises-filters';
 import { CreateFranchiseBody } from './dtos/create-franchise-body';
 import { UpdateFranchiseBody } from './dtos/update-franchise-body';
 import { FranchiseRepository } from '../../../repositories/franchise-repository';
-import { actions } from 'src/services/permissions/permissions';
-import { AccessValidator } from 'src/modules/auth/decorators/access-validator.decorator';
+import {
+  AccessValidator,
+  accessValidator,
+} from 'src/modules/auth/decorators/access-validator.decorator';
 
 @Controller('organizations/franchises')
 export class FranchiseController {
-  private validateAccess: (action: actions) => void;
-
-  constructor(private franchiseRepository: FranchiseRepository) {
-    this.validateAccess = AccessValidator;
-  }
+  constructor(private franchiseRepository: FranchiseRepository) {}
 
   @Get()
   async findAllFranchises(
+    @AccessValidator() validateAccess: accessValidator,
     @Body() body: findFranchisesFilters,
   ): Promise<Franchise[]> {
-    this.validateAccess('findAllFranchises');
-
+    validateAccess('findAllFranchises');
     return this.franchiseRepository.findAllFranchises(body);
   }
 
   @Get('/:id')
-  async findFranchiseById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findFranchiseById');
-
+  async findFranchiseById(
+    @AccessValidator() validateAccess: accessValidator,
+    @Param('id') id: string,
+    @Res() res: any,
+  ) {
+    validateAccess('findFranchiseById');
     const franchise = this.franchiseRepository.findFranchiseById(id);
 
     const status = franchise ? 200 : 404;
@@ -44,9 +45,12 @@ export class FranchiseController {
   }
 
   @Post()
-  async createFranchise(@Body() body: CreateFranchiseBody, @Res() res: any) {
-    this.validateAccess('createFranchise');
-
+  async createFranchise(
+    @AccessValidator() validateAccess: accessValidator,
+    @Body() body: CreateFranchiseBody,
+    @Res() res: any,
+  ) {
+    validateAccess('createFranchise');
     const {
       name,
       cnpj,
@@ -86,12 +90,12 @@ export class FranchiseController {
 
   @Put('/:id')
   async updateFranchise(
+    @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateFranchiseBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateFranchise');
-
+    validateAccess('updateFranchise');
     const {
       name,
       cnpj,
@@ -132,9 +136,12 @@ export class FranchiseController {
   }
 
   @Delete('/:id')
-  async deleteFranchise(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteFranchise');
-
+  async deleteFranchise(
+    @AccessValidator() validateAccess: accessValidator,
+    @Param('id') id: string,
+    @Res() res: any,
+  ) {
+    validateAccess('deleteFranchise');
     const franchise = await this.franchiseRepository.deleteFranchise(id);
 
     const status = franchise ? 200 : 404;

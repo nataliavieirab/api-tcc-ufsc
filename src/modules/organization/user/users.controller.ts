@@ -13,37 +13,44 @@ import {
 import { findUsersFilters } from './dtos/find-users-filter';
 import { UpdateUserBody } from './dtos/update-user-body';
 import { UserRepository } from 'src/repositories/user-repository';
-import { actions } from 'src/services/permissions/permissions';
-import { AccessValidator } from 'src/modules/auth/decorators/access-validator.decorator';
+import {
+  AccessValidator,
+  accessValidator,
+} from 'src/modules/auth/decorators/access-validator.decorator';
 @Controller('organizations/users')
 export class UsersController {
-  private validateAccess: (action: actions) => void;
-
-  constructor(private userRepository: UserRepository) {
-    this.validateAccess = AccessValidator;
-  }
+  constructor(private userRepository: UserRepository) {}
 
   @Get()
-  async findAll(@Body() body: findUsersFilters): Promise<User[]> {
-    this.validateAccess('findAllUsers');
-
+  async findAll(
+    @AccessValidator() validateAccess: accessValidator,
+    @Body() body: findUsersFilters,
+  ): Promise<User[]> {
+    validateAccess('findAllUsers');
     return this.userRepository.findAll(body);
   }
 
   @Get('/:id')
-  async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findUserById');
-
-    const user = this.userRepository.findById(id);
+  async findById(
+    @AccessValidator() validateAccess: accessValidator,
+    @Param('id') id: string,
+    @Res() res: any,
+  ) {
+    validateAccess('findUserById');
+    const user = await this.userRepository.findById(id);
 
     const status = user ? 200 : 404;
     res.status(status).send(user);
   }
 
   @Post()
-  async create(@Body() body: CreateUserBody, @Res() res: any) {
-    this.validateAccess('createUser');
-
+  async create(
+    @AccessValidator() validateAccess: accessValidator,
+    @Body() body: CreateUserBody,
+    @Res() res: any,
+  ) {
+    console.log('bateu controller');
+    validateAccess('createUser');
     const {
       name,
       last_name,
@@ -71,12 +78,12 @@ export class UsersController {
 
   @Put('/:id')
   async update(
+    @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateUserBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateUser');
-
+    validateAccess('updateUser');
     const {
       name,
       last_name,
@@ -105,9 +112,12 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  async delete(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteUser');
-
+  async delete(
+    @AccessValidator() validateAccess: accessValidator,
+    @Param('id') id: string,
+    @Res() res: any,
+  ) {
+    validateAccess('deleteUser');
     const user = await this.userRepository.delete(id);
 
     const status = user ? 204 : 404;
