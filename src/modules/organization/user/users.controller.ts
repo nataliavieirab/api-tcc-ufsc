@@ -49,7 +49,6 @@ export class UsersController {
     @Body() body: CreateUserBody,
     @Res() res: any,
   ) {
-    console.log('bateu controller');
     validateAccess('createUser');
     const {
       name,
