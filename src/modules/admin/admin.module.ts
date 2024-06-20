@@ -7,12 +7,14 @@ import { UsersController } from './user/users.controller';
 import { OrganizationController } from './organization/organization.controller';
 import { OrganizationRepository } from 'src/repositories/organization-repository';
 import { PrismaOrganizationRepository } from 'src/repositories/prisma/prisma-organization-repository';
+import { UserService } from 'src/services/domains/user.service';
 
 @Module({
   imports: [PrismaModule],
   controllers: [UsersController, OrganizationController],
   providers: [
     PrismaService,
+    UserService,
     {
       provide: UserRepository,
       useClass: PrismaUsersRepository,
