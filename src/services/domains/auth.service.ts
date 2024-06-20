@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from 'src/repositories/user-repository';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedError } from '../modules/auth/errors/unauthorized.error';
+import { UnauthorizedError } from '../../modules/auth/errors/unauthorized.error';
 import { UserPayload } from 'src/modules/auth/models/UserPayload';
 import { UserToken } from 'src/modules/auth/models/UserToken';
 

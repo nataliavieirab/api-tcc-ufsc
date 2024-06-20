@@ -95,6 +95,7 @@ export class PrismaUsersRepository implements UserRepository {
         last_name,
         birth_date,
         cpf,
+        email,
         password,
         user_name,
         role,
