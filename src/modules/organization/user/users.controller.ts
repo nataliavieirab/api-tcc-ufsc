@@ -1,4 +1,3 @@
-import { CreateUserBody } from './dtos/create-user-body';
 import { User } from '@prisma/client';
 import {
   Body,
@@ -10,16 +9,17 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { findUsersFilters } from './dtos/find-users-filter';
+import { CreateUserBody } from './dtos/create-user-body';
 import { UpdateUserBody } from './dtos/update-user-body';
-import { UserRepository } from 'src/repositories/user-repository';
 import {
   AccessValidator,
   accessValidator,
 } from 'src/modules/auth/decorators/access-validator.decorator';
+import { UserService } from 'src/services/domains/user.service';
+import { findUsersFilters } from './dtos/find-users-filter';
 @Controller('organizations/users')
 export class UsersController {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userService: UserService) {}
 
   @Get()
   async findAll(
@@ -27,7 +27,7 @@ export class UsersController {
     @Body() body: findUsersFilters,
   ): Promise<User[]> {
     validateAccess('findAllUsers');
-    return this.userRepository.findAll(body);
+    return this.userService.findAll(body);
   }
 
   @Get('/:id')
@@ -37,9 +37,10 @@ export class UsersController {
     @Res() res: any,
   ) {
     validateAccess('findUserById');
-    const user = await this.userRepository.findById(id);
+    const user = await this.userService.findById(id);
 
     const status = user ? 200 : 404;
+
     res.status(status).send(user);
   }
 
@@ -50,27 +51,8 @@ export class UsersController {
     @Res() res: any,
   ) {
     validateAccess('createUser');
-    const {
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    } = body;
 
-    const user = await this.userRepository.create(
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    );
+    const user = await this.userService.create(body);
 
     res.status(201).send({ ...user, password: undefined });
   }
@@ -83,28 +65,7 @@ export class UsersController {
     @Res() res: any,
   ) {
     validateAccess('updateUser');
-    const {
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    } = body;
-
-    const user = await this.userRepository.update(
-      id,
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    );
+    const user = await this.userService.update(id, body);
 
     const status = user ? 200 : 404;
     res.status(status).send({ ...user, password: undefined });
@@ -117,7 +78,7 @@ export class UsersController {
     @Res() res: any,
   ) {
     validateAccess('deleteUser');
-    const user = await this.userRepository.delete(id);
+    const user = await this.userService.delete(id);
 
     const status = user ? 204 : 404;
     res.status(status).send();

@@ -7,12 +7,14 @@ import { FranchiseRepository } from 'src/repositories/franchise-repository';
 import { PrismaModule } from 'src/infra/database/prisma/prisma.module';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { FranchiseController } from './franchise/franchise.controller';
+import { UserService } from 'src/services/domains/user.service';
 
 @Module({
   imports: [PrismaModule],
   controllers: [UsersController, FranchiseController],
   providers: [
     PrismaService,
+    UserService,
     {
       provide: UserRepository,
       useClass: PrismaUsersRepository,
