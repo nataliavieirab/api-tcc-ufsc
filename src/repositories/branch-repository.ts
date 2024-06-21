@@ -1,14 +1,12 @@
 import { Branch } from '@prisma/client';
-import { findBranchesFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
+import { findBranchFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
 
 export abstract class BranchRepository {
-  abstract findAllBranches(
-    findBranchesFilters: findBranchesFilters,
-  ): Promise<Branch[]>;
+  abstract findAll(findBranchesFilters: findBranchFilters): Promise<Branch[]>;
 
-  abstract findBranchById(id: string): Promise<Branch | null>;
+  abstract findById(id: string): Promise<Branch | null>;
 
-  abstract createBranch(
+  abstract create(
     name: string,
     cnpj: string,
     address: string,
@@ -23,7 +21,7 @@ export abstract class BranchRepository {
     email: string,
   );
 
-  abstract updateBranch(
+  abstract update(
     id: string,
     name: string,
     cnpj: string,
@@ -39,5 +37,5 @@ export abstract class BranchRepository {
     email: string,
   ): Promise<Branch | null>;
 
-  abstract deleteBranch(id: string): Promise<Branch | null>;
+  abstract delete(id: string): Promise<Branch | null>;
 }
