@@ -8,6 +8,7 @@ import { BranchController } from './branch/branch.controller';
 import { BranchRepository } from 'src/repositories/branch-repository';
 import { PrismaBranchRepository } from 'src/repositories/prisma/prisma-branch-repository';
 import { UserService } from 'src/services/domains/user.service';
+import { BranchService } from 'src/services/domains/branch.service';
 
 @Module({
   imports: [PrismaModule],
@@ -15,6 +16,7 @@ import { UserService } from 'src/services/domains/user.service';
   providers: [
     PrismaService,
     UserService,
+    BranchService,
     {
       provide: UserRepository,
       useClass: PrismaUsersRepository,
