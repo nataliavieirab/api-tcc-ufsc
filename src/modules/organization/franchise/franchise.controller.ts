@@ -12,139 +12,80 @@ import { Franchise } from '@prisma/client';
 import { findFranchisesFilters } from './dtos/find-franchises-filters';
 import { CreateFranchiseBody } from './dtos/create-franchise-body';
 import { UpdateFranchiseBody } from './dtos/update-franchise-body';
-import { FranchiseRepository } from '../../../repositories/franchise-repository';
 import {
   AccessValidator,
   accessValidator,
 } from 'src/modules/auth/decorators/access-validator.decorator';
+import { FranchiseService } from 'src/services/domains/franchise.service';
 
 @Controller('organizations/franchises')
 export class FranchiseController {
-  constructor(private franchiseRepository: FranchiseRepository) {}
+  constructor(private franchiseService: FranchiseService) {}
 
   @Get()
-  async findAllFranchises(
+  async findAll(
     @AccessValidator() validateAccess: accessValidator,
     @Body() body: findFranchisesFilters,
   ): Promise<Franchise[]> {
     validateAccess('findAllFranchises');
-    return this.franchiseRepository.findAllFranchises(body);
+    return this.franchiseService.findAll(body);
   }
 
   @Get('/:id')
-  async findFranchiseById(
+  async findById(
     @AccessValidator() validateAccess: accessValidator,
     @Param('id') id: string,
     @Res() res: any,
   ) {
     validateAccess('findFranchiseById');
-    const franchise = await this.franchiseRepository.findFranchiseById(id);
+    const franchise = await this.franchiseService.findById(id);
 
     const status = franchise ? 200 : 404;
     res.status(status).send(franchise);
   }
 
   @Post()
-  async createFranchise(
+  async create(
     @AccessValidator() validateAccess: accessValidator,
     @Body() body: CreateFranchiseBody,
     @Res() res: any,
   ) {
     validateAccess('createFranchise');
-    const {
-      name,
-      cnpj,
-      address,
-      number,
-      complement,
-      neighborhood,
-      city,
-      state,
-      country,
-      zip_code,
-      phone,
-      email,
-      adm_id,
-      organization_id,
-    } = body;
 
-    const franchise = await this.franchiseRepository.createFranchise(
-      name,
-      cnpj,
-      address,
-      number,
-      complement,
-      neighborhood,
-      city,
-      state,
-      country,
-      zip_code,
-      phone,
-      email,
-      adm_id,
-      organization_id,
-    );
+    const franchise = await this.franchiseService.create(body);
 
-    res.status(201).send(franchise);
+    res
+      .status(201)
+      .send({ franchise, message: 'Franchise successfully created!' });
   }
 
   @Put('/:id')
-  async updateFranchise(
+  async update(
     @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateFranchiseBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
     validateAccess('updateFranchise');
-    const {
-      name,
-      cnpj,
-      address,
-      number,
-      complement,
-      neighborhood,
-      city,
-      state,
-      country,
-      zip_code,
-      phone,
-      email,
-      adm_id,
-      organization_id,
-    } = body;
 
-    const franchise = await this.franchiseRepository.updateFranchise(
-      id,
-      name,
-      cnpj,
-      address,
-      number,
-      complement,
-      neighborhood,
-      city,
-      state,
-      country,
-      zip_code,
-      phone,
-      email,
-      adm_id,
-      organization_id,
-    );
+    const franchise = await this.franchiseService.update(id, body);
 
     const status = franchise ? 200 : 404;
-    res.status(status).send(franchise);
+    res
+      .status(status)
+      .send({ franchise, message: 'Franchise successfully updated!' });
   }
 
   @Delete('/:id')
-  async deleteFranchise(
+  async delete(
     @AccessValidator() validateAccess: accessValidator,
     @Param('id') id: string,
     @Res() res: any,
   ) {
     validateAccess('deleteFranchise');
-    const franchise = await this.franchiseRepository.deleteFranchise(id);
+    const franchise = await this.franchiseService.delete(id);
 
     const status = franchise ? 200 : 404;
-    res.status(status).send();
+    res.status(status).send('Franchise successfully deleted!');
   }
 }

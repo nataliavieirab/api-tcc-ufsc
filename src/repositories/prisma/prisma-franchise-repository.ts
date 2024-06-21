@@ -9,7 +9,7 @@ import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 export class PrismaFranchiseRepository implements FranchiseRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createFranchise(
+  async create(
     name: string,
     cnpj: string,
     address: string,
@@ -46,9 +46,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
     });
   }
 
-  async findAllFranchises(
-    filters: findFranchisesFilters,
-  ): Promise<Franchise[]> {
+  async findAll(filters: findFranchisesFilters): Promise<Franchise[]> {
     const { name, cnpj, city, state, zip_code, phone, email, adm_id } = filters;
 
     const prismaFilters: Prisma.FranchiseWhereInput = {
@@ -67,13 +65,13 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
     });
   }
 
-  async findFranchiseById(id: string): Promise<Franchise | null> {
+  async findById(id: string): Promise<Franchise | null> {
     const params = { where: { id } };
 
     return await this.prisma.franchise.findUnique(params);
   }
 
-  async updateFranchise(
+  async update(
     id: string,
     name: string,
     cnpj: string,
@@ -121,7 +119,7 @@ export class PrismaFranchiseRepository implements FranchiseRepository {
     return updatedFranchise;
   }
 
-  async deleteFranchise(id: string): Promise<Franchise | null> {
+  async delete(id: string): Promise<Franchise | null> {
     const existingFranchise = await this.prisma.franchise.findUnique({
       where: { id },
     });
