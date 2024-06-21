@@ -10,11 +10,11 @@ export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async findAll(findUsersFilters: findUsersFilters): Promise<User[]> {
-    return this.userRepository.findAll(findUsersFilters);
+    return await this.userRepository.findAll(findUsersFilters);
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userRepository.findById(id);
+    return await this.userRepository.findById(id);
   }
 
   async create(createUserBody: CreateUserBody): Promise<User> {
