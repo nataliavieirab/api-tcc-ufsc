@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { Branch, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { BranchRepository } from '../branch-repository';
-import { findBranchesFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
+import { findBranchFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
 
 @Injectable()
 export class PrismaBranchRepository implements BranchRepository {
   constructor(private prisma: PrismaService) {}
 
-  async createBranch(
+  async create(
     name: string,
     cnpj: string,
     address: string,
@@ -42,7 +42,7 @@ export class PrismaBranchRepository implements BranchRepository {
     });
   }
 
-  async findAllBranches(filters: findBranchesFilters): Promise<Branch[]> {
+  async findAll(filters: findBranchFilters): Promise<Branch[]> {
     const { name, cnpj, city, state, zip_code, phone, email } = filters;
 
     const prismaFilters: Prisma.BranchWhereInput = {
@@ -60,13 +60,13 @@ export class PrismaBranchRepository implements BranchRepository {
     });
   }
 
-  async findBranchById(id: string): Promise<Branch | null> {
+  async findById(id: string): Promise<Branch | null> {
     const params = { where: { id } };
 
     return await this.prisma.branch.findUnique(params);
   }
 
-  async updateBranch(
+  async update(
     id: string,
     name: string,
     cnpj: string,
@@ -110,7 +110,7 @@ export class PrismaBranchRepository implements BranchRepository {
     return updatedBranch;
   }
 
-  async deleteBranch(id: string): Promise<Branch | null> {
+  async delete(id: string): Promise<Branch | null> {
     const existingBranch = await this.prisma.branch.findUnique({
       where: { id },
     });
