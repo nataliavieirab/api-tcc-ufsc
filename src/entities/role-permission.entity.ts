@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Role } from './role.entity';
 
@@ -6,4 +6,10 @@ import { Role } from './role.entity';
 export class RolePermission extends DefaultEntity {
   @ManyToOne(() => Role, (role) => role.permissions)
   role: Role;
+
+  @Column()
+  action: string;
+
+  @Column()
+  module: string;
 }
