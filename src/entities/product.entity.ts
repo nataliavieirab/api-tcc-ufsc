@@ -5,7 +5,7 @@ import { ProductSetItem } from './product-set-item.entity';
 
 @Entity()
 export class Product extends DefaultEntity {
-  @ManyToOne(() => Company, (company) => company.paymentTypes)
+  @ManyToOne(() => Company, (company) => company.products)
   company: Company;
 
   @Column()
