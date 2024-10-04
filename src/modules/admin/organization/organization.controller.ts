@@ -8,7 +8,6 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { Organization } from '@prisma/client';
 import {
   AccessValidator,
   accessValidator,

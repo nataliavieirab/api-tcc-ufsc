@@ -1,4 +1,3 @@
-import { UserRole } from '.prisma/client';
 import {
   IsDateString,
   IsOptional,

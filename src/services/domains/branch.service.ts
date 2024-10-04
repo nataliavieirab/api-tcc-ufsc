@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Branch } from '@prisma/client';
 import { CreateBranchBody } from 'src/modules/organization/branch/dtos/create-branch-body';
 import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
 import { UpdateBranchBody } from 'src/modules/organization/branch/dtos/update-branch-body';
