@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Address } from './address.entity';
+import { BagItem } from './bag-item.entity';
 
 enum ShippingStatus {
   AWAITING = 'awaiting',
@@ -9,7 +10,7 @@ enum ShippingStatus {
 }
 
 @Entity()
-export class Bag extends DefaultEntity {
+export class Shipping extends DefaultEntity {
   @ManyToOne(() => Address, { nullable: true })
   senderAddress?: Address;
 
@@ -28,4 +29,7 @@ export class Bag extends DefaultEntity {
 
   @Column({ type: 'enum', enum: ShippingStatus })
   status: ShippingStatus;
+
+  @OneToMany(() => BagItem, (item) => item.shipping)
+  items: BagItem[];
 }
