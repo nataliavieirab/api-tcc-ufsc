@@ -61,9 +61,5 @@ export class CreateBranchBody {
 
   @IsString()
   @IsOptional()
-  readonly franchise_id: string;
-
-  @IsString()
-  @IsOptional()
   readonly manager_id: string;
 }
