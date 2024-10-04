@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Company } from './company.entity';
+import { ProductSetItem } from './product-set-item.entity';
 
 enum ProductSetStatus {
   ACTIVE = 'active',
@@ -20,4 +21,10 @@ export class ProductSet extends DefaultEntity {
     enum: ProductSetStatus,
   })
   status: ProductSetStatus;
+
+  @OneToMany(
+    () => ProductSetItem,
+    (productSetItem) => productSetItem.productSet,
+  )
+  items: ProductSetItem[];
 }
