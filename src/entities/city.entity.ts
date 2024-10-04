@@ -2,13 +2,13 @@ import { Column, Entity } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 
 @Entity()
-export class Organization extends DefaultEntity {
+export class City extends DefaultEntity {
   @Column()
   name: string;
 
   @Column()
-  phone: string;
+  code: number;
 
   @Column()
-  email: string;
+  state: string;
 }

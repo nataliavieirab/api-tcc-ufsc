@@ -2,13 +2,16 @@ import { Column, Entity } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 
 @Entity()
-export class Organization extends DefaultEntity {
+export class Address extends DefaultEntity {
   @Column()
-  name: string;
+  street: string;
 
   @Column()
-  phone: string;
+  number: number;
 
   @Column()
-  email: string;
+  complement: string;
+
+  @Column()
+  zipCode: number;
 }
