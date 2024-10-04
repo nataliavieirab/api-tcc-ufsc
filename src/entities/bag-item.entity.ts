@@ -4,6 +4,7 @@ import { Bag } from './bag.entity';
 import { Shipping } from './shipping.entity';
 import { Product } from './product.entity';
 import { BagItemOption } from './bag-item-option.entity';
+import { BagItemAddOn } from './bag-item-add-on.entity';
 
 @Entity()
 export class BagItem extends DefaultEntity {
@@ -24,4 +25,7 @@ export class BagItem extends DefaultEntity {
 
   @OneToMany(() => BagItemOption, (bag) => bag.bagItem)
   bagItemOptions: BagItemOption;
+
+  @OneToMany(() => BagItemAddOn, (bag) => bag.bagItem)
+  bagItemAddOns: BagItemAddOn;
 }
