@@ -11,6 +11,6 @@ export class Role extends DefaultEntity {
   @OneToMany(() => UserRole, (user) => user.role)
   users: UserRole[];
 
-  @OneToMany(() => RolePermission, (permission) => permission.role)
-  permissions: RolePermission[];
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
+  rolePermissions: RolePermission[];
 }

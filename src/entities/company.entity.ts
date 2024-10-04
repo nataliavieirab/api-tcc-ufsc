@@ -5,6 +5,7 @@ import { CompanyAddress } from './company-address.entity';
 import { PaymentType } from './payment-type.entity';
 import { Product } from './product.entity';
 import { ProductSet } from './product-set.entity';
+import { DeliverySettings } from './delivery-settings.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
@@ -25,4 +26,10 @@ export class Company extends DefaultEntity {
 
   @OneToMany(() => ProductSet, (address) => address.company)
   productSets: ProductSet[];
+
+  @OneToOne(
+    () => DeliverySettings,
+    (deliverySettings) => deliverySettings.company,
+  )
+  deliverySettings: DeliverySettings;
 }
