@@ -55,9 +55,5 @@ export class UpdateBranchBody {
 
   @IsString()
   @IsOptional()
-  readonly franchise_id: string;
-
-  @IsString()
-  @IsOptional()
   readonly manager_id: string;
 }

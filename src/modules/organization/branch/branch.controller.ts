@@ -18,7 +18,7 @@ import { UpdateBranchBody } from './dtos/update-branch-body';
 import { findBranchFilters } from './dtos/find-branch-filters';
 import { BranchService } from 'src/services/domains/branch.service';
 
-@Controller('franchises/branches')
+@Controller('/branches')
 export class BranchController {
   constructor(private branchService: BranchService) {}
 
