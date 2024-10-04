@@ -6,11 +6,18 @@ import { PaymentType } from './payment-type.entity';
 import { Product } from './product.entity';
 import { ProductSet } from './product-set.entity';
 import { DeliverySettings } from './delivery-settings.entity';
+import { Category } from './category.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
   @Column()
   name: string;
+
+  @OneToOne(
+    () => DeliverySettings,
+    (deliverySettings) => deliverySettings.company,
+  )
+  deliverySettings: DeliverySettings;
 
   @OneToMany(() => CashRegister, (cashRegister) => cashRegister.company)
   cashRegister: CashRegister[];
@@ -27,9 +34,6 @@ export class Company extends DefaultEntity {
   @OneToMany(() => ProductSet, (address) => address.company)
   productSets: ProductSet[];
 
-  @OneToOne(
-    () => DeliverySettings,
-    (deliverySettings) => deliverySettings.company,
-  )
-  deliverySettings: DeliverySettings;
+  @OneToMany(() => Category, (address) => address.company)
+  categories: Category[];
 }
