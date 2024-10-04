@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { City } from './city.entity';
 
 @Entity()
 export class Neighborhood extends DefaultEntity {
-  @ManyToOne(() => City, (city) => city.nei)
+  @ManyToOne(() => City, (city) => city.neighborhoods)
   city: City;
 
   @Column()
