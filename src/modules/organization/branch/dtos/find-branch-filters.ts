@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class findBranchFilters {
+export class findCompanyFilters {
   @IsString()
   @IsOptional()
   readonly name: string;

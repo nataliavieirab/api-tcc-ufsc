@@ -8,80 +8,79 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { Branch } from '@prisma/client';
 import {
   AccessValidator,
   accessValidator,
 } from 'src/modules/auth/decorators/access-validator.decorator';
-import { CreateBranchBody } from './dtos/create-branch-body';
-import { UpdateBranchBody } from './dtos/update-branch-body';
-import { findBranchFilters } from './dtos/find-branch-filters';
-import { BranchService } from 'src/services/domains/branch.service';
+import { CreateCompanyBody } from './dtos/create-company-body';
+import { UpdateCompanyBody } from './dtos/update-company-body';
+import { findCompanyFilters } from './dtos/find-company-filters';
+import { CompanyService } from 'src/services/domains/company.service';
 
-@Controller('/branches')
-export class BranchController {
-  constructor(private branchService: BranchService) {}
+@Controller('/companyes')
+export class CompanyController {
+  constructor(private companyService: CompanyService) {}
 
   @Get()
-  async findAllBranches(
+  async findAllCompanies(
     @AccessValidator() validateAccess: accessValidator,
-    @Body() body: findBranchFilters,
-  ): Promise<Branch[]> {
-    validateAccess('findAllBranches');
-    return this.branchService.findAll(body);
+    @Body() body: findCompanyFilters,
+  ): Promise<Company[]> {
+    validateAccess('findAllCompanies');
+    return this.companyService.findAll(body);
   }
 
   @Get('/:id')
-  async findBranchById(
+  async findCompanyById(
     @AccessValidator() validateAccess: accessValidator,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    validateAccess('findBranchById');
-    const branch = await this.branchService.findById(id);
+    validateAccess('findCompanyById');
+    const company = await this.companyService.findById(id);
 
-    const status = branch ? 200 : 404;
-    res.status(status).send(branch);
+    const status = company ? 200 : 404;
+    res.status(status).send(company);
   }
 
   @Post()
-  async createBranch(
+  async createCompany(
     @AccessValidator() validateAccess: accessValidator,
-    @Body() body: CreateBranchBody,
+    @Body() body: CreateCompanyBody,
     @Res() res: any,
   ) {
-    validateAccess('createBranch');
+    validateAccess('createCompany');
 
-    const branch = await this.branchService.create(body);
+    const company = await this.companyService.create(body);
 
-    res.status(201).send(branch);
+    res.status(201).send(company);
   }
 
   @Put('/:id')
-  async updateBranch(
+  async updateCompany(
     @AccessValidator() validateAccess: accessValidator,
-    @Body() body: UpdateBranchBody,
+    @Body() body: UpdateCompanyBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    validateAccess('updateBranch');
+    validateAccess('updateCompany');
 
-    const branch = await this.branchService.update(id, body);
+    const company = await this.companyService.update(id, body);
 
-    const status = branch ? 200 : 404;
-    res.status(status).send(branch);
+    const status = company ? 200 : 404;
+    res.status(status).send(company);
   }
 
   @Delete('/:id')
-  async deleteBranch(
+  async deleteCompany(
     @AccessValidator() validateAccess: accessValidator,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    validateAccess('deleteBranch');
-    const branch = await this.branchService.delete(id);
+    validateAccess('deleteCompany');
+    const company = await this.companyService.delete(id);
 
-    const status = branch ? 200 : 404;
-    res.status(status).send('Branch successfully deleted');
+    const status = company ? 200 : 404;
+    res.status(status).send('Company successfully deleted');
   }
 }

@@ -1,6 +1,6 @@
 import { IsInt, IsOptional, IsString, Length } from 'class-validator';
 
-export class UpdateBranchBody {
+export class UpdateCompanyBody {
   @IsString()
   @Length(2, 50)
   @IsOptional()

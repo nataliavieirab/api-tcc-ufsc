@@ -1,9 +1,11 @@
-import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
+import { findCompanyFilters } from 'src/modules/organization/company/dtos/find-company-filters';
 
-export abstract class BranchRepository {
-  abstract findAll(findBranchesFilters: findBranchFilters): Promise<Branch[]>;
+export abstract class CompanyRepository {
+  abstract findAll(
+    findCompaniesFilters: findCompanyFilters,
+  ): Promise<Company[]>;
 
-  abstract findById(id: string): Promise<Branch | null>;
+  abstract findById(id: string): Promise<Company | null>;
 
   abstract create(
     name: string,
@@ -34,7 +36,7 @@ export abstract class BranchRepository {
     zip_code: string,
     phone: string,
     email: string,
-  ): Promise<Branch | null>;
+  ): Promise<Company | null>;
 
-  abstract delete(id: string): Promise<Branch | null>;
+  abstract delete(id: string): Promise<Company | null>;
 }

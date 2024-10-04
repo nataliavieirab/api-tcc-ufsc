@@ -17,11 +17,11 @@ type actions =
   | 'findAllOrganizations'
   | 'findOrganizationById'
   | 'deleteOrganization'
-  | 'createBranch'
-  | 'updateBranch'
-  | 'deleteBranch'
-  | 'findAllBranches'
-  | 'findBranchById';
+  | 'createCompany'
+  | 'updateCompany'
+  | 'deleteCompany'
+  | 'findAllCompanies'
+  | 'findCompanyById';
 
 const roles_permissions = {
   createUser: [
@@ -59,11 +59,11 @@ const roles_permissions = {
   deleteOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findOrganizationById: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findAllOrganizations: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  createBranch: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  updateBranch: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  deleteBranch: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findAllBranches: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findBranchById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  createCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  updateCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  deleteCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findAllCompanies: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findCompanyById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
 };
 
 const module_permissions = {

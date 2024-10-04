@@ -1,22 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBranchBody } from 'src/modules/organization/branch/dtos/create-branch-body';
-import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
-import { UpdateBranchBody } from 'src/modules/organization/branch/dtos/update-branch-body';
-import { BranchRepository } from 'src/repositories/branch-repository';
+import { CreateCompanyBody } from 'src/modules/organization/company/dtos/create-company-body';
+import { findCompanyFilters } from 'src/modules/organization/company/dtos/find-company-filters';
+import { UpdateCompanyBody } from 'src/modules/organization/company/dtos/update-company-body';
+import { CompanyRepository } from 'src/repositories/company-repository';
 
 @Injectable()
-export class BranchService {
-  constructor(private readonly branchRepository: BranchRepository) {}
+export class CompanyService {
+  constructor(private readonly companyRepository: CompanyRepository) {}
 
-  async findAll(findBranchFilters: findBranchFilters): Promise<Branch[]> {
-    return this.branchRepository.findAll(findBranchFilters);
+  async findAll(findCompanyFilters: findCompanyFilters): Promise<Company[]> {
+    return this.companyRepository.findAll(findCompanyFilters);
   }
 
-  async findById(id: string): Promise<Branch | null> {
-    return this.branchRepository.findById(id);
+  async findById(id: string): Promise<Company | null> {
+    return this.companyRepository.findById(id);
   }
 
-  async create(createBranchBody: CreateBranchBody): Promise<Branch> {
+  async create(createCompanyBody: CreateCompanyBody): Promise<Company> {
     const {
       name,
       cnpj,
@@ -30,9 +30,9 @@ export class BranchService {
       zip_code,
       phone,
       email,
-    } = createBranchBody;
+    } = createCompanyBody;
 
-    return this.branchRepository.create(
+    return this.companyRepository.create(
       name,
       cnpj,
       address,
@@ -50,8 +50,8 @@ export class BranchService {
 
   async update(
     id: string,
-    updateBranchBody: UpdateBranchBody,
-  ): Promise<Branch | null> {
+    updateCompanyBody: UpdateCompanyBody,
+  ): Promise<Company | null> {
     const {
       name,
       cnpj,
@@ -65,9 +65,9 @@ export class BranchService {
       zip_code,
       phone,
       email,
-    } = updateBranchBody;
+    } = updateCompanyBody;
 
-    return this.branchRepository.update(
+    return this.companyRepository.update(
       id,
       name,
       cnpj,
@@ -84,7 +84,7 @@ export class BranchService {
     );
   }
 
-  async delete(id: string): Promise<Branch> | null {
-    return this.branchRepository.delete(id);
+  async delete(id: string): Promise<Company> | null {
+    return this.companyRepository.delete(id);
   }
 }
