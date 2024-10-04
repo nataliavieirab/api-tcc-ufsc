@@ -4,6 +4,7 @@ import { Company } from './company.entity';
 import { ProductSetItem } from './product-set-item.entity';
 import { ProductCategory } from './product-category.entity';
 import { ProductAddOn } from './product-add-on.entity';
+import { ProductOption } from './product-option.entity';
 
 @Entity()
 export class Product extends DefaultEntity {
@@ -24,4 +25,7 @@ export class Product extends DefaultEntity {
 
   @OneToMany(() => ProductAddOn, (productSetItem) => productSetItem.product)
   productAddOns: ProductAddOn[];
+
+  @OneToMany(() => ProductOption, (productSetItem) => productSetItem.product)
+  productOptions: ProductAddOn[];
 }
