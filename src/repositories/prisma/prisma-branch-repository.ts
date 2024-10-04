@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Branch, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/database/prisma/prisma.service';
 import { BranchRepository } from '../branch-repository';
-import { findBranchFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
+import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
 
 @Injectable()
 export class PrismaBranchRepository implements BranchRepository {

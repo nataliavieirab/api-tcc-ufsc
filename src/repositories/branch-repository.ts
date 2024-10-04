@@ -1,5 +1,5 @@
 import { Branch } from '@prisma/client';
-import { findBranchFilters } from 'src/modules/franchise/branch/dtos/find-branch-filters';
+import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
 
 export abstract class BranchRepository {
   abstract findAll(findBranchesFilters: findBranchFilters): Promise<Branch[]>;
