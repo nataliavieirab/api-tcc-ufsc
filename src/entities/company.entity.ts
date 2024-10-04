@@ -6,15 +6,12 @@ import { PaymentType } from './payment_type.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
+  @Column()
+  name: string;
+
   @OneToMany(() => CashRegister, (cashRegister) => cashRegister.company)
   cashRegister: CashRegister[];
 
   @OneToOne(() => CompanyAddress, (address) => address.company)
   address?: CompanyAddress;
-
-  @Column()
-  name: string;
-
-  @OneToMany(() => PaymentType, (address) => address.company)
-  paymentTypes: PaymentType[];
 }
