@@ -4,6 +4,7 @@ import { CashRegister } from './cash-register.entity';
 import { CompanyAddress } from './company-address.entity';
 import { PaymentType } from './payment-type.entity';
 import { Product } from './product.entity';
+import { ProductSet } from './product-set.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
@@ -21,4 +22,7 @@ export class Company extends DefaultEntity {
 
   @OneToMany(() => Product, (address) => address.company)
   products: Product[];
+
+  @OneToMany(() => ProductSet, (address) => address.company)
+  productSets: ProductSet[];
 }
