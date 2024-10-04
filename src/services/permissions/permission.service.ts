@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { actions, roles_permissions, module_permissions } from './permissions';
 
 @Injectable()

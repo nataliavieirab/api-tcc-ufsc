@@ -1,4 +1,3 @@
-import { User, UserRole } from '@prisma/client';
 import { findUsersFilters } from '../modules/organization/user/dtos/find-users-filter';
 
 export abstract class UserRepository {

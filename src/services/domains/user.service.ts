@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
 import { CreateUserBody } from 'src/modules/organization/user/dtos/create-user-body';
 import { findUsersFilters } from 'src/modules/organization/user/dtos/find-users-filter';
 import { UpdateUserBody } from 'src/modules/organization/user/dtos/update-user-body';
