@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
+import { Bag } from './bag.entity';
 
 @Entity()
 export class Customer extends DefaultEntity {
@@ -11,4 +12,7 @@ export class Customer extends DefaultEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Bag, (bag) => bag.customer)
+  bags: Bag[];
 }
