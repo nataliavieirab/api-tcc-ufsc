@@ -4,9 +4,6 @@ import { Neighborhood } from './neighborhood.entity';
 
 @Entity()
 export class City extends DefaultEntity {
-  @OneToMany(() => Neighborhood, (neighborhood) => neighborhood.city)
-  neighborhoods: Neighborhood[];
-
   @Column()
   name: string;
 
@@ -15,4 +12,7 @@ export class City extends DefaultEntity {
 
   @Column()
   state: string;
+
+  @OneToMany(() => Neighborhood, (neighborhood) => neighborhood.city)
+  neighborhoods: Neighborhood[];
 }
