@@ -4,7 +4,7 @@ import { Role } from './role.entity';
 
 @Entity()
 export class RolePermission extends DefaultEntity {
-  @ManyToOne(() => Role, (role) => role.permissions)
+  @ManyToOne(() => Role, (role) => role.rolePermissions)
   role: Role;
 
   @Column()
