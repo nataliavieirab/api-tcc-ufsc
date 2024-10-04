@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Company } from './company.entity';
+import { Order } from './order.entity';
 
 @Entity()
 export class CashRegister extends DefaultEntity {
@@ -12,4 +13,7 @@ export class CashRegister extends DefaultEntity {
 
   @Column()
   closing_date: Date;
+
+  @OneToMany(() => Order, (order) => order.cashRegister)
+  orders: Order[];
 }
