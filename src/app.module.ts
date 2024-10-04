@@ -7,12 +7,9 @@ import { OrganizationModule } from './modules/organization/organization.module';
 import { JwtModule } from '@nestjs/jwt';
 import { UserRepository } from './repositories/user-repository';
 import { PrismaUsersRepository } from './repositories/prisma/prisma-user-repository';
-import { FranchiseRepository } from './repositories/franchise-repository';
-import { PrismaFranchiseRepository } from './repositories/prisma/prisma-franchise-repository';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth-.guard';
 import { AdminModule } from './modules/admin/admin.module';
-import { FranchiseModule } from './modules/franchise/franchise.module';
 
 @Module({
   imports: [
@@ -21,7 +18,6 @@ import { FranchiseModule } from './modules/franchise/franchise.module';
     AuthModule,
     JwtModule,
     AdminModule,
-    FranchiseModule,
   ],
   controllers: [AppController],
   providers: [
