@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Product } from './product.entity';
+import { ProductOptionValue } from './product-option-value.entity';
 
 enum ProductOptionType {
   FREE_VALUES = 'free_values',
@@ -20,4 +21,7 @@ export class ProductOption extends DefaultEntity {
 
   @Column()
   required: boolean;
+
+  @OneToMany(() => ProductOptionValue, (value) => value.option)
+  values: ProductOptionValue[];
 }
