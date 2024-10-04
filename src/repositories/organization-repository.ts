@@ -1,4 +1,3 @@
-import { Organization } from '@prisma/client';
 import { findOrganizationFilters } from 'src/modules/admin/organization/dtos/find-organization-filters';
 
 export abstract class OrganizationRepository {

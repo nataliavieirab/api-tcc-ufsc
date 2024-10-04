@@ -1,4 +1,3 @@
-import { Branch } from '@prisma/client';
 import { findBranchFilters } from 'src/modules/organization/branch/dtos/find-branch-filters';
 
 export abstract class BranchRepository {
