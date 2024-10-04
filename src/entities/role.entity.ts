@@ -5,12 +5,12 @@ import { RolePermission } from './role-permission.entity';
 
 @Entity()
 export class Role extends DefaultEntity {
+  @Column()
+  name: string;
+
   @OneToMany(() => UserRole, (user) => user.role)
   users: UserRole[];
 
   @OneToMany(() => RolePermission, (permission) => permission.role)
   permissions: RolePermission[];
-
-  @Column()
-  name: string;
 }
