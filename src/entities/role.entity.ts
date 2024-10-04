@@ -5,6 +5,8 @@ import { UserRole } from './user-role.entity';
 @Entity()
 export class Role extends DefaultEntity {
   @OneToMany(() => UserRole, (user) => user.role)
+  users: UserRole[];
+
   @Column()
   name: string;
 }
