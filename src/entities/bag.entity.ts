@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { AddOn } from './add-on.entity';
 import { Customer } from './customer.entity';
 import { Order } from './order.entity';
+import { BagItem } from './bag-item.entity';
 
 enum BagStatus {
   OPENED = 'opened',
@@ -22,4 +23,7 @@ export class Bag extends DefaultEntity {
 
   @OneToOne(() => Order, (order) => order.bag)
   order: Order;
+
+  @OneToMany(() => BagItem, (item) => item.bag)
+  items: BagItem[];
 }
