@@ -7,6 +7,7 @@ import { Product } from './product.entity';
 import { ProductSet } from './product-set.entity';
 import { DeliverySettings } from './delivery-settings.entity';
 import { Category } from './category.entity';
+import { AddOn } from './add-on.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
@@ -36,4 +37,7 @@ export class Company extends DefaultEntity {
 
   @OneToMany(() => Category, (address) => address.company)
   categories: Category[];
+
+  @OneToMany(() => AddOn, (address) => address.company)
+  addOns: AddOn[];
 }
