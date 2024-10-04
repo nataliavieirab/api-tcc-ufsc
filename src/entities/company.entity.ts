@@ -14,4 +14,7 @@ export class Company extends DefaultEntity {
 
   @OneToOne(() => CompanyAddress, (address) => address.company)
   address?: CompanyAddress;
+
+  @OneToMany(() => PaymentType, (address) => address.company)
+  paymentTypes: PaymentType[];
 }
