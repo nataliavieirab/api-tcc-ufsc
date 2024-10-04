@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Company } from './company.entity';
+import { Payment } from './payment.entity';
 
 enum SystemPaymentType {
   CASH = 'cash',
@@ -23,4 +24,7 @@ export class PaymentType extends DefaultEntity {
     enum: SystemPaymentType,
   })
   type: SystemPaymentType;
+
+  @OneToMany(() => Payment, (payment) => payment.paymentType)
+  payments: Payment[];
 }
