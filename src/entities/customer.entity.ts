@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Bag } from './bag.entity';
+import { CustomerAddress } from './customer-address.entity';
 
 @Entity()
 export class Customer extends DefaultEntity {
@@ -15,4 +16,10 @@ export class Customer extends DefaultEntity {
 
   @OneToMany(() => Bag, (bag) => bag.customer)
   bags: Bag[];
+
+  @OneToMany(
+    () => CustomerAddress,
+    (customerAddress) => customerAddress.customer,
+  )
+  customerAddresses: CustomerAddress[];
 }
