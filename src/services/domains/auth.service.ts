@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from 'src/repositories/user-repository';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedError } from '../../modules/auth/errors/unauthorized.error';
 import { UserPayload } from 'src/modules/auth/models/UserPayload';
 import { UserToken } from 'src/modules/auth/models/UserToken';
+import { User } from 'src/entities/user.entity';
+import { UserRepository } from 'src/repositories/user.repository';
+import { UnauthorizedError } from 'src/errors/unauthorized.error';
 
 @Injectable()
 export class AuthService {
@@ -16,8 +17,8 @@ export class AuthService {
   async login(user: User): Promise<UserToken> {
     const payload: UserPayload = {
       sub: user.id,
-      email: user.email,
-      username: user.user_name,
+      iat: Date.now(),
+      expt: Date.now() + 1000 * 60 * 60 * 24,
     };
 
     return {
@@ -29,20 +30,18 @@ export class AuthService {
     userIdentification: string,
     password: string,
   ): Promise<User> {
-    let user = await this.userRepository.findByEmail(userIdentification);
-
-    if (!user) {
-      user = await this.userRepository.findByUserName(userIdentification);
-    }
+    const user = await this.userRepository.findOne({
+      conditions: {
+        userName: userIdentification,
+      },
+    });
 
     if (user) {
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (isPasswordValid) {
-        return {
-          ...user,
-          password: undefined,
-        };
+        user.password = undefined;
+        return user;
       }
     }
 
