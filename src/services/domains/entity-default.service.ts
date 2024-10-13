@@ -79,6 +79,7 @@ export abstract class EntityDefaultService<BaseEntity extends DefaultEntity> {
   }
 
   async delete(id: string): Promise<void> {
-    return await this.repository.delete(id);
+    const entity = await this.repository.find(id);
+    return await this.repository.delete(entity.id);
   }
 }

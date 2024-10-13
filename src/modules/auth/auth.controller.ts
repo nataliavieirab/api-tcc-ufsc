@@ -20,6 +20,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   async login(@Request() req: AuthRequest) {
-    return this.authService.login(req.user);
+    return this.authService.login(req.user, req.orgId);
   }
 }
