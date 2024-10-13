@@ -1,71 +1,53 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserBody } from 'src/modules/organization/user/dtos/create-user-body';
-import { findUsersFilters } from 'src/modules/organization/user/dtos/find-users-filter';
-import { UpdateUserBody } from 'src/modules/organization/user/dtos/update-user-body';
-import { UserRepository } from 'src/repositories/user-repository';
+import { UserRepository } from 'src/repositories/user.repository';
+import { EntityDefaultService } from './entity-default.service';
+import { User } from 'src/entities/user.entity';
+import * as bcrypt from 'bcrypt';
+import { UserRoleRepository } from 'src/repositories/user-role.repository';
+import { SystemRole } from 'src/entities/user-role.entity';
+import { RoleRepository } from 'src/repositories/role.repository';
 
 @Injectable()
-export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
-
-  async findAll(findUsersFilters: findUsersFilters): Promise<User[]> {
-    return await this.userRepository.findAll(findUsersFilters);
+export class UserService extends EntityDefaultService<User> {
+  constructor(
+    userRepository: UserRepository,
+    private readonly userRoleRepository: UserRoleRepository,
+    private readonly roleRepository: RoleRepository,
+  ) {
+    super(userRepository);
   }
 
-  async findById(id: string): Promise<User | null> {
-    return await this.userRepository.findById(id);
+  async create(input: {
+    userName: string;
+    password: string;
+    roles?: string[];
+    systemRoles?: SystemRole[];
+  }): Promise<User> {
+    input.password = await bcrypt.hash(input.password, 10);
+
+    const createdUser = await this.repository.create({
+      userName: input.userName,
+      password: input.password,
+    });
+
+    for (const role of input.systemRoles || []) {
+      await this.addRole(createdUser, role);
+    }
+
+    for (const role of input.roles || []) {
+      await this.addRole(createdUser, null, role);
+    }
+
+    return createdUser;
   }
 
-  async create(createUserBody: CreateUserBody): Promise<User> {
-    const {
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    } = createUserBody;
+  async addRole(user: User, systemRole: SystemRole, roleId?: string) {
+    const role = roleId ? await this.roleRepository.find(roleId) : null;
 
-    return await this.userRepository.create(
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
+    this.userRoleRepository.create({
+      user: user,
+      systemRole,
       role,
-    );
-  }
-
-  async update(id: string, updateUserBody: UpdateUserBody): Promise<User> {
-    const {
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    } = updateUserBody;
-
-    return await this.userRepository.update(
-      id,
-      name,
-      last_name,
-      birth_date,
-      cpf,
-      email,
-      password,
-      user_name,
-      role,
-    );
-  }
-
-  async delete(id: string): Promise<User | null> {
-    return await this.userRepository.delete(id);
+    });
   }
 }

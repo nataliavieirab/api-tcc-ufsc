@@ -14,10 +14,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login(user: User): Promise<UserToken> {
+  async login(user: User, orgId: string): Promise<UserToken> {
     const payload: UserPayload = {
       sub: user.id,
       iat: Date.now(),
+      orgId,
       expt: Date.now() + 1000 * 60 * 60 * 24,
     };
 

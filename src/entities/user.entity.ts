@@ -9,7 +9,7 @@ export class User extends DefaultEntity {
   userName: string;
 
   @OneToMany(() => UserRole, (role) => role.user)
-  roles: UserRole[];
+  userRoles: UserRole[];
 
   @Column()
   password: string;
