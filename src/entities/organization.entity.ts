@@ -7,8 +7,5 @@ export class Organization extends DefaultEntity {
   name: string;
 
   @Column()
-  phone: string;
-
-  @Column()
   email: string;
 }
