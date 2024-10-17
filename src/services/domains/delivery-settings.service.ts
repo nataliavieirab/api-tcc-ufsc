@@ -12,4 +12,8 @@ export class DeliverySettingsService extends EntityDefaultService<DeliverySettin
   async openDelivery(id: string): Promise<void> {
     await this.findById(id);
   }
+
+  async closeDelivery(id: string): Promise<void> {
+    await this.findById(id);
+  }
 }

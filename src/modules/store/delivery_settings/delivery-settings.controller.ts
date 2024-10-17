@@ -51,4 +51,12 @@ export class DeliverySettingsController extends DefaultController {
 
     res.status(200).send({ message: "Delivery's open!" });
   }
+
+  @Patch('/:id')
+  async closeDelivery(@Param('id') id: string, @Res() res: Response) {
+    this.validateAccess('closeDelivery');
+    await this.deliverySettingsService.closeDelivery(id);
+
+    res.status(200).send({ message: "Delivery's closed." });
+  }
 }
