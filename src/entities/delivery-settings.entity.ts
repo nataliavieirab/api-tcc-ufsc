@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Company } from './company.entity';
 
-enum DeliveryStatus {
+export enum DeliveryStatus {
   OPEN = 'open',
   CLOSED = 'closed',
 }
