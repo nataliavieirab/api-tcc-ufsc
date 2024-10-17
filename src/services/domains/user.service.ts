@@ -44,8 +44,8 @@ export class UserService extends EntityDefaultService<User> {
   async update(
     id: string,
     input: {
-      userName: string;
-      password: string;
+      userName?: string;
+      password?: string;
     },
   ): Promise<User> {
     if (input.password) input.password = await bcrypt.hash(input.password, 10);
