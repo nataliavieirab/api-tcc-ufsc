@@ -26,18 +26,18 @@ export class Company extends DefaultEntity {
   @OneToOne(() => CompanyAddress, (address) => address.company)
   address?: CompanyAddress;
 
-  @OneToMany(() => PaymentType, (address) => address.company)
+  @OneToMany(() => PaymentType, (paymentType) => paymentType.company)
   paymentTypes: PaymentType[];
 
-  @OneToMany(() => Product, (address) => address.company)
+  @OneToMany(() => Product, (product) => product.company)
   products: Product[];
 
-  @OneToMany(() => ProductSet, (address) => address.company)
+  @OneToMany(() => ProductSet, (productSet) => productSet.company)
   productSets: ProductSet[];
 
-  @OneToMany(() => Category, (address) => address.company)
+  @OneToMany(() => Category, (category) => category.company)
   categories: Category[];
 
-  @OneToMany(() => AddOn, (address) => address.company)
+  @OneToMany(() => AddOn, (addOn) => addOn.company)
   addOns: AddOn[];
 }
