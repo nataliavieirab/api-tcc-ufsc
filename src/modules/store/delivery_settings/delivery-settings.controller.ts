@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Put, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Res,
+} from '@nestjs/common';
 import { DeliverySettings } from 'src/entities/delivery-settings.entity';
 import { DefaultController } from 'src/modules/default.controller';
 import { DeliverySettingsService } from 'src/services/domains/delivery-settings.service';
@@ -6,6 +16,9 @@ import { FindDeliverySettingsFilters } from './dtos/find-delivery-settings-filte
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Response } from 'express';
 import { UpdateDeliverySettingsBody } from './dtos/update-delivery-settings-body';
+import { CreateNeighborhoodBody } from './dtos/create-neighborhood-body';
+import { findAllNeighborhoodsFilters } from './dtos/find-neighborhoods-filters';
+import { DeliveryNeighborhood } from 'src/entities/delivery-neighborhood.entity';
 
 @Controller('store/delivery-settings')
 export class DeliverySettingsController extends DefaultController {
@@ -58,5 +71,35 @@ export class DeliverySettingsController extends DefaultController {
     await this.deliverySettingsService.closeDelivery(id);
 
     res.status(200).send({ message: "Delivery's closed." });
+  }
+
+  @Post()
+  async createNeighborhood(
+    @Body() body: CreateNeighborhoodBody,
+    @Res() res: Response,
+  ) {
+    this.validateAccess('createNeighborhood');
+
+    const neighborhood = await this.deliverySettingsService.createNeighborhood(
+      body,
+    );
+
+    res.status(201).send(neighborhood);
+  }
+
+  @Get()
+  async findAllNeighborhoods(
+    @Body() body: findAllNeighborhoodsFilters,
+  ): Promise<EntityPagination<DeliveryNeighborhood>> {
+    this.validateAccess('findAllNeighborhoods');
+    return this.deliverySettingsService.findAllNeighborhoods(body);
+  }
+
+  @Delete('/:id')
+  async deleteNeighborhood(@Param('id') id: string, @Res() res: Response) {
+    this.validateAccess('deleteNeighborhood');
+    await this.deliverySettingsService.deleteNeighborhood(id);
+
+    res.status(204).send({ message: 'Neighborhood deleted succesfully!' });
   }
 }
