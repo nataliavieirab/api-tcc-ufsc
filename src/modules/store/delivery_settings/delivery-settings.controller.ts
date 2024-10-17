@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Put, Res } from '@nestjs/common';
 import { DeliverySettings } from 'src/entities/delivery-settings.entity';
 import { DefaultController } from 'src/modules/default.controller';
 import { DeliverySettingsService } from 'src/services/domains/delivery-settings.service';
@@ -42,5 +42,13 @@ export class DeliverySettingsController extends DefaultController {
     );
 
     res.status(200).send(deliverySettings);
+  }
+
+  @Patch('/:id')
+  async openDelivery(@Param('id') id: string, @Res() res: Response) {
+    this.validateAccess('openDelivery');
+    await this.deliverySettingsService.openDelivery(id);
+
+    res.status(200).send({ message: "Delivery's open!" });
   }
 }

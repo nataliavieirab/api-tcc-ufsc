@@ -8,4 +8,8 @@ export class DeliverySettingsService extends EntityDefaultService<DeliverySettin
   constructor(deliverySettingRepository: DeliverySettingRepository) {
     super(deliverySettingRepository);
   }
+
+  async openDelivery(id: string): Promise<void> {
+    await this.findById(id);
+  }
 }
