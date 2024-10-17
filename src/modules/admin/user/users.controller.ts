@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserBody } from './dtos/create-user-body';
 import { UpdateUserBody } from './dtos/update-user-body';
-import { findUsersFilters } from './dtos/find-users-filters';
+import { FindUsersFilters } from './dtos/find-users-filters';
 import { UserService } from 'src/services/domains/user.service';
 import { User } from 'src/entities/user.entity';
 import { DefaultController } from 'src/modules/default.controller';
@@ -23,7 +23,7 @@ export class UsersController extends DefaultController {
 
   @Get()
   async findAll(
-    @Body() body: findUsersFilters,
+    @Body() body: FindUsersFilters,
   ): Promise<EntityPagination<User>> {
     this.validateAccess('findAllUsers');
     return this.userService.findAll(body);
