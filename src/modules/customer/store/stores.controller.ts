@@ -9,6 +9,11 @@ import { FindProductsFilters } from './dtos/find-products-filters';
 import { FindStoresFilters } from './dtos/find-stores-filters';
 import { FindPaymentTypesFilters } from './dtos/find-payment-types-filters';
 import { PaymentTypeService } from 'src/services/domains/payment-type.service';
+import { EntityPagination } from 'src/utils/entity-pagination.type';
+import { Category } from 'src/entities/category.entity';
+import { Product } from 'src/entities/product.entity';
+import { Company } from 'src/entities/company.entity';
+import { PaymentType } from 'src/entities/payment-type.entity';
 
 @Controller('customer/stores')
 export class StoresController extends DefaultController {
@@ -34,43 +39,34 @@ export class StoresController extends DefaultController {
   async findAllCategories(
     @Body() body: FindCategoriesFilters,
     @Param('companyId') companyId: string,
-    @Res() res: Response,
-  ): Promise<any> {
+  ): Promise<EntityPagination<Category>> {
     this.validateAccess('findAllCategories');
 
-    const category = this.categoryService.findAll({ ...body, companyId });
-
-    res.status(200).send(category);
+    return this.categoryService.findAll({ ...body, companyId });
   }
 
   @Get('/:companyId/products')
   async findAllProducts(
     @Body() body: FindProductsFilters,
     @Param('companyId') companyId: string,
-    @Res() res: Response,
-  ) {
+  ): Promise<EntityPagination<Product>> {
     this.validateAccess('findAllProducts');
-    const products = this.productService.findByCategory(body.categoryId, body);
-
-    res.status(200).send(products);
+    return this.productService.findByCategory(body.categoryId, body);
   }
 
   @Get()
-  async findAllStores(@Body() body: FindStoresFilters, @Res() res: Response) {
+  async findAllStores(
+    @Body() body: FindStoresFilters,
+  ): Promise<EntityPagination<Company>> {
     this.validateAccess('findAllStores');
-    const stores = this.storeService.findAll(body);
-
-    res.status(200).send(stores);
+    return this.storeService.findAll(body);
   }
 
   @Get()
   async findAllPaymentTypes(
     @Body() body: FindPaymentTypesFilters,
-    @Res() res: Response,
-  ) {
+  ): Promise<EntityPagination<PaymentType>> {
     this.validateAccess('findAllPaymentTypes');
-    const paymentTypes = this.paymentTypeService.findAll(body);
-
-    res.status(200).send(paymentTypes);
+    return this.paymentTypeService.findAll(body);
   }
 }
