@@ -12,17 +12,22 @@ import { CurrentRequestService } from '../application/current-request.service';
 import { CustomerAddress } from 'src/entities/customer-address.entity';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 
+interface AddressAttributes {
+  street: string;
+  number: string;
+  complement: string;
+  zipCode: string;
+  neighborhoodCode: string;
+}
 @Injectable()
-export class CustomerService extends EntityDefaultService<Customer> {
+export class CustomerService {
   constructor(
-    customerRepository: CustomerRepository,
+    private repository: CustomerRepository,
     private bagRepository: BagRepository,
     private addressRepository: AddressRepository,
     private customerAddressRepository: CustomerAddressRepository,
     private currentRequestService: CurrentRequestService,
-  ) {
-    super(customerRepository);
-  }
+  ) {}
 
   async create(input: {
     name: string;
@@ -40,22 +45,27 @@ export class CustomerService extends EntityDefaultService<Customer> {
     return createdCustomer;
   }
 
-  async update(
-    id: string,
-    input: {
-      name?: string;
-      email?: string;
-      password?: string;
-    },
-  ): Promise<Customer> {
+  async update(input: {
+    name?: string;
+    email?: string;
+    password?: string;
+  }): Promise<Customer> {
     if (input.password) input.password = await bcrypt.hash(input.password, 10);
 
-    const createdCustomer = await this.repository.update(id, input);
+    const customer = this.currentRequestService.getCurrentCustomer();
+
+    const createdCustomer = await this.repository.update(customer.id, input);
 
     return createdCustomer;
   }
 
-  async addAddress(adreessAttributes: Address): Promise<Address> {
+  async delete(): Promise<void> {
+    const customer = this.currentRequestService.getCurrentCustomer();
+
+    return await this.repository.delete(customer.id);
+  }
+
+  async addAddress(adreessAttributes: AddressAttributes): Promise<Address> {
     const address = await this.addressRepository.create(adreessAttributes);
 
     const customer = this.currentRequestService.getCurrentCustomer();
@@ -70,7 +80,7 @@ export class CustomerService extends EntityDefaultService<Customer> {
 
   async updateAddress(
     addressId: string,
-    adreessAttributes: Address,
+    adreessAttributes: Partial<AddressAttributes>,
   ): Promise<Address> {
     const address = await this.addressRepository.update(
       addressId,
@@ -81,9 +91,12 @@ export class CustomerService extends EntityDefaultService<Customer> {
   }
 
   async removeAddress(addressId: string): Promise<void> {
+    const customer = this.currentRequestService.getCurrentCustomer();
+
     const customerAddress = await this.customerAddressRepository.findOne({
       conditions: {
-        addressId,
+        address: { id: addressId },
+        customer: customer,
       },
     });
 
