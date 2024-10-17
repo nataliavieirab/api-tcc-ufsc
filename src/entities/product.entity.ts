@@ -27,5 +27,5 @@ export class Product extends DefaultEntity {
   productAddOns: ProductAddOn[];
 
   @OneToMany(() => ProductOption, (productSetItem) => productSetItem.product)
-  productOptions: ProductAddOn[];
+  productOptions: ProductOption[];
 }

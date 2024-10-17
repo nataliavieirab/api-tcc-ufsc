@@ -5,7 +5,7 @@ import { Order } from './order.entity';
 
 @Entity()
 export class CashRegister extends DefaultEntity {
-  @ManyToOne(() => Company, (company) => company.cashRegister)
+  @ManyToOne(() => Company, (company) => company.cashRegisters)
   company: Company;
 
   @Column()
