@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncLocalStorage } from 'async_hooks';
+import { User } from 'src/entities/user.entity';
 import { QueryRunner } from 'typeorm';
 
 @Injectable()
@@ -25,5 +26,18 @@ export class CurrentRequestService {
     const stored = this.storage.getStore();
 
     return stored['queryRunner'];
+  }
+
+  setCurrentUser(user: User) {
+    const stored = this.storage.getStore() || {};
+    stored['user'] = user;
+
+    return this.storage.enterWith(stored);
+  }
+
+  getCurrentUser(): User {
+    const stored = this.storage.getStore();
+
+    return stored['user'];
   }
 }
