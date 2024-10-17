@@ -1,9 +1,22 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Bag } from './bag.entity';
 import { CashRegister } from './cash-register.entity';
 import { Payment } from './payment.entity';
 
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REFUSED = 'REFUSED',
+  FINISHED = 'FINISHED',
+}
 @Entity()
 export class Order extends DefaultEntity {
   @OneToOne(() => Bag, (bag) => bag.order)
@@ -15,4 +28,14 @@ export class Order extends DefaultEntity {
 
   @OneToMany(() => Payment, (payment) => payment.order)
   payments: Payment[];
+
+  @Column()
+  date: Date;
+
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
+  })
+  status: OrderStatus;
 }
