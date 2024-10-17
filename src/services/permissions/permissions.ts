@@ -72,3 +72,28 @@ const module_permissions = {
 };
 
 export { actions, roles, roles_permissions, module_permissions };
+
+export enum Permissions {
+  createUser = 'createUser',
+  updateUser = 'updateUser',
+  deleteUser = 'deleteUser',
+  findUserById = 'findUserById',
+  findAllUsers = 'findAllUsers',
+  createOrganization = 'createOrganization',
+  updateOrganization = 'updateOrganization',
+  findAllOrganizations = 'findAllOrganizations',
+  findOrganizationById = 'findOrganizationById',
+  deleteOrganization = 'deleteOrganization',
+  createCompany = 'createCompany',
+  updateCompany = 'updateCompany',
+  deleteCompany = 'deleteCompany',
+  findAllCompanies = 'findAllCompanies',
+  findCompanyById = 'findCompanyById',
+}
+
+export enum Modules {
+  admin = 'admin',
+  organizations = 'organizations',
+  store = 'store',
+  customer = 'customer',
+}
