@@ -8,10 +8,6 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import {
-  AccessValidator,
-  accessValidator,
-} from 'src/modules/auth/decorators/access-validator.decorator';
 import { CreateCompanyBody } from './dtos/create-company-body';
 import { UpdateCompanyBody } from './dtos/update-company-body';
 import { FindCompanyFilters } from './dtos/find-company-filters';
