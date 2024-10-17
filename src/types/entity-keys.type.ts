@@ -15,12 +15,21 @@ type EntitySearchKeys<BaseEntity> =
         | ({ generic_entity: boolean } | undefined)
         | ({ generic_entity: boolean } | undefined)[];
     }
-  | Record<string, never>;
+  | Record<string, never>
+  | EntityKeysWithSulfix<BaseEntity, 'Id'>;
 
 type EntityKeysWithPrefix<BaseEntity, Prefix extends string> = {
   [key in
     | keyof BaseEntity
     | `${Prefix}${string & keyof BaseEntity}`]?: key extends keyof BaseEntity
+    ? BaseEntity[key]
+    : number | Date | string | { id: string } | { id: string }[];
+};
+
+type EntityKeysWithSulfix<BaseEntity, Sulfix extends string> = {
+  [key in
+    | keyof BaseEntity
+    | `${string & keyof BaseEntity}${Sulfix}`]?: key extends keyof BaseEntity
     ? BaseEntity[key]
     : number | string | { id: string } | { id: string }[];
 };

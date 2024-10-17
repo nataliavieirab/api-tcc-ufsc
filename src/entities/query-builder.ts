@@ -181,6 +181,44 @@ export class QueryBuilder<Entity extends DefaultEntity> {
     return this;
   }
 
+  after(condition?: EntitySearchKeys<Entity> | null): QueryBuilder<Entity> {
+    if (!condition) return this;
+    this.removeUnknownFields(condition);
+
+    type ConditionKeys = keyof typeof condition;
+    (Object.keys(condition) as ConditionKeys[]).forEach((key) => {
+      const query = `${this.entityName}.${key} > :comparedDate`;
+      const value = { comparedDate: condition[key] };
+
+      this.currentQuery = this.raw
+        ? this.currentQuery.where(query, value)
+        : this.currentQuery.andWhere(query, value);
+
+      this.raw = false;
+    });
+
+    return this;
+  }
+
+  before(condition?: EntitySearchKeys<Entity> | null): QueryBuilder<Entity> {
+    if (!condition) return this;
+    this.removeUnknownFields(condition);
+
+    type ConditionKeys = keyof typeof condition;
+    (Object.keys(condition) as ConditionKeys[]).forEach((key) => {
+      const query = `${this.entityName}.${key} < :comparedDate`;
+      const value = { comparedDate: condition[key] };
+
+      this.currentQuery = this.raw
+        ? this.currentQuery.where(query, value)
+        : this.currentQuery.andWhere(query, value);
+
+      this.raw = false;
+    });
+
+    return this;
+  }
+
   selectFields(fields: (keyof Entity)[] = []): QueryBuilder<Entity> {
     if (fields.length == 0) return this;
 
