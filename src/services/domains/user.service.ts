@@ -41,6 +41,20 @@ export class UserService extends EntityDefaultService<User> {
     return createdUser;
   }
 
+  async update(
+    id: string,
+    input: {
+      userName: string;
+      password: string;
+    },
+  ): Promise<User> {
+    if (input.password) input.password = await bcrypt.hash(input.password, 10);
+
+    const updatedUser = await this.repository.update(id, input);
+
+    return updatedUser;
+  }
+
   async addRole(user: User, systemRole: SystemRole, roleId?: string) {
     const role = roleId ? await this.roleRepository.find(roleId) : null;
 
