@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class findUsersFilters {
+export class FindUsersFilters {
   @IsOptional()
   @IsString()
   readonly userName?: string;
