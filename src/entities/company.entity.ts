@@ -8,6 +8,7 @@ import { ProductSet } from './product-set.entity';
 import { DeliverySettings } from './delivery-settings.entity';
 import { Category } from './category.entity';
 import { AddOn } from './add-on.entity';
+import { Role } from './role.entity';
 
 @Entity()
 export class Company extends DefaultEntity {
@@ -20,8 +21,11 @@ export class Company extends DefaultEntity {
   )
   deliverySettings: DeliverySettings;
 
+  @OneToMany(() => Role, (role) => role.company)
+  roles: Role[];
+
   @OneToMany(() => CashRegister, (cashRegister) => cashRegister.company)
-  cashRegister: CashRegister[];
+  cashRegisters: CashRegister[];
 
   @OneToOne(() => CompanyAddress, (address) => address.company)
   address?: CompanyAddress;
