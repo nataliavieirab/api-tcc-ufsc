@@ -16,7 +16,7 @@ import { Company } from 'src/entities/company.entity';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { DefaultController } from 'src/modules/default.controller';
 
-@Controller('/companyes')
+@Controller('/companies')
 export class CompanyController extends DefaultController {
   constructor(private companyService: CompanyService) {
     super();
