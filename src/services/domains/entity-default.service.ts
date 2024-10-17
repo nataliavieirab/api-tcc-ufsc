@@ -1,27 +1,26 @@
 import { DefaultEntity } from 'src/entities/default-entity';
 import { DefaultRepository } from 'src/repositories/default.repository';
-import { FiltersTransformer } from '../application/filters-transformer.service';
+import {
+  FiltersTransformer,
+  TransformedFilters,
+} from '../application/filters-transformer.service';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
-
-type transformedFilters<BaseEntity> = {
-  simpleFilters: EntityExactKeys<BaseEntity>;
-  notFilters: EntityExactKeys<BaseEntity>;
-  likeFilters: EntityKeysWithForcedType<BaseEntity, string>;
-  additionalFilters: any;
-};
 
 export type FindFiltersType<BaseEntity> = EntityKeysWithPrefix<
   BaseEntity,
   'like_'
 > &
-  EntityKeysWithPrefix<BaseEntity, 'not_'>;
+  EntityKeysWithSulfix<BaseEntity, 'Id'> &
+  EntityKeysWithPrefix<BaseEntity, 'not_'> &
+  EntityKeysWithPrefix<BaseEntity, 'after_'> &
+  EntityKeysWithPrefix<BaseEntity, 'before_'>;
 
 export abstract class EntityDefaultService<BaseEntity extends DefaultEntity> {
   constructor(protected readonly repository: DefaultRepository<BaseEntity>) {}
 
   protected async transformDecoratedFilters(
     filters: any,
-  ): Promise<transformedFilters<BaseEntity>> {
+  ): Promise<TransformedFilters<BaseEntity>> {
     const entityKeys = this.repository.getEntityAttributes();
 
     return await FiltersTransformer.transformDecoratedFilters(
@@ -38,12 +37,19 @@ export abstract class EntityDefaultService<BaseEntity extends DefaultEntity> {
       nestedEntity: string;
     }[] = [],
   ): Promise<EntityPagination<BaseEntity>> {
-    const { likeFilters, notFilters, simpleFilters } =
-      await this.transformDecoratedFilters(findFilters);
+    const {
+      likeFilters,
+      notFilters,
+      simpleFilters,
+      afterFilters,
+      beforeFilters,
+    } = await this.transformDecoratedFilters(findFilters);
 
     return await this.repository.where({
       conditions: simpleFilters,
       conditionsNot: notFilters,
+      conditionsAfter: afterFilters,
+      conditionsBefore: beforeFilters,
       conditionsLike: likeFilters,
       relations,
       nestedRelations,

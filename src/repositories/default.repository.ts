@@ -128,6 +128,8 @@ export abstract class DefaultRepository<EntityType extends DefaultEntity> {
       .where(queryOptions.conditions)
       .whereNot(queryOptions.conditionsNot)
       .like(queryOptions.conditionsLike)
+      .after(queryOptions.conditionsAfter)
+      .before(queryOptions.conditionsBefore)
       .include(queryOptions.relations)
       .includeNested(queryOptions.nestedRelations)
       .selectFields(queryOptions.selectFields);
@@ -214,6 +216,8 @@ export class UniqueEntityWithFiltersQueryOptions<
 > extends UniqueEntityQueryOptions<entityType> {
   conditions?: EntitySearchKeys<entityType> | null;
   conditionsNot?: EntitySearchKeys<entityType> | null;
+  conditionsAfter?: EntitySearchKeys<entityType> | null;
+  conditionsBefore?: EntitySearchKeys<entityType> | null;
   conditionsLike?: EntityKeysWithForcedType<entityType, string> | null;
 
   joins?: {
@@ -250,6 +254,8 @@ export type ManyEntitiesQueryOptionsType<entityType extends DefaultEntity> = {
   selectFields?: (keyof entityType)[];
   conditions?: EntitySearchKeys<entityType> | null;
   conditionsNot?: EntitySearchKeys<entityType> | null;
+  conditionsAfter?: EntitySearchKeys<entityType> | null;
+  conditionsBefore?: EntitySearchKeys<entityType> | null;
   conditionsLike?: EntityKeysWithForcedType<entityType, string> | null;
   pagination?: { page: number | undefined; pageSize: number | undefined };
   skipAccessFilter?: boolean;
