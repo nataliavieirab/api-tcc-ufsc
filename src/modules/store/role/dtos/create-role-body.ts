@@ -22,6 +22,10 @@ const modulePermittedPermissions: Permissions[] = [
 
 export class CreateRoleBody {
   @IsString()
+  @IsNotEmpty()
+  readonly companyId: string;
+
+  @IsString()
   @Length(2, 30)
   @IsNotEmpty({ message: 'The role name should not be empty.' })
   readonly name: string;
