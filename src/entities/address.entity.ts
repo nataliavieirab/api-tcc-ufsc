@@ -7,11 +7,14 @@ export class Address extends DefaultEntity {
   street: string;
 
   @Column()
-  number: number;
+  number: string;
 
   @Column()
   complement: string;
 
   @Column()
-  zipCode: number;
+  zipCode: string;
+
+  @Column()
+  neighborhoodCode: string;
 }

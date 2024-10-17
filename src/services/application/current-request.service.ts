@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncLocalStorage } from 'async_hooks';
+import { Customer } from 'src/entities/customer.entity';
 import { User } from 'src/entities/user.entity';
 import { QueryRunner } from 'typeorm';
 
@@ -39,5 +40,18 @@ export class CurrentRequestService {
     const stored = this.storage.getStore();
 
     return stored['user'];
+  }
+
+  setCurrentCustomer(customer: Customer) {
+    const stored = this.storage.getStore() || {};
+    stored['customer'] = customer;
+
+    return this.storage.enterWith(stored);
+  }
+
+  getCurrentCustomer(): Customer {
+    const stored = this.storage.getStore();
+
+    return stored['customer'];
   }
 }
