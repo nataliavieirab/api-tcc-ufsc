@@ -3,7 +3,7 @@ import { DefaultEntity } from './default-entity';
 import { Product } from './product.entity';
 import { ProductOptionValue } from './product-option-value.entity';
 
-enum ProductOptionType {
+export enum ProductOptionType {
   FREE_VALUES = 'free_values',
   FIXED_VALUES = 'fixed_values',
 }
@@ -12,6 +12,9 @@ enum ProductOptionType {
 export class ProductOption extends DefaultEntity {
   @ManyToOne(() => Product, (product) => product.productOptions)
   product: Product;
+
+  @Column()
+  name: string;
 
   @Column({
     type: 'enum',
