@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Neighborhood } from './neighborhood.entity';
 
@@ -9,4 +9,7 @@ export class DeliveryNeighborhood extends DefaultEntity {
     (neighborhood) => neighborhood.deliveryNeighborhood,
   )
   neighborhood: Neighborhood;
+
+  @Column()
+  deliveryFee: number;
 }
