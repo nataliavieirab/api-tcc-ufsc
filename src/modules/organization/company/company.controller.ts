@@ -14,42 +14,37 @@ import {
 } from 'src/modules/auth/decorators/access-validator.decorator';
 import { CreateCompanyBody } from './dtos/create-company-body';
 import { UpdateCompanyBody } from './dtos/update-company-body';
-import { findCompanyFilters } from './dtos/find-company-filters';
+import { FindCompanyFilters } from './dtos/find-company-filters';
 import { CompanyService } from 'src/services/domains/company.service';
+import { Company } from 'src/entities/company.entity';
+import { EntityPagination } from 'src/utils/entity-pagination.type';
+import { DefaultController } from 'src/modules/default.controller';
 
 @Controller('/companyes')
-export class CompanyController {
-  constructor(private companyService: CompanyService) {}
+export class CompanyController extends DefaultController {
+  constructor(private companyService: CompanyService) {
+    super();
+  }
 
   @Get()
   async findAllCompanies(
-    @AccessValidator() validateAccess: accessValidator,
-    @Body() body: findCompanyFilters,
-  ): Promise<Company[]> {
-    validateAccess('findAllCompanies');
+    @Body() body: FindCompanyFilters,
+  ): Promise<EntityPagination<Company>> {
+    this.validateAccess('findAllCompanies');
     return this.companyService.findAll(body);
   }
 
   @Get('/:id')
-  async findCompanyById(
-    @AccessValidator() validateAccess: accessValidator,
-    @Param('id') id: string,
-    @Res() res: any,
-  ) {
-    validateAccess('findCompanyById');
+  async findCompanyById(@Param('id') id: string, @Res() res: any) {
+    this.validateAccess('findCompanyById');
     const company = await this.companyService.findById(id);
 
-    const status = company ? 200 : 404;
-    res.status(status).send(company);
+    res.status(200).send(company);
   }
 
   @Post()
-  async createCompany(
-    @AccessValidator() validateAccess: accessValidator,
-    @Body() body: CreateCompanyBody,
-    @Res() res: any,
-  ) {
-    validateAccess('createCompany');
+  async createCompany(@Body() body: CreateCompanyBody, @Res() res: any) {
+    this.validateAccess('createCompany');
 
     const company = await this.companyService.create(body);
 
@@ -58,29 +53,22 @@ export class CompanyController {
 
   @Put('/:id')
   async updateCompany(
-    @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateCompanyBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    validateAccess('updateCompany');
+    this.validateAccess('updateCompany');
 
     const company = await this.companyService.update(id, body);
 
-    const status = company ? 200 : 404;
-    res.status(status).send(company);
+    res.status(200).send(company);
   }
 
   @Delete('/:id')
-  async deleteCompany(
-    @AccessValidator() validateAccess: accessValidator,
-    @Param('id') id: string,
-    @Res() res: any,
-  ) {
-    validateAccess('deleteCompany');
-    const company = await this.companyService.delete(id);
+  async deleteCompany(@Param('id') id: string, @Res() res: any) {
+    this.validateAccess('deleteCompany');
+    await this.companyService.delete(id);
 
-    const status = company ? 200 : 404;
-    res.status(status).send('Company successfully deleted');
+    res.status(204).send('Company successfully deleted');
   }
 }
