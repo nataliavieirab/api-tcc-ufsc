@@ -1,5 +1,4 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { OrganizationModule } from './modules/organization/organization.module';
 import { JwtModule } from '@nestjs/jwt';
@@ -8,10 +7,20 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth-.guard';
 import { AdminModule } from './modules/admin/admin.module';
 import { postgresDataSource } from './infra/data-source';
 import { RequestScopeSetterMiddleware } from './middlewares/request-scope-setter.middleware';
+import { CustomerModule } from './modules/customer/customer.module';
+import { StoreModule } from './modules/store/store.module';
+import { CurrentRequestService } from './services/application/current-request.service';
+import { TenantService } from './services/application/tenant.service';
 
 @Module({
-  imports: [OrganizationModule, AuthModule, JwtModule, AdminModule],
-  controllers: [AppController],
+  imports: [
+    OrganizationModule,
+    AuthModule,
+    JwtModule,
+    AdminModule,
+    CustomerModule,
+    StoreModule,
+  ],
   providers: [
     {
       provide: APP_GUARD,
@@ -21,6 +30,8 @@ import { RequestScopeSetterMiddleware } from './middlewares/request-scope-setter
       provide: 'DataSource',
       useValue: postgresDataSource,
     },
+    CurrentRequestService,
+    TenantService,
   ],
 })
 export class AppModule {

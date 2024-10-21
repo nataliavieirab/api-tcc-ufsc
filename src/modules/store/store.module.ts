@@ -31,6 +31,19 @@ import { RoleRepository } from 'src/repositories/role.repository';
 import { UsersController } from './user/users.controller';
 import { UserService } from 'src/services/domains/user.service';
 import { UserRepository } from 'src/repositories/user.repository';
+import { StoreService } from 'src/services/domains/store.service';
+import { CurrentRequestService } from 'src/services/application/current-request.service';
+import { DeliveryNeighborhoodRepository } from 'src/repositories/delivery-neighborhood.repository';
+import { BagRepository } from 'src/repositories/bag.repository';
+import { AddressRepository } from 'src/repositories/address.repository';
+import { ShippingRepository } from 'src/repositories/shipping.repository';
+import { PaymentRepository } from 'src/repositories/payment.repository';
+import { StoreRepository } from 'src/repositories/store.repository';
+import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
+import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
+import { ProductOptionValueRepository } from 'src/repositories/product-option-value.repository';
+import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
+import { UserRoleRepository } from 'src/repositories/user-role.repository';
 
 @Module({
   controllers: [
@@ -68,6 +81,19 @@ import { UserRepository } from 'src/repositories/user.repository';
     RoleRepository,
     UserService,
     UserRepository,
+    StoreService,
+    CurrentRequestService,
+    DeliveryNeighborhoodRepository,
+    BagRepository,
+    AddressRepository,
+    ShippingRepository,
+    PaymentRepository,
+    StoreRepository,
+    ProductAddOnRepository,
+    ProductCategoryRepository,
+    ProductOptionValueRepository,
+    RolePermissionRepository,
+    UserRoleRepository,
   ],
 })
 export class StoreModule {}

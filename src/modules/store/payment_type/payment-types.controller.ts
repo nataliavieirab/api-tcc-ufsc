@@ -16,7 +16,7 @@ import { Response } from 'express';
 import { CreatePaymentTypeBody } from './dtos/create-payment-type-body';
 import { UpdatePaymentTypeBody } from './dtos/update-payment-type-body';
 
-@Controller('store/payment-types')
+@Controller('store/:storeId/payment-types')
 export class PaymentTypeController extends DefaultController {
   constructor(private paymentTypeService: PaymentTypeService) {
     super();
@@ -26,10 +26,10 @@ export class PaymentTypeController extends DefaultController {
 
   @Get()
   async findAll(
-    @Body() body: FindPaymentTypeFilters,
+    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<PaymentType>> {
     await this.validateAccess('findAllPaymentTypes');
-    return this.paymentTypeService.findAll(body);
+    return this.paymentTypeService.findAll({ storeId });
   }
 
   @Get('/:id')
@@ -37,15 +37,22 @@ export class PaymentTypeController extends DefaultController {
     await this.validateAccess('findPaymentTypeById');
     const paymentType = await this.paymentTypeService.findById(id);
 
-    res.status(200).send({ ...paymentType });
+    res.status(200).send(paymentType);
   }
 
   @Post()
-  async create(@Body() body: CreatePaymentTypeBody, @Res() res: Response) {
+  async create(
+    @Param('storeId') storeId: string,
+    @Body() body: CreatePaymentTypeBody,
+    @Res() res: Response,
+  ) {
     await this.validateAccess('createPaymentType');
-    const paymentType = await this.paymentTypeService.create(body);
+    const paymentType = await this.paymentTypeService.create({
+      storeId,
+      ...body,
+    });
 
-    res.status(201).send({ ...paymentType });
+    res.status(201).send(paymentType);
   }
 
   @Put('/:id')

@@ -17,6 +17,23 @@ import { ProductRepository } from 'src/repositories/product.repository';
 import { PaymentTypeRepository } from 'src/repositories/payment-type.repository';
 import { CustomerRepository } from 'src/repositories/customer.repository';
 import { BagRepository } from 'src/repositories/bag.repository';
+import { AddressRepository } from 'src/repositories/address.repository';
+import { ShippingRepository } from 'src/repositories/shipping.repository';
+import { CashRegisterRepository } from 'src/repositories/cash-register.repository';
+import { CurrentRequestService } from 'src/services/application/current-request.service';
+import { PaymentRepository } from 'src/repositories/payment.repository';
+import { BagItemRepository } from 'src/repositories/bag-item.repository';
+import { BagItemAddOnRepository } from 'src/repositories/bag-item-add-on.repository';
+import { BagItemOptionRepository } from 'src/repositories/bag-item-option.repository';
+import { ProductSetItemRepository } from 'src/repositories/product-set-item.repository';
+import { ProductOptionRepository } from 'src/repositories/product-option.repository';
+import { ProductOptionValueRepository } from 'src/repositories/product-option-value.repository';
+import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
+import { DeliverySettingsRepository } from 'src/repositories/delivery-settings.repository';
+import { DeliveryNeighborhoodRepository } from 'src/repositories/delivery-neighborhood.repository';
+import { AddOnRepository } from 'src/repositories/add-on.repository';
+import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
+import { CustomerAddressRepository } from 'src/repositories/customer-address.repository';
 
 @Module({
   controllers: [
@@ -40,6 +57,23 @@ import { BagRepository } from 'src/repositories/bag.repository';
     PaymentTypeRepository,
     CustomerRepository,
     BagRepository,
+    AddressRepository,
+    ShippingRepository,
+    CashRegisterRepository,
+    CurrentRequestService,
+    PaymentRepository,
+    BagItemRepository,
+    BagItemAddOnRepository,
+    BagItemOptionRepository,
+    ProductSetItemRepository,
+    ProductOptionRepository,
+    ProductOptionValueRepository,
+    ProductAddOnRepository,
+    DeliverySettingsRepository,
+    DeliveryNeighborhoodRepository,
+    AddOnRepository,
+    ProductCategoryRepository,
+    CustomerAddressRepository,
   ],
 })
 export class CustomerModule {}

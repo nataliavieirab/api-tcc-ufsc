@@ -5,6 +5,9 @@ import { Product } from 'src/entities/product.entity';
 import { StoreRepository } from 'src/repositories/store.repository';
 import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
 import { AddOnRepository } from 'src/repositories/add-on.repository';
+import { EntityPagination } from 'src/utils/entity-pagination.type';
+import { CategoryRepository } from 'src/repositories/category.repository';
+import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 
 interface CreateProductInput {
   name: string;
@@ -18,6 +21,8 @@ export class ProductService extends EntityDefaultService<Product> {
     private storeRepository: StoreRepository,
     private productAddOnRepository: ProductAddOnRepository,
     private addOnRepository: AddOnRepository,
+    private categoryRepository: CategoryRepository,
+    private productCategoryRepository: ProductCategoryRepository,
   ) {
     super(productRepository);
   }
@@ -66,5 +71,30 @@ export class ProductService extends EntityDefaultService<Product> {
     await this.productAddOnRepository.delete(productAddOn.id);
 
     return;
+  }
+
+  async findByCategory(
+    categoryId: string,
+    findFilters: {
+      like_name?: string;
+      name?: string;
+    },
+  ): Promise<EntityPagination<Product>> {
+    const { likeFilters, simpleFilters } = await this.transformDecoratedFilters(
+      findFilters,
+    );
+
+    const category = await this.categoryRepository.find(categoryId);
+    const productCategories = this.productCategoryRepository.getQueryFor({
+      conditions: { category },
+    });
+
+    return await this.repository.where({
+      conditions: simpleFilters,
+      conditionsLike: likeFilters,
+      joins: {
+        productCategories,
+      },
+    });
   }
 }
