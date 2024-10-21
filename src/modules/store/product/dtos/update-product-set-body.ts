@@ -1,9 +1,15 @@
-import { ProductSetItem } from 'src/entities/product-set-item.entity';
+import { IsOptional, IsString } from 'class-validator';
+import { ProductSetStatus } from 'src/entities/product-set.entity';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
 export class UpdateProductSetBody {
-  name: string;
+  @IsString()
+  @IsOptional()
+  name?: string;
 
-  //   status: ProductSetStatus;
-
-  items: ProductSetItem[];
+  @IsOptional()
+  @HasValidValue(Object.values(ProductSetStatus), {
+    message: 'Invalid status.',
+  })
+  status?: ProductSetStatus;
 }

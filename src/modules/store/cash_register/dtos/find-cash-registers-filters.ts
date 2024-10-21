@@ -11,13 +11,13 @@ export class FindCashRegistersFilters {
 
   @IsOptional()
   @IsDate()
+  readonly after_openingDate?: Date;
+
+  @IsOptional()
+  @IsDate()
   readonly before_closingDate?: Date;
 
   @IsOptional()
   @IsDate()
   readonly after_closingDate?: Date;
-
-  @IsOptional()
-  @IsDate()
-  readonly after_openingDate?: Date;
 }

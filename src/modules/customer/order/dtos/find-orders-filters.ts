@@ -12,5 +12,5 @@ export class FindOrdersFilters {
 
   @IsOptional()
   @IsArray()
-  status: OrderStatus;
+  status?: OrderStatus;
 }
