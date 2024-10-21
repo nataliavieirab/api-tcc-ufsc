@@ -3,7 +3,7 @@ import { DefaultEntity } from './default-entity';
 import { Store } from './store.entity';
 import { ProductSetItem } from './product-set-item.entity';
 
-enum ProductSetStatus {
+export enum ProductSetStatus {
   ACTIVE = 'active',
   INACTIVE = 'inactive',
 }

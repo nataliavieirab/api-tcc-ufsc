@@ -3,7 +3,7 @@ import { DefaultEntity } from './default-entity';
 import { Store } from './store.entity';
 import { Payment } from './payment.entity';
 
-enum SystemPaymentType {
+export enum SystemPaymentType {
   CASH = 'cash',
   CREDIT = 'credit',
   DEBIT = 'debit',

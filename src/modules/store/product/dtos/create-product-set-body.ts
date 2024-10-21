@@ -1,12 +1,15 @@
-import { Store } from 'src/entities/store.entity';
-import { ProductSetItem } from 'src/entities/product-set-item.entity';
+import { ProductSetStatus } from 'src/entities/product-set.entity';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
 export class CreateProductSetBody {
-  store: Store;
-
+  @IsString()
+  @IsNotEmpty()
   name: string;
 
-  //   status: ProductSetStatus;
-
-  items: ProductSetItem[];
+  @IsNotEmpty({ message: 'The user role should not be empty.' })
+  @HasValidValue(Object.values(ProductSetStatus), {
+    message: 'Invalid status.',
+  })
+  status: ProductSetStatus;
 }

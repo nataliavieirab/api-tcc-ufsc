@@ -1,9 +1,11 @@
-import { DeliveryStatus } from 'src/entities/delivery-settings.entity';
+import { IsDateString, IsOptional } from 'class-validator';
 
 export class UpdateDeliverySettingsBody {
-  start_hour: string;
+  @IsDateString()
+  @IsOptional()
+  startHour: Date;
 
-  end_hour: string;
-
-  type: DeliveryStatus;
+  @IsDateString()
+  @IsOptional()
+  endHour: Date;
 }

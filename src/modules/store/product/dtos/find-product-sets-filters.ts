@@ -1,7 +1,16 @@
+import { IsOptional, IsString } from 'class-validator';
+import { ProductSetStatus } from 'src/entities/product-set.entity';
+
 export class FindProductSetsFilters {
-  name: string;
+  @IsOptional()
+  @IsString()
+  readonly name?: string;
 
-  //   status: ProductSetStatus;
+  @IsOptional()
+  @IsString()
+  readonly like_name?: string;
 
-  //   items: ProductSetItem[];
+  @IsOptional()
+  @IsString()
+  readonly status?: ProductSetStatus;
 }
