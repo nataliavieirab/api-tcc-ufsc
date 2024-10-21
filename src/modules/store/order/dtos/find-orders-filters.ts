@@ -1,4 +1,5 @@
 import { IsDate, IsOptional, IsString } from 'class-validator';
+import { OrderStatus } from 'src/entities/order.entity';
 
 export class FindOrdersFilters {
   @IsOptional()
@@ -7,7 +8,7 @@ export class FindOrdersFilters {
 
   @IsOptional()
   @IsString()
-  status?: string;
+  status?: OrderStatus;
 
   @IsOptional()
   @IsDate()

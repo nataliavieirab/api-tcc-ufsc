@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { PaymentType } from './payment-type.entity';
 import { Order } from './order.entity';
@@ -10,4 +10,7 @@ export class Payment extends DefaultEntity {
 
   @ManyToOne(() => Order, (order) => order.payments)
   order: Order;
+
+  @Column()
+  value: number;
 }
