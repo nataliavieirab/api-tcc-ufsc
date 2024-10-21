@@ -12,24 +12,12 @@ export const DbConnectionParams: DataSourceOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/entities/**/**/*{entity.js,entity.ts}'],
+  entities: ['dist/entities/*{entity.js,entity.ts}'],
   migrations: ['dist/infra/postgres/migrations/*{.js,.ts}'],
   subscribers: [],
   logging: false,
 };
 
-export const postgresDataSource = new DataSource({
-  synchronize: false,
-  type: 'postgres',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  entities: ['dist/entities/**/**/*{entity.js,entity.ts}'],
-  migrations: ['dist/infra/postgres/migrations/*{.js,.ts}'],
-  subscribers: [],
-  logging: false,
-});
+export const postgresDataSource = new DataSource(DbConnectionParams);
 
 postgresDataSource.initialize();

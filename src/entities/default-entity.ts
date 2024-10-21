@@ -54,7 +54,7 @@ export class DefaultEntity {
     let newData = clearNestedInput(data);
     newData = removeUnknownFields(data, repository);
 
-    type TKeys = keyof EntitySearchKeys<T>;
+    type TKeys = keyof EntityExactKeys<T>;
     (Object.keys(newData) as TKeys[]).forEach((key) => {
       if (newData[key] == undefined) return;
       const value = newData[key] as T[string & keyof T];
@@ -86,7 +86,7 @@ export class DefaultEntity {
   }
 }
 
-function removeUnknownFields(data: any, repository: Repository<any>) {
+function removeUnknownFields<T>(data: T, repository: Repository<T>) {
   const columns = repository.metadata.columns
     .map((column) => column.propertyName)
     .concat(

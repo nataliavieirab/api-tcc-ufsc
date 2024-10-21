@@ -15,7 +15,7 @@ import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { ProductSet } from 'src/entities/product-set.entity';
 import { Response } from 'express';
 import { CreateProductSetBody } from './dtos/create-product-set-body';
-import { UpdateUserBody } from '../user/dtos/update-user-body';
+import { UpdateProductSetBody } from './dtos/update-product-set-body';
 
 @Controller('store/productsets')
 export class ProductSetsController extends DefaultController {
@@ -53,7 +53,7 @@ export class ProductSetsController extends DefaultController {
 
   @Put('/:id')
   async update(
-    @Body() body: UpdateUserBody,
+    @Body() body: UpdateProductSetBody,
     @Param('id') id: string,
     @Res() res: Response,
   ) {

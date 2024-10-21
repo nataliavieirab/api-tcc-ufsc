@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 services:
   db:
     image: postgres:10.7-alpine
@@ -14,4 +14,3 @@ services:
 
 volumes:
   postgres107:
-  
