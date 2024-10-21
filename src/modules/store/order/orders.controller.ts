@@ -11,17 +11,19 @@ export class OrdersController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindOrdersFilters,
   ): Promise<EntityPagination<Order>> {
-    this.validateAccess('findAllOrders');
+    await this.validateAccess('findAllOrders');
     return this.orderService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findOrderById');
+    await this.validateAccess('findOrderById');
     const order = await this.orderService.findById(id);
 
     res.status(200).send(order);

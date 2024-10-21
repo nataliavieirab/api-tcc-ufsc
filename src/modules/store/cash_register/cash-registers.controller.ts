@@ -23,17 +23,19 @@ export class CashRegistersController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindCashRegistersFilters,
   ): Promise<EntityPagination<CashRegister>> {
-    this.validateAccess('findAllCashRegisters');
+    await this.validateAccess('findAllCashRegisters');
     return this.cashRegisterService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findCashRegisterById');
+    await this.validateAccess('findCashRegisterById');
     const cashRegister = await this.cashRegisterService.findById(id);
 
     res.status(200).send(cashRegister);
@@ -41,7 +43,7 @@ export class CashRegistersController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateCashRegisterBody, @Res() res: Response) {
-    this.validateAccess('createCashRegister');
+    await this.validateAccess('createCashRegister');
     const cashRegister = await this.cashRegisterService.create(body);
     res.status(201).send(cashRegister);
   }
@@ -52,7 +54,7 @@ export class CashRegistersController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateCashRegister');
+    await this.validateAccess('updateCashRegister');
     const cashRegister = await this.cashRegisterService.update(id, body);
 
     res.status(200).send(cashRegister);
@@ -60,7 +62,7 @@ export class CashRegistersController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteCashRegister');
+    await this.validateAccess('deleteCashRegister');
     await this.cashRegisterService.delete(id);
 
     res.status(204).send();

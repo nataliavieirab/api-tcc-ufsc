@@ -23,17 +23,19 @@ export class AddOnController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindAddOnsFilters,
   ): Promise<EntityPagination<AddOn>> {
-    this.validateAccess('findAddOnsFilters');
+    await this.validateAccess('findAddOnsFilters');
     return this.addOnService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findAddOnsById');
+    await this.validateAccess('findAddOnsById');
     const addOn = await this.addOnService.findById(id);
 
     res.status(200).send(addOn);
@@ -41,7 +43,7 @@ export class AddOnController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateAddOnBody, @Res() res: Response) {
-    this.validateAccess('createAddOn');
+    await this.validateAccess('createAddOn');
     const addOn = await this.addOnService.create(body);
 
     res.status(201).send(addOn);
@@ -53,7 +55,7 @@ export class AddOnController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateAddOn');
+    await this.validateAccess('updateAddOn');
     const addOn = await this.addOnService.update(id, body);
 
     res.status(200).send(addOn);
@@ -61,7 +63,7 @@ export class AddOnController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteAddOn');
+    await this.validateAccess('deleteAddOn');
     await this.addOnService.delete(id);
 
     res.status(204).send();

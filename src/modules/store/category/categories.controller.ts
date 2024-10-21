@@ -21,15 +21,17 @@ export class CategoryController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(@Body() body: FindCategoriesFilters) {
-    this.validateAccess('findAllCategories');
+    await this.validateAccess('findAllCategories');
     return this.categoryService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findCategoryById');
+    await this.validateAccess('findCategoryById');
     const category = await this.categoryService.findById(id);
 
     res.status(200).send(category);
@@ -37,7 +39,7 @@ export class CategoryController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateCategoryBody, @Res() res: Response) {
-    this.validateAccess('createCategory');
+    await this.validateAccess('createCategory');
     const category = await this.categoryService.create(body);
 
     res.status(201).send(category);
@@ -49,7 +51,7 @@ export class CategoryController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateCategory');
+    await this.validateAccess('updateCategory');
     const category = await this.categoryService.update(id, body);
 
     res.status(200).send(category);
@@ -57,7 +59,7 @@ export class CategoryController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteCategory');
+    await this.validateAccess('deleteCategory');
     await this.categoryService.delete(id);
 
     res.status(204).send();

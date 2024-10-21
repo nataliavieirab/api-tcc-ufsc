@@ -16,23 +16,25 @@ import { Store } from 'src/entities/store.entity';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { DefaultController } from 'src/modules/default.controller';
 
-@Controller('/stores')
+@Controller('organization/stores')
 export class StoreController extends DefaultController {
   constructor(private storeService: StoreService) {
     super();
   }
 
+  module = 'organization';
+
   @Get()
   async findAllStore(
     @Body() body: FindStoreFilters,
   ): Promise<EntityPagination<Store>> {
-    this.validateAccess('findAllStore');
+    await this.validateAccess('findAllStore');
     return this.storeService.findAll(body);
   }
 
   @Get('/:id')
   async findStoreById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findStoreById');
+    await this.validateAccess('findStoreById');
     const store = await this.storeService.findById(id);
 
     res.status(200).send(store);
@@ -40,7 +42,7 @@ export class StoreController extends DefaultController {
 
   @Post()
   async createStore(@Body() body: CreateStoreBody, @Res() res: any) {
-    this.validateAccess('createStore');
+    await this.validateAccess('createStore');
 
     const store = await this.storeService.create(body);
 
@@ -53,7 +55,7 @@ export class StoreController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateStore');
+    await this.validateAccess('updateStore');
 
     const store = await this.storeService.update(id, body);
 
@@ -62,7 +64,7 @@ export class StoreController extends DefaultController {
 
   @Delete('/:id')
   async deleteStore(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteStore');
+    await this.validateAccess('deleteStore');
     await this.storeService.delete(id);
 
     res.status(204).send('Store successfully deleted');

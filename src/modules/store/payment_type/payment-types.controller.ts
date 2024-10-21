@@ -23,17 +23,19 @@ export class PaymentTypeController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindPaymentTypeFilters,
   ): Promise<EntityPagination<PaymentType>> {
-    this.validateAccess('findAllPaymentTypes');
+    await this.validateAccess('findAllPaymentTypes');
     return this.paymentTypeService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findPaymentTypeById');
+    await this.validateAccess('findPaymentTypeById');
     const paymentType = await this.paymentTypeService.findById(id);
 
     res.status(200).send({ ...paymentType });
@@ -41,7 +43,7 @@ export class PaymentTypeController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreatePaymentTypeBody, @Res() res: Response) {
-    this.validateAccess('createPaymentType');
+    await this.validateAccess('createPaymentType');
     const paymentType = await this.paymentTypeService.create(body);
 
     res.status(201).send({ ...paymentType });
@@ -53,7 +55,7 @@ export class PaymentTypeController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updatePaymentType');
+    await this.validateAccess('updatePaymentType');
     const paymentType = await this.paymentTypeService.update(id, body);
 
     res.status(200).send({ ...paymentType });
@@ -61,7 +63,7 @@ export class PaymentTypeController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param() id: string, @Res() res: Response) {
-    this.validateAccess('deletePaymentType');
+    await this.validateAccess('deletePaymentType');
     await this.paymentTypeService.delete(id);
 
     res.status(204).send({ message: 'Payment type deleted successfully!!' });

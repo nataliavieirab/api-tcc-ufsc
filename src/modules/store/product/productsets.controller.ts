@@ -23,17 +23,19 @@ export class ProductSetController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindProductSetsFilters,
   ): Promise<EntityPagination<ProductSet>> {
-    this.validateAccess('findProductSetsFilters');
+    await this.validateAccess('findProductSetsFilters');
     return this.productSetService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findProductSetsById');
+    await this.validateAccess('findProductSetsById');
     const productSet = await this.productSetService.findById(id);
 
     res.status(200).send(productSet);
@@ -41,7 +43,7 @@ export class ProductSetController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateProductSetBody, @Res() res: Response) {
-    this.validateAccess('createProductSet');
+    await this.validateAccess('createProductSet');
     const productSet = await this.productSetService.create(body);
 
     res
@@ -55,7 +57,7 @@ export class ProductSetController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateProductSet');
+    await this.validateAccess('updateProductSet');
     const productSet = await this.productSetService.update(id, body);
 
     res
@@ -65,7 +67,7 @@ export class ProductSetController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteProductSet');
+    await this.validateAccess('deleteProductSet');
     await this.productSetService.delete(id);
 
     res.status(204).send({ message: 'Product Set deleted successfully!' });

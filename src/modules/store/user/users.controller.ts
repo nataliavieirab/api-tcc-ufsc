@@ -23,17 +23,19 @@ export class UsersController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindUsersFilters,
   ): Promise<EntityPagination<User>> {
-    this.validateAccess('findAllUsers');
+    await this.validateAccess('findAllUsers');
     return this.userService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findUserById');
+    await this.validateAccess('findUserById');
     const user = await this.userService.findById(id);
 
     res.status(200).send(user);
@@ -41,7 +43,7 @@ export class UsersController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateUserBody, @Res() res: Response) {
-    this.validateAccess('createUser');
+    await this.validateAccess('createUser');
     const user = await this.userService.create(body);
     res.status(201).send({ ...user, password: undefined });
   }
@@ -52,7 +54,7 @@ export class UsersController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateUser');
+    await this.validateAccess('updateUser');
     const user = await this.userService.update(id, body);
 
     res.status(200).send({ ...user, password: undefined });
@@ -60,7 +62,7 @@ export class UsersController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteUser');
+    await this.validateAccess('deleteUser');
     await this.userService.delete(id);
 
     res.status(204).send();

@@ -16,9 +16,11 @@ import {
 } from 'src/modules/auth/decorators/access-validator.decorator';
 import { UserService } from 'src/services/domains/user.service';
 import { findUsersFilters } from './dtos/find-users-filter';
-@Controller('organizations/users')
+@Controller('organization/users')
 export class UsersController {
   constructor(private userService: UserService) {}
+
+  module = 'organization';
 
   @Get()
   async findAll(

@@ -16,22 +16,19 @@ import { Store } from 'src/entities/store.entity';
 import { PaymentType } from 'src/entities/payment-type.entity';
 
 @Controller('customer/stores')
-export class StoresController extends DefaultController {
+export class StoresController {
   constructor(
     private storeService: StoreService,
     private categoryService: CategoryService,
     private productService: ProductService,
     private paymentTypeService: PaymentTypeService,
-  ) {
-    super();
-  }
+  ) {}
 
   @Get('/:storeId/delivery-fees/:neighborhoodCode')
   async getDeliveryFee(
     @Param('storeId') storeId: string,
     @Param('neighborhoodCode') neighborhoodCode: number,
   ): Promise<number> {
-    this.validateAccess('findDeliveryFee');
     return this.storeService.getDeliveryFee(storeId, neighborhoodCode);
   }
 
@@ -40,8 +37,6 @@ export class StoresController extends DefaultController {
     @Body() body: FindCategoriesFilters,
     @Param('storeId') storeId: string,
   ): Promise<EntityPagination<Category>> {
-    this.validateAccess('findAllCategories');
-
     return this.categoryService.findAll({ ...body, storeId });
   }
 
@@ -50,7 +45,6 @@ export class StoresController extends DefaultController {
     @Body() body: FindProductsFilters,
     @Param('storeId') storeId: string,
   ): Promise<EntityPagination<Product>> {
-    this.validateAccess('findAllProducts');
     return this.productService.findByCategory(body.categoryId, body);
   }
 
@@ -58,7 +52,6 @@ export class StoresController extends DefaultController {
   async findAllStores(
     @Body() body: FindStoresFilters,
   ): Promise<EntityPagination<Store>> {
-    this.validateAccess('findAllStores');
     return this.storeService.findAll(body);
   }
 
@@ -66,7 +59,6 @@ export class StoresController extends DefaultController {
   async findAllPaymentTypes(
     @Body() body: FindPaymentTypesFilters,
   ): Promise<EntityPagination<PaymentType>> {
-    this.validateAccess('findAllPaymentTypes');
     return this.paymentTypeService.findAll(body);
   }
 }

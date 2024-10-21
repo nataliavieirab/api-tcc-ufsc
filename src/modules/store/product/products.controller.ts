@@ -27,11 +27,13 @@ export class ProductsController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindProductsFilters,
   ): Promise<EntityPagination<Product>> {
-    this.validateAccess('findAllProducts');
+    await this.validateAccess('findAllProducts');
 
     return this.productService.findAll(
       body,
@@ -51,7 +53,7 @@ export class ProductsController extends DefaultController {
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findProductById');
+    await this.validateAccess('findProductById');
     const user = await this.productService.findById(id);
 
     res.status(200).send(user);
@@ -59,7 +61,7 @@ export class ProductsController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateProductBody, @Res() res: any) {
-    this.validateAccess('createProduct');
+    await this.validateAccess('createProduct');
 
     const product = await this.productService.create(body);
 
@@ -72,7 +74,7 @@ export class ProductsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateProduct');
+    await this.validateAccess('updateProduct');
     const product = await this.productService.update(id, body);
 
     res.status(200).send(product);
@@ -80,7 +82,7 @@ export class ProductsController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteProduct');
+    await this.validateAccess('deleteProduct');
     await this.productService.delete(id);
 
     res.status(204).send();
@@ -88,7 +90,7 @@ export class ProductsController extends DefaultController {
 
   @Post('/:id/options')
   async addOption(@Body() body: AddOptionsToProductBody, @Res() res: any) {
-    this.validateAccess('addOptionToProduct');
+    await this.validateAccess('addOptionToProduct');
 
     const productOption = await this.productOptionService.create(body);
 
@@ -101,7 +103,7 @@ export class ProductsController extends DefaultController {
 
   @Delete('/:id/options/:optionId')
   async removeOption(@Param('optionId') optionId: string, @Res() res: any) {
-    this.validateAccess('removeOptionFromProduct');
+    await this.validateAccess('removeOptionFromProduct');
 
     await this.productOptionService.delete(optionId);
 
@@ -114,7 +116,7 @@ export class ProductsController extends DefaultController {
     @Param('addOnId') addOnId: string,
     @Res() res: any,
   ) {
-    this.validateAccess('addAddOnToProduct');
+    await this.validateAccess('addAddOnToProduct');
 
     const product = await this.productService.addAddOn(productId, addOnId);
 
@@ -127,7 +129,7 @@ export class ProductsController extends DefaultController {
     @Param('addOnId') addOnId: string,
     @Res() res: any,
   ) {
-    this.validateAccess('removeAddOnFromProduct');
+    await this.validateAccess('removeAddOnFromProduct');
 
     await this.productService.removeAddOn(productId, addOnId);
 

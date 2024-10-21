@@ -1,13 +1,19 @@
+import { ForbiddenError } from 'src/errors/forbidden.error';
 import { PermissionService } from 'src/services/permissions/permission.service';
 
-export class DefaultController {
-  protected validateAccess(action: string) {
-    // const permissionService = new PermissionService(user);
-    // const hasAccess =
-    //   permissionService.validateAction(action) &&
-    //   permissionService.validateModuleAccess(module);
-    // if (!hasAccess) {
-    //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    // }
+export abstract class DefaultController {
+  abstract module: string;
+
+  protected async validateAccess(action: string) {
+    const permissionService = new PermissionService();
+
+    const hasAccess = await permissionService.validateAction(
+      action,
+      this.module,
+    );
+
+    if (!hasAccess) {
+      throw new ForbiddenError();
+    }
   }
 }

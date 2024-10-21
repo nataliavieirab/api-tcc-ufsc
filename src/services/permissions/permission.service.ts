@@ -1,25 +1,81 @@
 import { Injectable } from '@nestjs/common';
-import { actions, roles_permissions, module_permissions } from './permissions';
+import { CurrentRequestService } from '../application/current-request.service';
+import { DependenciesResolver } from 'src/utils/dependencies-resolver';
+import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
+import { RoleRepository } from 'src/repositories/role.repository';
+import { UserRoleRepository } from 'src/repositories/user-role.repository';
+import { systemRolesPermissions } from './permissions';
 
 @Injectable()
 export class PermissionService {
-  user_role: string;
+  currentRequestService: CurrentRequestService;
+  rolePermissionRepository: RolePermissionRepository;
+  roleRepository: RoleRepository;
+  userRoleRepository: UserRoleRepository;
 
-  constructor(user: User) {
-    this.user_role = user.role;
+  constructor() {
+    this.currentRequestService = DependenciesResolver.getResolvedDependency(
+      'CurrentRequestService',
+    );
+
+    this.rolePermissionRepository = DependenciesResolver.getResolvedDependency(
+      'RolePermissionRepository',
+    );
+
+    this.userRoleRepository =
+      DependenciesResolver.getResolvedDependency('UserRoleRepository');
+
+    this.roleRepository =
+      DependenciesResolver.getResolvedDependency('RoleRepository');
   }
 
-  validateAction(action: actions): boolean {
-    const permitted_roles = roles_permissions[action];
+  async validateAction(action: string, module: string): Promise<boolean> {
+    if (this.validateActionBySystemRole(action, module)) return true;
 
-    return permitted_roles.includes(this.user_role);
+    const rolesPermissionsQuery = this.rolePermissionRepository.getQueryFor({
+      conditions: {
+        action,
+        module,
+      },
+    });
+
+    const rolesQuery = this.roleRepository.getQueryFor({
+      joins: {
+        rolePermissions: rolesPermissionsQuery,
+      },
+    });
+
+    const currentUser = this.currentRequestService.getCurrentUser();
+
+    const userRole = await this.userRoleRepository.findOne({
+      conditions: {
+        user: currentUser,
+      },
+      joins: {
+        role: rolesQuery,
+      },
+    });
+
+    return !!userRole;
   }
 
-  validateModuleAccess(module: string): boolean {
-    const permitted_roles = module_permissions[module];
+  async validateActionBySystemRole(
+    action: string,
+    module: string,
+  ): Promise<boolean> {
+    const currentUser = this.currentRequestService.getCurrentUser();
 
-    if (!permitted_roles) return false;
+    const userSystemRoles = await this.userRoleRepository.getMany({
+      conditions: {
+        user: currentUser,
+        role: null,
+      },
+    });
 
-    return permitted_roles.includes(this.user_role);
+    const permittedSystemRoles = systemRolesPermissions[module][action];
+
+    return userSystemRoles.some((userRole) =>
+      permittedSystemRoles?.includes(userRole.systemRole),
+    );
   }
 }
