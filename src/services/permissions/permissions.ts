@@ -17,11 +17,11 @@ type actions =
   | 'findAllOrganizations'
   | 'findOrganizationById'
   | 'deleteOrganization'
-  | 'createCompany'
-  | 'updateCompany'
-  | 'deleteCompany'
-  | 'findAllCompanies'
-  | 'findCompanyById';
+  | 'createStore'
+  | 'updateStore'
+  | 'deleteStore'
+  | 'findAllStore'
+  | 'findStoreById';
 
 const roles_permissions = {
   createUser: [
@@ -59,11 +59,11 @@ const roles_permissions = {
   deleteOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findOrganizationById: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
   findAllOrganizations: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  createCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  updateCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  deleteCompany: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findAllCompanies: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findCompanyById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  createStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  updateStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  deleteStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findAllStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
+  findStoreById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
 };
 
 const module_permissions = {
@@ -84,11 +84,11 @@ export enum Permissions {
   findAllOrganizations = 'findAllOrganizations',
   findOrganizationById = 'findOrganizationById',
   deleteOrganization = 'deleteOrganization',
-  createCompany = 'createCompany',
-  updateCompany = 'updateCompany',
-  deleteCompany = 'deleteCompany',
-  findAllCompanies = 'findAllCompanies',
-  findCompanyById = 'findCompanyById',
+  createStore = 'createStore',
+  updateStore = 'updateStore',
+  deleteStore = 'deleteStore',
+  findAllStore = 'findAllStore',
+  findStoreById = 'findStoreById',
 }
 
 export enum Modules {

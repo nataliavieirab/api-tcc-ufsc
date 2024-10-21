@@ -1,13 +1,13 @@
 import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
-import { Company } from './company.entity';
+import { Store } from './store.entity';
 import { Address } from './address.entity';
 
 @Entity()
-export class CompanyAddress extends DefaultEntity {
-  @OneToOne(() => Company, (company) => company.address)
+export class StoreAddress extends DefaultEntity {
+  @OneToOne(() => Store, (store) => store.address)
   @JoinColumn()
-  company: Company;
+  store: Store;
 
   @ManyToOne(() => Address)
   address: Address;

@@ -2,20 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { ProductRepository } from 'src/repositories/product.repository';
 import { EntityDefaultService } from './entity-default.service';
 import { Product } from 'src/entities/product.entity';
-import { CompanyRepository } from 'src/repositories/company.repository';
+import { StoreRepository } from 'src/repositories/store.repository';
 import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
 import { AddOnRepository } from 'src/repositories/add-on.repository';
 
 interface CreateProductInput {
   name: string;
-  companyId: string;
+  storeId: string;
 }
 
 @Injectable()
 export class ProductService extends EntityDefaultService<Product> {
   constructor(
     productRepository: ProductRepository,
-    private companyRepository: CompanyRepository,
+    private storeRepository: StoreRepository,
     private productAddOnRepository: ProductAddOnRepository,
     private addOnRepository: AddOnRepository,
   ) {
@@ -23,10 +23,10 @@ export class ProductService extends EntityDefaultService<Product> {
   }
 
   async create(createInput: CreateProductInput): Promise<Product> {
-    const company = await this.companyRepository.find(createInput.companyId);
+    const store = await this.storeRepository.find(createInput.storeId);
 
     const newProduct = await this.repository.create({
-      company,
+      store,
       name: createInput.name,
     });
 

@@ -1,8 +1,8 @@
-import { Company } from 'src/entities/company.entity';
+import { Store } from 'src/entities/store.entity';
 import { ProductCategory } from 'src/entities/product-category.entity';
 
 export class CreateCategoryBody {
-  company: Company;
+  store: Store;
 
   name: string;
 
