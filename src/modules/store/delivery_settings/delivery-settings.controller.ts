@@ -26,17 +26,19 @@ export class DeliverySettingsController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindDeliverySettingsFilters,
   ): Promise<EntityPagination<DeliverySettings>> {
-    this.validateAccess('findAllDeliverySettings');
+    await this.validateAccess('findAllDeliverySettings');
     return this.deliverySettingsService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('findDeliverySettingsById');
+    await this.validateAccess('findDeliverySettingsById');
     const deliverySettings = await this.deliverySettingsService.findById(id);
 
     res.status(200).send(deliverySettings);
@@ -48,7 +50,7 @@ export class DeliverySettingsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('updateDeliverySettings');
+    await this.validateAccess('updateDeliverySettings');
     const deliverySettings = await this.deliverySettingsService.update(
       id,
       body,
@@ -59,7 +61,7 @@ export class DeliverySettingsController extends DefaultController {
 
   @Patch('/:id')
   async openDelivery(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('openDelivery');
+    await this.validateAccess('openDelivery');
     await this.deliverySettingsService.openDelivery(id);
 
     res.status(200).send({ message: "Delivery's open!" });
@@ -67,7 +69,7 @@ export class DeliverySettingsController extends DefaultController {
 
   @Patch('/:id')
   async closeDelivery(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('closeDelivery');
+    await this.validateAccess('closeDelivery');
     await this.deliverySettingsService.closeDelivery(id);
 
     res.status(200).send({ message: "Delivery's closed." });
@@ -78,7 +80,7 @@ export class DeliverySettingsController extends DefaultController {
     @Body() body: CreateNeighborhoodBody,
     @Res() res: Response,
   ) {
-    this.validateAccess('createNeighborhood');
+    await this.validateAccess('createNeighborhood');
 
     const neighborhood = await this.deliverySettingsService.addNeighborhood(
       body,
@@ -91,13 +93,13 @@ export class DeliverySettingsController extends DefaultController {
   async findAllNeighborhoods(
     @Body() body: findAllNeighborhoodsFilters,
   ): Promise<EntityPagination<DeliveryNeighborhood>> {
-    this.validateAccess('findAllNeighborhoods');
+    await this.validateAccess('findAllNeighborhoods');
     return this.deliverySettingsService.findAllNeighborhoods(body);
   }
 
   @Delete('/:id')
   async deleteNeighborhood(@Param('id') id: string, @Res() res: Response) {
-    this.validateAccess('deleteNeighborhood');
+    await this.validateAccess('deleteNeighborhood');
     await this.deliverySettingsService.deleteNeighborhood(id);
 
     res.status(204).send({ message: 'Neighborhood deleted succesfully!' });

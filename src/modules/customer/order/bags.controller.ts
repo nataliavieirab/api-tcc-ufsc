@@ -1,4 +1,3 @@
-import { DefaultController } from 'src/modules/default.controller';
 import {
   Body,
   Controller,
@@ -13,15 +12,11 @@ import { BagService } from 'src/services/domains/bag.service';
 import { AddItemToBagBody } from './dtos/add-item-to-bag-body';
 
 @Controller('stores/:storeId/bag')
-export class OrdersController extends DefaultController {
-  constructor(private bagService: BagService) {
-    super();
-  }
+export class OrdersController {
+  constructor(private bagService: BagService) {}
 
   @Get()
   async getCurrentBag(@Param('storeId') storeId: string, @Res() res: Response) {
-    this.validateAccess('getCurrentBag');
-
     const bag = await this.bagService.getCurrentBag(storeId);
 
     res.status(200).send(bag);
@@ -29,7 +24,6 @@ export class OrdersController extends DefaultController {
 
   @Post()
   async cleanBag(@Param('storeId') storeId: string, @Res() res: Response) {
-    this.validateAccess('cleanBag');
     await this.bagService.cleanBag(storeId);
 
     res.status(204).send();
@@ -41,7 +35,6 @@ export class OrdersController extends DefaultController {
     @Body() body: AddItemToBagBody,
     @Res() res: Response,
   ) {
-    this.validateAccess('addItemToBag');
     const bagItem = await this.bagService.addItem(storeId, body);
 
     res.status(200).send(bagItem);
@@ -53,7 +46,6 @@ export class OrdersController extends DefaultController {
     @Param('bagItemId') bagItemId: string,
     @Res() res: Response,
   ) {
-    this.validateAccess('removeItemFromBag');
     await this.bagService.removeItem(storeId, bagItemId);
 
     res.status(204).send();
