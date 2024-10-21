@@ -43,6 +43,7 @@ export class ProductOptionService extends EntityDefaultService<ProductOption> {
     values: {
       name: string;
       value: string;
+      price: number;
     }[],
   ): Promise<ProductOption> {
     const productOption = await this.repository.find(productOptionId);
@@ -52,6 +53,7 @@ export class ProductOptionService extends EntityDefaultService<ProductOption> {
         option: productOption,
         name: value.name,
         value: value.value,
+        price: value.price,
       });
     }
 

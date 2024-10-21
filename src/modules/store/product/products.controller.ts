@@ -17,6 +17,7 @@ import { CreateProductBody } from './dtos/create-product-body';
 import { UpdateProductBody } from './dtos/update-product-body';
 import { AddOptionsToProductBody } from './dtos/add-options-to-product-body';
 import { ProductOptionService } from 'src/services/domains/product-option.service';
+import { AddAddOnToProductBody } from './dtos/add-add-on-to-product-body';
 
 @Controller('admin/users')
 export class ProductsController extends DefaultController {
@@ -89,10 +90,17 @@ export class ProductsController extends DefaultController {
   }
 
   @Post('/:id/options')
-  async addOption(@Body() body: AddOptionsToProductBody, @Res() res: any) {
+  async addOption(
+    @Param('id') productId: string,
+    @Body() body: AddOptionsToProductBody,
+    @Res() res: any,
+  ) {
     await this.validateAccess('addOptionToProduct');
 
-    const productOption = await this.productOptionService.create(body);
+    const productOption = await this.productOptionService.create({
+      productId,
+      ...body,
+    });
 
     if (body.values) {
       await this.productOptionService.addValues(productOption.id, body.values);
@@ -110,15 +118,21 @@ export class ProductsController extends DefaultController {
     res.status(204).send();
   }
 
-  @Post('/:id/add-ons/:addOnId')
+  @Post('/:id/add-ons')
   async addAddOn(
     @Param('id') productId: string,
-    @Param('addOnId') addOnId: string,
+    @Body() body: AddAddOnToProductBody,
     @Res() res: any,
   ) {
     await this.validateAccess('addAddOnToProduct');
 
-    const product = await this.productService.addAddOn(productId, addOnId);
+    const { price, addOnId } = body;
+
+    const product = await this.productService.addAddOn(
+      productId,
+      addOnId,
+      price,
+    );
 
     res.status(201).send(product);
   }
