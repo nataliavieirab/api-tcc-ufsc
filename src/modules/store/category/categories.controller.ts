@@ -15,7 +15,7 @@ import { Response } from 'express';
 import { CreateCategoryBody } from './dtos/create-category-body';
 import { UpdateCategoryBody } from './dtos/update-category-body';
 
-@Controller('store/categories')
+@Controller('store/:storeId/categories')
 export class CategoriesController extends DefaultController {
   constructor(private categoryService: CategoryService) {
     super();
@@ -24,9 +24,12 @@ export class CategoriesController extends DefaultController {
   module = 'store';
 
   @Get()
-  async findAll(@Body() body: FindCategoriesFilters) {
+  async findAll(
+    @Param('storeId') storeId: string,
+    @Body() body: FindCategoriesFilters,
+  ) {
     await this.validateAccess('findAllCategories');
-    return this.categoryService.findAll(body);
+    return this.categoryService.findAll({ storeId, ...body });
   }
 
   @Get('/:id')
@@ -38,9 +41,13 @@ export class CategoriesController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateCategoryBody, @Res() res: Response) {
+  async create(
+    @Param('storeId') storeId: string,
+    @Body() body: CreateCategoryBody,
+    @Res() res: Response,
+  ) {
     await this.validateAccess('createCategory');
-    const category = await this.categoryService.create(body);
+    const category = await this.categoryService.create({ storeId, ...body });
 
     res.status(201).send(category);
   }
