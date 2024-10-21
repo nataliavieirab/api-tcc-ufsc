@@ -8,6 +8,6 @@ export class ProductAddOn extends DefaultEntity {
   @ManyToOne(() => Product, (product) => product.productAddOns)
   product: Product;
 
-  @ManyToOne(() => AddOn, (addOn) => addOn.productAddOns)
+  @ManyToOne(() => AddOn, (addOn) => addOn.productAddOns, { lazy: true })
   addOn: AddOn;
 }

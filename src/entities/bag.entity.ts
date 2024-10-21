@@ -3,14 +3,18 @@ import { DefaultEntity } from './default-entity';
 import { Customer } from './customer.entity';
 import { Order } from './order.entity';
 import { BagItem } from './bag-item.entity';
+import { Company } from './company.entity';
 
-enum BagStatus {
+export enum BagStatus {
   OPENED = 'opened',
   ORDERED = 'ordered',
 }
 
 @Entity()
 export class Bag extends DefaultEntity {
+  @ManyToOne(() => Company)
+  company: Company;
+
   @ManyToOne(() => Customer, (customer) => customer.bags)
   customer: Customer;
 
@@ -20,6 +24,6 @@ export class Bag extends DefaultEntity {
   @OneToOne(() => Order, (order) => order.bag)
   order: Order;
 
-  @OneToMany(() => BagItem, (item) => item.bag)
+  @OneToMany(() => BagItem, (item) => item.bag, { lazy: true })
   items: BagItem[];
 }
