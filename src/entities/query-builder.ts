@@ -34,22 +34,26 @@ export class QueryBuilder<Entity extends DefaultEntity> {
 
     type ConditionKeys = keyof typeof condition;
     (Object.keys(condition) as ConditionKeys[]).forEach((key) => {
+      const conditionValue = condition[key];
+
       if (
-        !(condition[key] instanceof Array) &&
-        typeof condition[key] === 'object'
+        !(conditionValue instanceof Array) &&
+        typeof conditionValue === 'object'
       )
         return;
 
-      if (condition[key] instanceof Array && condition[key].length == 0) return;
+      if (conditionValue instanceof Array && conditionValue.length == 0) return;
 
       let query;
-      if (condition[key] instanceof Array) {
+      if (conditionValue instanceof Array) {
         query = `${this.entityName}.${key} IN (:...${key})`;
       } else {
         query = `${this.entityName}.${key} = :${key}`;
       }
 
-      const value = { [key]: condition[key] };
+      const value = {
+        [key]: conditionValue as string,
+      };
 
       this.currentQuery = this.raw
         ? this.currentQuery.where(query, value)
@@ -101,22 +105,24 @@ export class QueryBuilder<Entity extends DefaultEntity> {
 
     type ConditionKeys = keyof typeof condition;
     (Object.keys(condition) as ConditionKeys[]).forEach((key) => {
+      const conditionValue = condition[key];
+
       if (
-        !(condition[key] instanceof Array) &&
-        typeof condition[key] === 'object'
+        !(conditionValue instanceof Array) &&
+        typeof conditionValue === 'object'
       )
         return;
 
-      if (condition[key] instanceof Array && condition[key].length == 0) return;
+      if (conditionValue instanceof Array && conditionValue.length == 0) return;
 
       let query;
-      if (condition[key] instanceof Array) {
+      if (conditionValue instanceof Array) {
         query = `${this.entityName}.${key} NOT IN (:...${key})`;
       } else {
         query = `${this.entityName}.${key} != :${key}`;
       }
 
-      const value = { [key]: condition[key] };
+      const value = { [key]: conditionValue as string };
 
       this.currentQuery = this.raw
         ? this.currentQuery.where(query, value)

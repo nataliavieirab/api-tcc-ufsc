@@ -1,13 +1,10 @@
-import { Body, Controller, Get, Param, Res } from '@nestjs/common';
-import { DefaultController } from 'src/modules/default.controller';
+import { Body, Controller, Get, Param } from '@nestjs/common';
 import { StoreService } from 'src/services/domains/store.service';
 import { FindCategoriesFilters } from './dtos/find-categories-filters';
-import { Response } from 'express';
 import { CategoryService } from 'src/services/domains/category.service';
 import { ProductService } from 'src/services/domains/product.service';
 import { FindProductsFilters } from './dtos/find-products-filters';
 import { FindStoresFilters } from './dtos/find-stores-filters';
-import { FindPaymentTypesFilters } from './dtos/find-payment-types-filters';
 import { PaymentTypeService } from 'src/services/domains/payment-type.service';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Category } from 'src/entities/category.entity';
@@ -27,7 +24,7 @@ export class StoresController {
   @Get('/:storeId/delivery-fees/:neighborhoodCode')
   async getDeliveryFee(
     @Param('storeId') storeId: string,
-    @Param('neighborhoodCode') neighborhoodCode: number,
+    @Param('neighborhoodCode') neighborhoodCode: string,
   ): Promise<number> {
     return this.storeService.getDeliveryFee(storeId, neighborhoodCode);
   }
@@ -43,7 +40,6 @@ export class StoresController {
   @Get('/:storeId/products')
   async findAllProducts(
     @Body() body: FindProductsFilters,
-    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<Product>> {
     return this.productService.findByCategory(body.categoryId, body);
   }
@@ -55,10 +51,10 @@ export class StoresController {
     return this.storeService.findAll(body);
   }
 
-  @Get()
+  @Get('/:storeId/payment-types')
   async findAllPaymentTypes(
-    @Body() body: FindPaymentTypesFilters,
+    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<PaymentType>> {
-    return this.paymentTypeService.findAll(body);
+    return this.paymentTypeService.findAll({ storeId });
   }
 }

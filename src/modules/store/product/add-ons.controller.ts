@@ -11,11 +11,11 @@ import {
 import { DefaultController } from 'src/modules/default.controller';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Response } from 'express';
-import { UpdateUserBody } from '../user/dtos/update-user-body';
 import { AddOnService } from 'src/services/domains/add-on.service';
 import { FindAddOnsFilters } from './dtos/find-add-ons-filters';
 import { AddOn } from 'src/entities/add-on.entity';
 import { CreateAddOnBody } from './dtos/create-add-on-body';
+import { UpdateAddOnBody } from './dtos/update-add-on-body';
 
 @Controller('store/add-ons')
 export class AddOnController extends DefaultController {
@@ -51,7 +51,7 @@ export class AddOnController extends DefaultController {
 
   @Put('/:id')
   async update(
-    @Body() body: UpdateUserBody,
+    @Body() body: UpdateAddOnBody,
     @Param('id') id: string,
     @Res() res: Response,
   ) {

@@ -16,7 +16,7 @@ import { Role } from 'src/entities/role.entity';
 import { CreateRoleBody } from './dtos/create-role-body';
 import { UpdateRoleBody } from './dtos/update-role-body';
 import { Modules } from 'src/services/permissions/permissions';
-@Controller('admin/users')
+@Controller('store/:storeId/roles')
 export class RolesController extends DefaultController {
   constructor(private roleService: RoleService) {
     super();
@@ -42,11 +42,17 @@ export class RolesController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateRoleBody, @Res() res: any) {
+  async create(
+    @Param('storeId') storeId: string,
+
+    @Body() body: CreateRoleBody,
+    @Res() res: any,
+  ) {
     await this.validateAccess('createRole');
 
     const role = await this.roleService.create({
       ...body,
+      storeId,
       module: Modules.store,
     });
 
