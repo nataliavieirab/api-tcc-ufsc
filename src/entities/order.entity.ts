@@ -10,6 +10,8 @@ import { DefaultEntity } from './default-entity';
 import { Bag } from './bag.entity';
 import { CashRegister } from './cash-register.entity';
 import { Payment } from './payment.entity';
+import { PaymentType } from './payment-type.entity';
+import { Shipping } from './shipping.entity';
 
 export enum OrderStatus {
   PENDING = 'PENDING',
@@ -23,14 +25,34 @@ export class Order extends DefaultEntity {
   @JoinColumn()
   bag: Bag;
 
-  @ManyToOne(() => CashRegister, (cashRegister) => cashRegister.orders)
-  cashRegister: CashRegister;
+  @ManyToOne(() => CashRegister, (cashRegister) => cashRegister.orders, {
+    nullable: true,
+  })
+  cashRegister?: CashRegister;
+
+  @ManyToOne(() => PaymentType, { nullable: true })
+  preferredPaymentType?: PaymentType;
 
   @OneToMany(() => Payment, (payment) => payment.order)
   payments: Payment[];
 
+  @OneToMany(() => Shipping, (shipping) => shipping.order)
+  shippings: Shipping[];
+
   @Column()
   date: Date;
+
+  @Column()
+  bagPrice: number;
+
+  @Column()
+  shippingPrice: number;
+
+  @Column()
+  totalPrice: number;
+
+  @Column({ nullable: true })
+  observation?: string;
 
   @Column({
     type: 'enum',

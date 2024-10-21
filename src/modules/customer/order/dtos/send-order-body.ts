@@ -10,6 +10,10 @@ export class SendOrderBody {
   bagId: string;
 
   @IsString()
+  @IsNotEmpty()
+  preferredPaymentTypeId: string;
+
+  @IsString()
   @IsOptional()
-  observation: string;
+  observation?: string;
 }
