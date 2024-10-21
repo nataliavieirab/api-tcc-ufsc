@@ -17,7 +17,7 @@ import { UpdateUserBody } from './dtos/update-user-body';
 import { CreateUserBody } from './dtos/create-user-body';
 import { Response } from 'express';
 
-@Controller('store/users')
+@Controller('store/:storeId/users')
 export class UsersController extends DefaultController {
   constructor(private userService: UserService) {
     super();
@@ -42,9 +42,14 @@ export class UsersController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateUserBody, @Res() res: Response) {
+  async create(
+    @Param('storeId') storeId: string,
+    @Body() body: CreateUserBody,
+    @Res() res: Response,
+  ) {
     await this.validateAccess('createUser');
-    const user = await this.userService.create(body);
+    const user = await this.userService.create({ storeId, ...body });
+
     res.status(201).send({ ...user, password: undefined });
   }
 
