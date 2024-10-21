@@ -12,7 +12,7 @@ import { BagService } from 'src/services/domains/bag.service';
 import { AddItemToBagBody } from './dtos/add-item-to-bag-body';
 
 @Controller('stores/:storeId/bag')
-export class OrdersController {
+export class BagsController {
   constructor(private bagService: BagService) {}
 
   @Get()
