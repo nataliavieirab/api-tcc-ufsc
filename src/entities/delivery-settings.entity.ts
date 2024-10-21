@@ -21,6 +21,7 @@ export class DeliverySettings extends DefaultEntity {
   @Column({
     type: 'enum',
     enum: DeliveryStatus,
+    default: DeliveryStatus.OPEN,
   })
   status: DeliveryStatus;
 }

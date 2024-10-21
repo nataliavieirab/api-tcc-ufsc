@@ -10,48 +10,36 @@ import {
 } from '@nestjs/common';
 import { CreateUserBody } from './dtos/create-user-body';
 import { UpdateUserBody } from './dtos/update-user-body';
-import {
-  AccessValidator,
-  accessValidator,
-} from 'src/modules/auth/decorators/access-validator.decorator';
 import { UserService } from 'src/services/domains/user.service';
 import { findUsersFilters } from './dtos/find-users-filter';
+import { DefaultController } from 'src/modules/default.controller';
 @Controller('organization/users')
-export class UsersController {
-  constructor(private userService: UserService) {}
+export class UsersController extends DefaultController {
+  constructor(private userService: UserService) {
+    super();
+  }
 
   module = 'organization';
 
   @Get()
-  async findAll(
-    @AccessValidator() validateAccess: accessValidator,
-    @Body() body: findUsersFilters,
-  ): Promise<User[]> {
-    validateAccess('findAllUsers');
-    return this.userService.findAll(body);
+  async findAll(@Body() body: findUsersFilters, @Res() res: any) {
+    this.validateAccess('findAllUsers');
+    const users = this.userService.findAll(body);
+
+    res.status(200).send(users);
   }
 
   @Get('/:id')
-  async findById(
-    @AccessValidator() validateAccess: accessValidator,
-    @Param('id') id: string,
-    @Res() res: any,
-  ) {
-    validateAccess('findUserById');
+  async findById(@Param('id') id: string, @Res() res: any) {
+    this.validateAccess('findUserById');
     const user = await this.userService.findById(id);
 
-    const status = user ? 200 : 404;
-
-    res.status(status).send(user);
+    res.status(200).send(user);
   }
 
   @Post()
-  async create(
-    @AccessValidator() validateAccess: accessValidator,
-    @Body() body: CreateUserBody,
-    @Res() res: any,
-  ) {
-    validateAccess('createUser');
+  async create(@Body() body: CreateUserBody, @Res() res: any) {
+    this.validateAccess('createUser');
 
     const user = await this.userService.create(body);
 
@@ -60,28 +48,21 @@ export class UsersController {
 
   @Put('/:id')
   async update(
-    @AccessValidator() validateAccess: accessValidator,
     @Body() body: UpdateUserBody,
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    validateAccess('updateUser');
+    this.validateAccess('updateUser');
     const user = await this.userService.update(id, body);
 
-    const status = user ? 200 : 404;
-    res.status(status).send({ ...user, password: undefined });
+    res.status(200).send({ ...user, password: undefined });
   }
 
   @Delete('/:id')
-  async delete(
-    @AccessValidator() validateAccess: accessValidator,
-    @Param('id') id: string,
-    @Res() res: any,
-  ) {
-    validateAccess('deleteUser');
-    const user = await this.userService.delete(id);
+  async delete(@Param('id') id: string, @Res() res: any) {
+    this.validateAccess('deleteUser');
+    await this.userService.delete(id);
 
-    const status = user ? 204 : 404;
-    res.status(status).send();
+    res.status(204).send();
   }
 }
