@@ -12,7 +12,7 @@ export enum BagStatus {
 
 @Entity()
 export class Bag extends DefaultEntity {
-  @ManyToOne(() => Store)
+  @ManyToOne(() => Store, { lazy: true })
   store: Store;
 
   @ManyToOne(() => Customer, (customer) => customer.bags)
@@ -26,4 +26,10 @@ export class Bag extends DefaultEntity {
 
   @OneToMany(() => BagItem, (item) => item.bag, { lazy: true })
   items: BagItem[];
+
+  async getTotal(): Promise<number> {
+    return (await this.items).reduce((total, item) => {
+      return total + item.quantity * item.unitPrice;
+    }, 0);
+  }
 }

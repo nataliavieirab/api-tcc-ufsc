@@ -10,7 +10,7 @@ import { SendOrderBody } from './dtos/send-order-body';
 export class OrdersController {
   constructor(private orderService: OrderService) {}
 
-  module = 'stores';
+  module = 'store';
 
   @Get()
   async findAllOrders(
@@ -28,7 +28,7 @@ export class OrdersController {
 
   @Post()
   async sendOrder(@Body() body: SendOrderBody, @Res() res: Response) {
-    const order = await this.orderService.create(body);
+    const order = await this.orderService.sendOrder(body);
 
     res.status(201).send(order);
   }
