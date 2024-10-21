@@ -18,6 +18,7 @@ export class UserService extends EntityDefaultService<User> {
   }
 
   async create(input: {
+    storeId?: string;
     userName: string;
     password: string;
     roles?: string[];
@@ -28,6 +29,7 @@ export class UserService extends EntityDefaultService<User> {
     const createdUser = await this.repository.create({
       userName: input.userName,
       password: input.password,
+      storeId: input.storeId,
     });
 
     for (const role of input.systemRoles || []) {
