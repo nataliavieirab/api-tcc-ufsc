@@ -1,8 +1,8 @@
-import { Company } from 'src/entities/company.entity';
+import { Store } from 'src/entities/store.entity';
 import { Payment } from 'src/entities/payment.entity';
 
 export class CreatePaymentTypeBody {
-  company: Company;
+  store: Store;
 
   name: string;
 

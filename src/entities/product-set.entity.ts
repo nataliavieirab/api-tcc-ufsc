@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
-import { Company } from './company.entity';
+import { Store } from './store.entity';
 import { ProductSetItem } from './product-set-item.entity';
 
 enum ProductSetStatus {
@@ -10,8 +10,8 @@ enum ProductSetStatus {
 
 @Entity()
 export class ProductSet extends DefaultEntity {
-  @ManyToOne(() => Company, (company) => company.paymentTypes)
-  company: Company;
+  @ManyToOne(() => Store, (store) => store.paymentTypes)
+  store: Store;
 
   @Column()
   name: string;

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { DefaultEntity } from './default-entity';
-import { Company } from './company.entity';
+import { Store } from './store.entity';
 import { Payment } from './payment.entity';
 
 enum SystemPaymentType {
@@ -13,8 +13,8 @@ enum SystemPaymentType {
 
 @Entity()
 export class PaymentType extends DefaultEntity {
-  @ManyToOne(() => Company, (company) => company.paymentTypes)
-  company: Company;
+  @ManyToOne(() => Store, (store) => store.paymentTypes)
+  store: Store;
 
   @Column()
   name: string;

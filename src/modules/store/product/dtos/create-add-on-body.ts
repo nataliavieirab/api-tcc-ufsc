@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString, Length } from 'class-validator';
 export class CreateAddOnBody {
   @IsString()
   @IsNotEmpty()
-  readonly companyId: string;
+  readonly storeId: string;
 
   @IsString()
   @Length(2, 30)
