@@ -22,18 +22,20 @@ export class RolesController extends DefaultController {
     super();
   }
 
+  module = 'store';
+
   @Get()
   async findAll(
     @Body() body: FindRolesFilters,
   ): Promise<EntityPagination<Role>> {
-    this.validateAccess('findAllRoles');
+    await this.validateAccess('findAllRoles');
 
     return this.roleService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findRoleById');
+    await this.validateAccess('findRoleById');
     const user = await this.roleService.findById(id);
 
     res.status(200).send(user);
@@ -41,7 +43,7 @@ export class RolesController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateRoleBody, @Res() res: any) {
-    this.validateAccess('createRole');
+    await this.validateAccess('createRole');
 
     const role = await this.roleService.create({
       ...body,
@@ -57,7 +59,7 @@ export class RolesController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateRole');
+    await this.validateAccess('updateRole');
     const role = await this.roleService.update(id, {
       ...body,
       module: Modules.store,
@@ -68,7 +70,7 @@ export class RolesController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteRole');
+    await this.validateAccess('deleteRole');
     await this.roleService.delete(id);
 
     res.status(204).send();

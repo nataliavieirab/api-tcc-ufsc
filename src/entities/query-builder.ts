@@ -1,6 +1,6 @@
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { DefaultEntity } from './default-entity';
-import { RecordNotFoundError } from 'src/errors/unprocessable-entity.error copy';
+import { RecordNotFoundError } from 'src/errors/record-not-found.error';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { UnprocessableEntityError } from 'src/errors/unprocessable-entity.error';
 

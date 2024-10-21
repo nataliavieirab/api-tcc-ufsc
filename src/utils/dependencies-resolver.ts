@@ -1,7 +1,12 @@
 import { INestApplicationContext } from '@nestjs/common';
 import { Singleton } from 'src/utils/singleton';
 
-const SyncMappedDependencies = ['CurrentRequestService'] as const;
+const SyncMappedDependencies = [
+  'CurrentRequestService',
+  'RolePermissionRepository',
+  'RoleRepository',
+  'UserRoleRepository',
+] as const;
 
 type SyncMappedDependencies = (typeof SyncMappedDependencies)[number];
 

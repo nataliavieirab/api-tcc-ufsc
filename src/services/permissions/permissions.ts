@@ -23,55 +23,7 @@ type actions =
   | 'findAllStore'
   | 'findStoreById';
 
-const roles_permissions = {
-  createUser: [
-    'GENERAL_ADM',
-    'GENERAL_ASSISTANT',
-    'ORGANIZATION_ADM',
-    'ORGANIZATION_ASSISTANT',
-  ],
-  updateUser: [
-    'GENERAL_ADM',
-    'GENERAL_ASSISTANT',
-    'ORGANIZATION_ADM',
-    'ORGANIZATION_ASSISTANT',
-  ],
-  deleteUser: [
-    'GENERAL_ADM',
-    'GENERAL_ASSISTANT',
-    'ORGANIZATION_ADM',
-    'ORGANIZATION_ASSISTANT',
-  ],
-  findUserById: [
-    'GENERAL_ADM',
-    'GENERAL_ASSISTANT',
-    'ORGANIZATION_ADM',
-    'ORGANIZATION_ASSISTANT',
-  ],
-  findAllUsers: [
-    'GENERAL_ADM',
-    'GENERAL_ASSISTANT',
-    'ORGANIZATION_ADM',
-    'ORGANIZATION_ASSISTANT',
-  ],
-  createOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  updateOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  deleteOrganization: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  findOrganizationById: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  findAllOrganizations: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-  createStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  updateStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  deleteStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findAllStore: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-  findStoreById: ['ORGANIZATION_ADM', 'ORGANIZATION_ASSISTANT'],
-};
-
-const module_permissions = {
-  organizations: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADM'],
-  admin: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
-};
-
-export { actions, roles, roles_permissions, module_permissions };
+export { actions, roles, systemRolesPermissions };
 
 export enum Permissions {
   createUser = 'createUser',
@@ -97,3 +49,9 @@ export enum Modules {
   store = 'store',
   customer = 'customer',
 }
+
+const systemRolesPermissions: any = {
+  admin: {
+    createUser: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+  },
+};

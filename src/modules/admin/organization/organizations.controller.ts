@@ -21,17 +21,19 @@ export class OrganizationsController extends DefaultController {
     super();
   }
 
+  module = 'admin';
+
   @Get()
   async findAll(
     @Body() body: findOrgsFilters,
   ): Promise<EntityPagination<Organization>> {
-    this.validateAccess('findAllOrganizations');
+    await this.validateAccess('findAllOrganizations');
     return this.organizationService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findOrganizationById');
+    await this.validateAccess('findOrganizationById');
     const organization = await this.organizationService.findById(id);
 
     res.status(200).send(organization);
@@ -39,7 +41,7 @@ export class OrganizationsController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateOrganizationBody, @Res() res: any) {
-    this.validateAccess('createOrganization');
+    await this.validateAccess('createOrganization');
 
     const organization = await this.organizationService.create(body);
 
@@ -52,7 +54,7 @@ export class OrganizationsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateOrganization');
+    await this.validateAccess('updateOrganization');
     const organization = await this.organizationService.update(id, body);
 
     res.status(200).send(organization);
@@ -60,7 +62,7 @@ export class OrganizationsController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteOrganization');
+    await this.validateAccess('deleteOrganization');
     await this.organizationService.delete(id);
 
     res.status(204).send();
