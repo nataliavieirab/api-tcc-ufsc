@@ -16,7 +16,7 @@ import { CreateCategoryBody } from './dtos/create-category-body';
 import { UpdateCategoryBody } from './dtos/update-category-body';
 
 @Controller('store/categories')
-export class CategoryController extends DefaultController {
+export class CategoriesController extends DefaultController {
   constructor(private categoryService: CategoryService) {
     super();
   }

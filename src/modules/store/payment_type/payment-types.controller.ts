@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { DefaultController } from 'src/modules/default.controller';
 import { PaymentTypeService } from 'src/services/domains/payment-type.service';
-import { FindPaymentTypeFilters } from './dtos/find-payment-type.filters';
 import { PaymentType } from 'src/entities/payment-type.entity';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Response } from 'express';

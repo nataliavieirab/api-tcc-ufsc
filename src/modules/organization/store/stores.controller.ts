@@ -17,7 +17,7 @@ import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { DefaultController } from 'src/modules/default.controller';
 
 @Controller('organization/stores')
-export class StoreController extends DefaultController {
+export class StoresController extends DefaultController {
   constructor(private storeService: StoreService) {
     super();
   }
