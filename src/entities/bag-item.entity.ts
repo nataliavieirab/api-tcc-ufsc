@@ -24,8 +24,8 @@ export class BagItem extends DefaultEntity {
   unitPrice: number;
 
   @OneToMany(() => BagItemOption, (bag) => bag.bagItem)
-  bagItemOptions: BagItemOption;
+  bagItemOptions: BagItemOption[];
 
   @OneToMany(() => BagItemAddOn, (bag) => bag.bagItem)
-  bagItemAddOns: BagItemAddOn;
+  bagItemAddOns: BagItemAddOn[];
 }
