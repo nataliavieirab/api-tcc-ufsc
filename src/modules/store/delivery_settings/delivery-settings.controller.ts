@@ -74,13 +74,13 @@ export class DeliverySettingsController extends DefaultController {
   }
 
   @Post()
-  async createNeighborhood(
+  async addNeighborhood(
     @Body() body: CreateNeighborhoodBody,
     @Res() res: Response,
   ) {
     this.validateAccess('createNeighborhood');
 
-    const neighborhood = await this.deliverySettingsService.createNeighborhood(
+    const neighborhood = await this.deliverySettingsService.addNeighborhood(
       body,
     );
 

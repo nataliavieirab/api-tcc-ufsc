@@ -1,9 +1,16 @@
-import { Payment } from 'src/entities/payment.entity';
+import { IsOptional, IsString } from 'class-validator';
+import { SystemPaymentType } from 'src/entities/payment-type.entity';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
 export class UpdatePaymentTypeBody {
+  @IsString()
+  @IsOptional()
   name: string;
 
-  // type: SystemPaymentType;
-
-  payments: Payment[];
+  @IsString()
+  @IsOptional()
+  @HasValidValue(Object.values(SystemPaymentType), {
+    message: 'Invalid payment type.',
+  })
+  type: SystemPaymentType;
 }

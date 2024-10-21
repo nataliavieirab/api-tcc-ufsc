@@ -1,11 +1,19 @@
-import { Bag } from 'src/entities/bag.entity';
-import { CashRegister } from 'src/entities/cash-register.entity';
-import { Payment } from 'src/entities/payment.entity';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 
 export class FindOrdersFilters {
-  bag: Bag;
+  @IsOptional()
+  @IsString()
+  cashRegisterId?: string;
 
-  cashRegister: CashRegister;
+  @IsOptional()
+  @IsString()
+  status?: string;
 
-  payments: Payment[];
+  @IsOptional()
+  @IsDate()
+  before_date?: Date;
+
+  @IsOptional()
+  @IsDate()
+  after_date?: Date;
 }

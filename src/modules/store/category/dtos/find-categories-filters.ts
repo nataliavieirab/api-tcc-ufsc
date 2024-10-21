@@ -1,10 +1,11 @@
-import { Store } from 'src/entities/store.entity';
-import { ProductCategory } from 'src/entities/product-category.entity';
+import { IsOptional, IsString } from 'class-validator';
 
 export class FindCategoriesFilters {
-  store: Store;
+  @IsOptional()
+  @IsString()
+  readonly name?: string;
 
-  name: string;
-
-  // productCategories: ProductCategory[];
+  @IsOptional()
+  @IsString()
+  readonly like_name?: string;
 }

@@ -1,12 +1,15 @@
-import { Store } from 'src/entities/store.entity';
-import { DeliveryStatus } from 'src/entities/delivery-settings.entity';
+import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateDeliverySettingsBody {
-  store: Store;
+  @IsString()
+  @IsNotEmpty()
+  storeId: string;
 
-  start_hour: string;
+  @IsDateString()
+  @IsNotEmpty()
+  startHour: Date;
 
-  end_hour: string;
-
-  type: DeliveryStatus;
+  @IsDateString()
+  @IsNotEmpty()
+  endHour: Date;
 }

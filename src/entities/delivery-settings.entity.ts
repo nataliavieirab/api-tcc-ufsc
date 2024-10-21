@@ -13,14 +13,14 @@ export class DeliverySettings extends DefaultEntity {
   store: Store;
 
   @Column()
-  start_hour: string;
+  startHour: Date;
 
   @Column()
-  end_hour: string;
+  endHour: Date;
 
   @Column({
     type: 'enum',
     enum: DeliveryStatus,
   })
-  type: DeliveryStatus;
+  status: DeliveryStatus;
 }
