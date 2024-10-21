@@ -3,7 +3,7 @@ import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class CreateCashRegisterBody {
   @IsString()
   @IsNotEmpty()
-  readonly companyId: string;
+  readonly storeId: string;
 
   @IsOptional()
   @IsDate()

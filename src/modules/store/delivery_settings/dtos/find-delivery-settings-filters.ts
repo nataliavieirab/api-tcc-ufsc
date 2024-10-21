@@ -1,8 +1,8 @@
-import { Company } from 'src/entities/company.entity';
+import { Store } from 'src/entities/store.entity';
 import { DeliveryStatus } from 'src/entities/delivery-settings.entity';
 
 export class FindDeliverySettingsFilters {
-  company: Company;
+  store: Store;
 
   start_hour: string;
 

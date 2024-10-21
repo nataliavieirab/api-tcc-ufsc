@@ -3,7 +3,7 @@ import { DefaultEntity } from './default-entity';
 import { Customer } from './customer.entity';
 import { Order } from './order.entity';
 import { BagItem } from './bag-item.entity';
-import { Company } from './company.entity';
+import { Store } from './store.entity';
 
 export enum BagStatus {
   OPENED = 'opened',
@@ -12,8 +12,8 @@ export enum BagStatus {
 
 @Entity()
 export class Bag extends DefaultEntity {
-  @ManyToOne(() => Company)
-  company: Company;
+  @ManyToOne(() => Store)
+  store: Store;
 
   @ManyToOne(() => Customer, (customer) => customer.bags)
   customer: Customer;

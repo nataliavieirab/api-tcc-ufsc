@@ -13,17 +13,17 @@ const modulePermittedPermissions: Permissions[] = [
   Permissions.findAllOrganizations,
   Permissions.findOrganizationById,
   Permissions.deleteOrganization,
-  Permissions.createCompany,
-  Permissions.updateCompany,
-  Permissions.deleteCompany,
-  Permissions.findAllCompanies,
-  Permissions.findCompanyById,
+  Permissions.createStore,
+  Permissions.updateStore,
+  Permissions.deleteStore,
+  Permissions.findAllStore,
+  Permissions.findStoreById,
 ];
 
 export class CreateRoleBody {
   @IsString()
   @IsNotEmpty()
-  readonly companyId: string;
+  readonly storeId: string;
 
   @IsString()
   @Length(2, 30)

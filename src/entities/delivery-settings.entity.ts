@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
-import { Company } from './company.entity';
+import { Store } from './store.entity';
 
 export enum DeliveryStatus {
   OPEN = 'open',
@@ -8,9 +8,9 @@ export enum DeliveryStatus {
 }
 @Entity()
 export class DeliverySettings extends DefaultEntity {
-  @OneToOne(() => Company, (company) => company.deliverySettings)
+  @OneToOne(() => Store, (store) => store.deliverySettings)
   @JoinColumn()
-  company: Company;
+  store: Store;
 
   @Column()
   start_hour: string;

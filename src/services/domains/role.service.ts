@@ -4,13 +4,13 @@ import { EntityDefaultService } from './entity-default.service';
 import { Role } from 'src/entities/role.entity';
 import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
 import { Modules } from '../permissions/permissions';
-import { CompanyRepository } from 'src/repositories/company.repository';
+import { StoreRepository } from 'src/repositories/store.repository';
 
 interface CreateRoleInput {
   name: string;
   permissions: string[];
   module: Modules;
-  companyId: string;
+  storeId: string;
 }
 
 interface UpdateRoleInput {
@@ -23,16 +23,16 @@ export class RoleService extends EntityDefaultService<Role> {
   constructor(
     roleRepository: RoleRepository,
     private rolePermissionRepository: RolePermissionRepository,
-    private companyRepository: CompanyRepository,
+    private storeRepository: StoreRepository,
   ) {
     super(roleRepository);
   }
 
   async create(createInput: CreateRoleInput): Promise<Role> {
-    const company = await this.companyRepository.find(createInput.companyId);
+    const store = await this.storeRepository.find(createInput.storeId);
 
     const newRole = await this.repository.create({
-      company,
+      store,
       name: createInput.name,
     });
 

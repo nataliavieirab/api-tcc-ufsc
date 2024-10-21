@@ -9,7 +9,7 @@ import { ProductOptionValueRepository } from 'src/repositories/product-option-va
 import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
 import { BagItemAddOnRepository } from 'src/repositories/bag-item-add-on.repository';
 import { BagItemOptionRepository } from 'src/repositories/bag-item-option.repository';
-import { CompanyRepository } from 'src/repositories/company.repository';
+import { StoreRepository } from 'src/repositories/store.repository';
 import { ProductRepository } from 'src/repositories/product.repository';
 import { ProductSetItemRepository } from 'src/repositories/product-set-item.repository';
 import { BagItemAddOn } from 'src/entities/bag-item-add-on.entity';
@@ -39,7 +39,7 @@ export class BagService extends EntityDefaultService<Bag> {
   constructor(
     bagRepository: BagRepository,
     private currentRequestService: CurrentRequestService,
-    private companyRepository: CompanyRepository,
+    private storeRepository: StoreRepository,
     private bagItemRepository: BagItemRepository,
     private bagItemAddOnRepository: BagItemAddOnRepository,
     private bagItemOptionRepository: BagItemOptionRepository,
@@ -52,13 +52,13 @@ export class BagService extends EntityDefaultService<Bag> {
     super(bagRepository);
   }
 
-  async getCurrentBag(companyId: string) {
+  async getCurrentBag(storeId: string) {
     const customer = this.currentRequestService.getCurrentCustomer();
-    const company = await this.companyRepository.find(companyId);
+    const store = await this.storeRepository.find(storeId);
 
     let bag = await this.repository.findOne({
       conditions: {
-        company,
+        store,
         customer,
         status: BagStatus.OPENED,
       },
@@ -67,16 +67,16 @@ export class BagService extends EntityDefaultService<Bag> {
     if (!bag)
       bag = await this.repository.create({
         customer: customer,
-        company,
+        store,
         status: BagStatus.OPENED,
       });
 
     return bag;
   }
 
-  async addItem(companyId: string, itemEntry: BagItemEntry): Promise<BagItem> {
-    const bag = await this.getCurrentBag(companyId);
-    const company = await this.companyRepository.find(companyId);
+  async addItem(storeId: string, itemEntry: BagItemEntry): Promise<BagItem> {
+    const bag = await this.getCurrentBag(storeId);
+    const store = await this.storeRepository.find(storeId);
 
     const productSetItem = await this.productSetItemRepository.find(
       itemEntry.productSetItemId,
@@ -84,7 +84,7 @@ export class BagService extends EntityDefaultService<Bag> {
 
     const product = await this.productRepository.findOne({
       conditions: {
-        company,
+        store,
         id: (await productSetItem.product).id,
       },
     });
@@ -144,8 +144,8 @@ export class BagService extends EntityDefaultService<Bag> {
     return bagItem;
   }
 
-  async cleanBag(companyId: string) {
-    const bag = await this.getCurrentBag(companyId);
+  async cleanBag(storeId: string) {
+    const bag = await this.getCurrentBag(storeId);
     const items = await bag.items;
 
     for (const item of items) {
@@ -153,8 +153,8 @@ export class BagService extends EntityDefaultService<Bag> {
     }
   }
 
-  async removeItem(companyId: string, bagItemId: string) {
-    const bag = await this.getCurrentBag(companyId);
+  async removeItem(storeId: string, bagItemId: string) {
+    const bag = await this.getCurrentBag(storeId);
 
     const bagItem = await this.bagItemRepository.findOne({
       conditions: {
