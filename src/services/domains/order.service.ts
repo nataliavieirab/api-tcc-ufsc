@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrderRepository } from 'src/repositories/order.repository';
 import { EntityDefaultService } from './entity-default.service';
-import { Order } from 'src/entities/order.entity';
+import { Order, OrderStatus } from 'src/entities/order.entity';
 import { BagRepository } from 'src/repositories/bag.repository';
 import { AddressRepository } from 'src/repositories/address.repository';
 import { PaymentTypeRepository } from 'src/repositories/payment-type.repository';
@@ -10,12 +10,19 @@ import { StoreService } from './store.service';
 import { CurrentRequestService } from '../application/current-request.service';
 import { ShippingStatus } from 'src/entities/shipping.entity';
 import { BagStatus } from 'src/entities/bag.entity';
+import { CashRegisterRepository } from 'src/repositories/cash-register.repository';
+import { PaymentRepository } from 'src/repositories/payment.repository';
 
 interface OrderRequestInput {
   bagId: string;
   addressId: string;
   preferredPaymentTypeId?: string;
   observation?: string;
+}
+
+interface OrderPaymentInput {
+  paymentTypeId: string;
+  value: number;
 }
 
 @Injectable()
@@ -26,8 +33,10 @@ export class OrderService extends EntityDefaultService<Order> {
     private addressRepository: AddressRepository,
     private paymentTypeRepository: PaymentTypeRepository,
     private shippingRepository: ShippingRepository,
+    private cashRegisterRepository: CashRegisterRepository,
     private storeService: StoreService,
     private currentRequestService: CurrentRequestService,
+    private paymentRepository: PaymentRepository,
   ) {
     super(orderRepository);
   }
@@ -48,6 +57,7 @@ export class OrderService extends EntityDefaultService<Order> {
 
     const order = await this.repository.create({
       bag,
+      date: new Date(),
       preferredPaymentType: paymentType,
       observation: body.observation,
       bagPrice,
@@ -71,6 +81,71 @@ export class OrderService extends EntityDefaultService<Order> {
     }
 
     await bag.update({ status: BagStatus.ORDERED });
+
+    return order;
+  }
+
+  async acceptOrder(orderId: string, cashRegisterId: string): Promise<Order> {
+    const order = await this.repository.find(orderId);
+    const cashRegister = await this.cashRegisterRepository.find(cashRegisterId);
+
+    await order.update({ cashRegister, status: OrderStatus.ACCEPTED });
+
+    return order;
+  }
+
+  async refuseOrder(orderId: string, cashRegisterId: string): Promise<Order> {
+    const order = await this.repository.find(orderId);
+    const cashRegister = await this.cashRegisterRepository.find(cashRegisterId);
+
+    await order.update({ cashRegister, status: OrderStatus.REFUSED });
+
+    return order;
+  }
+
+  async setOrderAsShipping(orderId: string): Promise<Order> {
+    const order = await this.repository.find(orderId);
+
+    await order.update({ status: OrderStatus.SHIPPING });
+
+    const shipping = await this.shippingRepository.findOne({
+      conditions: {
+        order,
+      },
+    });
+
+    await shipping.update({ status: ShippingStatus.IN_PROGRESS });
+
+    return order;
+  }
+
+  async finishOrder(
+    orderId: string,
+    payments: OrderPaymentInput[],
+  ): Promise<Order> {
+    const order = await this.repository.find(orderId);
+
+    const createdPayments = [];
+    for (const payment of payments) {
+      createdPayments.push(
+        await this.paymentRepository.create({
+          order,
+          ...payment,
+        }),
+      );
+    }
+
+    await order.update({ status: OrderStatus.FINISHED });
+    order.payments = createdPayments;
+
+    const shipping = await this.shippingRepository.findOne({
+      conditions: {
+        order,
+      },
+    });
+
+    await shipping.update({ status: ShippingStatus.FINISHED });
+    order.shippings = [shipping];
 
     return order;
   }

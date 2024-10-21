@@ -16,6 +16,7 @@ import { Shipping } from './shipping.entity';
 export enum OrderStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
+  SHIPPING = 'SHIPPING',
   REFUSED = 'REFUSED',
   FINISHED = 'FINISHED',
 }
