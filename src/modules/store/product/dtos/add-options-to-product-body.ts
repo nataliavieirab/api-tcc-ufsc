@@ -10,10 +10,6 @@ import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
 export class AddOptionsToProductBody {
   @IsString()
-  @IsNotEmpty()
-  readonly productId: string;
-
-  @IsString()
   @Length(2, 30)
   @IsNotEmpty({ message: 'The product option name should not be empty.' })
   readonly name: string;
@@ -32,5 +28,6 @@ export class AddOptionsToProductBody {
   readonly values: {
     name: string;
     value: string;
+    price: number;
   }[];
 }

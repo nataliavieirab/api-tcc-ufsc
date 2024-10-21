@@ -1,4 +1,4 @@
-import { Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Product } from './product.entity';
 import { AddOn } from './add-on.entity';
@@ -10,4 +10,7 @@ export class ProductAddOn extends DefaultEntity {
 
   @ManyToOne(() => AddOn, (addOn) => addOn.productAddOns, { lazy: true })
   addOn: AddOn;
+
+  @Column()
+  price: number;
 }
