@@ -2,7 +2,6 @@ import * as bcrypt from 'bcrypt';
 
 import { Injectable } from '@nestjs/common';
 import { CustomerRepository } from 'src/repositories/customer.repository';
-import { EntityDefaultService } from './entity-default.service';
 import { Customer } from 'src/entities/customer.entity';
 import { BagRepository } from 'src/repositories/bag.repository';
 import { AddressRepository } from 'src/repositories/address.repository';
@@ -37,10 +36,6 @@ export class CustomerService {
     input.password = await bcrypt.hash(input.password, 10);
 
     const createdCustomer = await this.repository.create(input);
-
-    await this.bagRepository.create({
-      customer: createdCustomer,
-    });
 
     return createdCustomer;
   }
