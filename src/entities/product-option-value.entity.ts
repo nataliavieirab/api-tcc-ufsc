@@ -12,4 +12,7 @@ export class ProductOptionValue extends DefaultEntity {
 
   @Column()
   value: string;
+
+  @Column()
+  price: number;
 }

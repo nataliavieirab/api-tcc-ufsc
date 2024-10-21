@@ -18,7 +18,7 @@ import { CreateProductSetBody } from './dtos/create-product-set-body';
 import { UpdateUserBody } from '../user/dtos/update-user-body';
 
 @Controller('store/productsets')
-export class ProductSetController extends DefaultController {
+export class ProductSetsController extends DefaultController {
   constructor(private productSetService: ProductSetService) {
     super();
   }

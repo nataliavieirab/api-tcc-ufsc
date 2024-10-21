@@ -33,7 +33,11 @@ export class ProductService extends EntityDefaultService<Product> {
     return newProduct;
   }
 
-  async addAddOn(productId: string, addOnId: string): Promise<Product> {
+  async addAddOn(
+    productId: string,
+    addOnId: string,
+    price: number,
+  ): Promise<Product> {
     const product = await this.repository.find(productId);
 
     const addOn = await this.addOnRepository.find(addOnId);
@@ -41,6 +45,7 @@ export class ProductService extends EntityDefaultService<Product> {
     await this.productAddOnRepository.create({
       product,
       addOn,
+      price,
     });
 
     return product;
