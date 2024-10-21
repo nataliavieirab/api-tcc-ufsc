@@ -9,6 +9,7 @@ import { ShippingRepository } from 'src/repositories/shipping.repository';
 import { StoreService } from './store.service';
 import { CurrentRequestService } from '../application/current-request.service';
 import { ShippingStatus } from 'src/entities/shipping.entity';
+import { BagStatus } from 'src/entities/bag.entity';
 
 interface OrderRequestInput {
   bagId: string;
@@ -68,6 +69,8 @@ export class OrderService extends EntityDefaultService<Order> {
     for (const bagItem of await bag.items) {
       await bagItem.update({ shipping: shipping });
     }
+
+    await bag.update({ status: BagStatus.ORDERED });
 
     return order;
   }
