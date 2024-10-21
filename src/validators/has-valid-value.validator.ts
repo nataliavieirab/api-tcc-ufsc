@@ -21,10 +21,17 @@ export function HasValidValue(
       validator: {
         validate(inputedValue: any, args: ValidationArguments) {
           const permittedValues = args.constraints[0];
+
+          if (inputedValue instanceof Array) {
+            return inputedValue.every((value) =>
+              permittedValues.includes(value),
+            );
+          }
+
           return permittedValues.includes(inputedValue);
         },
         defaultMessage(args: ValidationArguments) {
-          return `Invalid role. Valid roles are: ${args.constraints[0].join(
+          return `Invalid value. Valid values are: ${args.constraints[0].join(
             ', ',
           )}.`;
         },
