@@ -57,6 +57,8 @@ export abstract class DefaultRepository<EntityType extends DefaultEntity> {
 
     let query = this.getQueryFor(queryOptions);
 
+    console.log({ query });
+
     if (!queryOptions.skipAccessFilter) query = this.accessibleBy(query);
 
     const data = await query.getOne();
