@@ -1,4 +1,8 @@
 import { DefaultRepository } from './default.repository';
 import { ProductOptionValue } from 'src/entities/product-option-value.entity';
 
-export class ProductOptionValueRepository extends DefaultRepository<ProductOptionValue> {}
+export class ProductOptionValueRepository extends DefaultRepository<ProductOptionValue> {
+  constructor() {
+    super(ProductOptionValue);
+  }
+}

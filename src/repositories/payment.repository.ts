@@ -1,4 +1,8 @@
 import { DefaultRepository } from './default.repository';
 import { Payment } from 'src/entities/payment.entity';
 
-export class PaymentRepository extends DefaultRepository<Payment> {}
+export class PaymentRepository extends DefaultRepository<Payment> {
+  constructor() {
+    super(Payment);
+  }
+}
