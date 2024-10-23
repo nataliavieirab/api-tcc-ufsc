@@ -14,6 +14,7 @@ import { FindCategoriesFilters } from './dtos/find-categories-filters';
 import { Response } from 'express';
 import { CreateCategoryBody } from './dtos/create-category-body';
 import { UpdateCategoryBody } from './dtos/update-category-body';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('store/:storeId/categories')
 export class CategoriesController extends DefaultController {
@@ -28,13 +29,13 @@ export class CategoriesController extends DefaultController {
     @Param('storeId') storeId: string,
     @Body() body: FindCategoriesFilters,
   ) {
-    await this.validateAccess('findAllCategories');
+    await this.validateAccess(Actions.findCategories);
     return this.categoryService.findAll({ storeId, ...body });
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('findCategoryById');
+    await this.validateAccess(Actions.findCategories);
     const category = await this.categoryService.findById(id);
 
     res.status(200).send(category);
@@ -46,7 +47,7 @@ export class CategoriesController extends DefaultController {
     @Body() body: CreateCategoryBody,
     @Res() res: Response,
   ) {
-    await this.validateAccess('createCategory');
+    await this.validateAccess(Actions.createCategory);
     const category = await this.categoryService.create({ storeId, ...body });
 
     res.status(201).send(category);
@@ -58,7 +59,7 @@ export class CategoriesController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('updateCategory');
+    await this.validateAccess(Actions.updateCategory);
     const category = await this.categoryService.update(id, body);
 
     res.status(200).send(category);
@@ -66,7 +67,7 @@ export class CategoriesController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('deleteCategory');
+    await this.validateAccess(Actions.deleteCategory);
     await this.categoryService.delete(id);
 
     res.status(204).send();

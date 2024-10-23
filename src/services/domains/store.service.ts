@@ -31,6 +31,7 @@ export class StoreService extends EntityDefaultService<Store> {
     });
 
     await this.userService.create({
+      storeId: store.id,
       userName: createInput.userName,
       password: createInput.userPassword,
       systemRoles: [SystemRoles.STORE_ADMIN],

@@ -18,6 +18,7 @@ import { UpdateProductBody } from './dtos/update-product-body';
 import { AddOptionsToProductBody } from './dtos/add-options-to-product-body';
 import { ProductOptionService } from 'src/services/domains/product-option.service';
 import { AddAddOnToProductBody } from './dtos/add-add-on-to-product-body';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('admin/users')
 export class ProductsController extends DefaultController {
@@ -34,7 +35,7 @@ export class ProductsController extends DefaultController {
   async findAll(
     @Body() body: FindProductsFilters,
   ): Promise<EntityPagination<Product>> {
-    await this.validateAccess('findAllProducts');
+    await this.validateAccess(Actions.findProducts);
 
     return this.productService.findAll(
       body,
@@ -54,7 +55,7 @@ export class ProductsController extends DefaultController {
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('findProductById');
+    await this.validateAccess(Actions.findProducts);
     const user = await this.productService.findById(id);
 
     res.status(200).send(user);
@@ -62,7 +63,7 @@ export class ProductsController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateProductBody, @Res() res: any) {
-    await this.validateAccess('createProduct');
+    await this.validateAccess(Actions.createProduct);
 
     const product = await this.productService.create(body);
 
@@ -75,7 +76,7 @@ export class ProductsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    await this.validateAccess('updateProduct');
+    await this.validateAccess(Actions.updateProduct);
     const product = await this.productService.update(id, body);
 
     res.status(200).send(product);
@@ -83,7 +84,7 @@ export class ProductsController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('deleteProduct');
+    await this.validateAccess(Actions.deleteProduct);
     await this.productService.delete(id);
 
     res.status(204).send();
@@ -95,7 +96,7 @@ export class ProductsController extends DefaultController {
     @Body() body: AddOptionsToProductBody,
     @Res() res: any,
   ) {
-    await this.validateAccess('addOptionToProduct');
+    await this.validateAccess(Actions.addOptionToProduct);
 
     const productOption = await this.productOptionService.create({
       productId,
@@ -111,7 +112,7 @@ export class ProductsController extends DefaultController {
 
   @Delete('/:id/options/:optionId')
   async removeOption(@Param('optionId') optionId: string, @Res() res: any) {
-    await this.validateAccess('removeOptionFromProduct');
+    await this.validateAccess(Actions.removeOptionFromProduct);
 
     await this.productOptionService.delete(optionId);
 
@@ -124,7 +125,7 @@ export class ProductsController extends DefaultController {
     @Body() body: AddAddOnToProductBody,
     @Res() res: any,
   ) {
-    await this.validateAccess('addAddOnToProduct');
+    await this.validateAccess(Actions.addAddOnToProduct);
 
     const { price, addOnId } = body;
 
@@ -143,7 +144,7 @@ export class ProductsController extends DefaultController {
     @Param('addOnId') addOnId: string,
     @Res() res: any,
   ) {
-    await this.validateAccess('removeAddOnFromProduct');
+    await this.validateAccess(Actions.removeAddOnFromProduct);
 
     await this.productService.removeAddOn(productId, addOnId);
 
