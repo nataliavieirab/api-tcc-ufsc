@@ -10,6 +10,7 @@ import { OrganizationRepository } from 'src/repositories/organization.repository
 import { postgresDataSource } from 'src/infra/data-source';
 import { ApplicationModule } from 'src/services/application/application.module';
 import { DataSource } from 'typeorm';
+import { StoreRepository } from 'src/repositories/store.repository';
 
 @Module({
   controllers: [UsersController, OrganizationsController],
@@ -21,6 +22,7 @@ import { DataSource } from 'typeorm';
     RoleRepository,
     OrganizationService,
     OrganizationRepository,
+    StoreRepository,
     {
       provide: DataSource,
       useValue: postgresDataSource,

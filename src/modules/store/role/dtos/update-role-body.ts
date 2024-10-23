@@ -1,28 +1,15 @@
-import { IsString, Length } from 'class-validator';
-import { Actions } from 'src/services/permissions/permissions';
+import { IsOptional, IsString, Length } from 'class-validator';
+import { storeAdminPermissions } from 'src/services/permissions/permissions';
 import { HasValidValue } from 'src/validators/has-valid-value.validator';
-
-const modulePermittedPermissions: Actions[] = [
-  Actions.createUser,
-  Actions.updateUser,
-  Actions.deleteUser,
-  Actions.findUsers,
-  Actions.createOrganization,
-  Actions.updateOrganization,
-  Actions.findOrganizations,
-  Actions.deleteOrganization,
-  Actions.createStore,
-  Actions.updateStore,
-  Actions.deleteStore,
-  Actions.findStores,
-];
 
 export class UpdateRoleBody {
   @IsString()
+  @IsOptional()
   @Length(2, 30)
   readonly name: string;
 
-  @HasValidValue(modulePermittedPermissions, {
+  @IsOptional()
+  @HasValidValue(storeAdminPermissions, {
     message: 'Invalid permissions.',
   })
   readonly permissions: string[];

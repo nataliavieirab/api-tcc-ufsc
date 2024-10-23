@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Res } from '@nestjs/common';
 import { DefaultController } from 'src/modules/default.controller';
 import { OrderService } from 'src/services/domains/order.service';
 import { FindOrdersFilters } from './dtos/find-orders-filters';
@@ -16,6 +7,7 @@ import { Order } from 'src/entities/order.entity';
 import { AcceptOrderBody } from './dtos/accept-order-body';
 import { RefuseOrderBody } from './dtos/refuse-order-body';
 import { FinishOrderBody } from './dtos/finish-order-body';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('store/orders')
 export class OrdersController extends DefaultController {
@@ -29,13 +21,13 @@ export class OrdersController extends DefaultController {
   async findAll(
     @Body() body: FindOrdersFilters,
   ): Promise<EntityPagination<Order>> {
-    await this.validateAccess('findAllOrders');
+    await this.validateAccess(Actions.findOrders);
     return this.orderService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('findAllOrders');
+    await this.validateAccess(Actions.findOrders);
     const order = await this.orderService.findById(id);
 
     res.status(200).send(order);
@@ -47,7 +39,7 @@ export class OrdersController extends DefaultController {
     @Res() res: any,
     @Body() body: AcceptOrderBody,
   ) {
-    await this.validateAccess('acceptOrder');
+    await this.validateAccess(Actions.acceptOrder);
     const order = await this.orderService.acceptOrder(id, body.cashRegisterId);
 
     res.status(200).send(order);
@@ -59,7 +51,7 @@ export class OrdersController extends DefaultController {
     @Res() res: any,
     @Body() body: RefuseOrderBody,
   ) {
-    await this.validateAccess('refuseOrder');
+    await this.validateAccess(Actions.refuseOrder);
     const order = await this.orderService.refuseOrder(id, body.cashRegisterId);
 
     res.status(200).send(order);
@@ -67,7 +59,7 @@ export class OrdersController extends DefaultController {
 
   @Patch('/:id/shipping')
   async setOrderAsShipping(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('setOrderAsShipping');
+    await this.validateAccess(Actions.setOrderAsShipping);
     const order = await this.orderService.setOrderAsShipping(id);
 
     res.status(200).send(order);
@@ -79,7 +71,7 @@ export class OrdersController extends DefaultController {
     @Res() res: any,
     @Body() body: FinishOrderBody,
   ) {
-    await this.validateAccess('finishOrder');
+    await this.validateAccess(Actions.finishOrder);
     const order = await this.orderService.finishOrder(id, body.payments);
 
     res.status(200).send(order);

@@ -15,6 +15,7 @@ import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Response } from 'express';
 import { CreatePaymentTypeBody } from './dtos/create-payment-type-body';
 import { UpdatePaymentTypeBody } from './dtos/update-payment-type-body';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('store/:storeId/payment-types')
 export class PaymentTypeController extends DefaultController {
@@ -28,13 +29,13 @@ export class PaymentTypeController extends DefaultController {
   async findAll(
     @Param('storeId') storeId: string,
   ): Promise<EntityPagination<PaymentType>> {
-    await this.validateAccess('findAllPaymentTypes');
+    await this.validateAccess(Actions.findPaymentTypes);
     return this.paymentTypeService.findAll({ storeId });
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('findPaymentTypeById');
+    await this.validateAccess(Actions.findPaymentTypes);
     const paymentType = await this.paymentTypeService.findById(id);
 
     res.status(200).send(paymentType);
@@ -46,7 +47,7 @@ export class PaymentTypeController extends DefaultController {
     @Body() body: CreatePaymentTypeBody,
     @Res() res: Response,
   ) {
-    await this.validateAccess('createPaymentType');
+    await this.validateAccess(Actions.createPaymentType);
     const paymentType = await this.paymentTypeService.create({
       storeId,
       ...body,
@@ -61,7 +62,7 @@ export class PaymentTypeController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('updatePaymentType');
+    await this.validateAccess(Actions.updatePaymentType);
     const paymentType = await this.paymentTypeService.update(id, body);
 
     res.status(200).send({ ...paymentType });
@@ -69,7 +70,7 @@ export class PaymentTypeController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param() id: string, @Res() res: Response) {
-    await this.validateAccess('deletePaymentType');
+    await this.validateAccess(Actions.deletePaymentType);
     await this.paymentTypeService.delete(id);
 
     res.status(204).send({ message: 'Payment type deleted successfully!!' });
