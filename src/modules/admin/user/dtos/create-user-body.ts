@@ -1,8 +1,8 @@
 import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
-import { SystemRole } from 'src/entities/user-role.entity';
+import { SystemRoles } from 'src/services/permissions/permissions';
 import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
-const modulePermittedRoles: SystemRole[] = [SystemRole.SYSTEM_ASSISTANT];
+const modulePermittedRoles: SystemRoles[] = [SystemRoles.SYSTEM_ASSISTANT];
 export class CreateUserBody {
   @IsString()
   @Length(2, 30)
@@ -21,5 +21,5 @@ export class CreateUserBody {
   @HasValidValue(modulePermittedRoles, {
     message: 'Invalid roles.',
   })
-  readonly systemRoles: SystemRole[];
+  readonly systemRoles: SystemRoles[];
 }

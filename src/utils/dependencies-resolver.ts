@@ -1,22 +1,13 @@
 import { INestApplicationContext } from '@nestjs/common';
 import { Singleton } from 'src/utils/singleton';
 
-const SyncMappedDependencies = [
-  'CurrentRequestService',
-  'RolePermissionRepository',
-  'RoleRepository',
-  'UserRoleRepository',
-] as const;
-
-type SyncMappedDependencies = (typeof SyncMappedDependencies)[number];
-
 class DependenciesResolverSingleton extends Singleton {
   private appContext?: INestApplicationContext;
   setContext(appContext: INestApplicationContext) {
     this.appContext = appContext;
   }
 
-  getResolvedDependency(className: SyncMappedDependencies) {
+  getResolvedDependency<T>(className: any): T {
     return this.appContext?.get(className, { strict: false });
   }
 }

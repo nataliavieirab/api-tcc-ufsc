@@ -23,15 +23,19 @@ export class UsersController extends DefaultController {
 
   @Get()
   async findAll(@Body() body: findUsersFilters, @Res() res: any) {
-    this.validateAccess('findAllUsers');
-    const users = this.userService.findAll(body);
+    await this.validateAccess('findAllUsers');
+    const users = await this.userService.findAll(body);
+    users.content = users.content.map((user) => {
+      user.password = undefined;
+      return user;
+    });
 
     res.status(200).send(users);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('findUserById');
+    await this.validateAccess('findUserById');
     const user = await this.userService.findById(id);
 
     res.status(200).send(user);
@@ -39,7 +43,7 @@ export class UsersController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateUserBody, @Res() res: any) {
-    this.validateAccess('createUser');
+    await this.validateAccess('createUser');
 
     const user = await this.userService.create(body);
 
@@ -52,7 +56,7 @@ export class UsersController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    this.validateAccess('updateUser');
+    await this.validateAccess('updateUser');
     const user = await this.userService.update(id, body);
 
     res.status(200).send({ ...user, password: undefined });
@@ -60,7 +64,7 @@ export class UsersController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    this.validateAccess('deleteUser');
+    await this.validateAccess('deleteUser');
     await this.userService.delete(id);
 
     res.status(204).send();

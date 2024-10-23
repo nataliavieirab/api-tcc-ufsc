@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -7,11 +10,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserRepository } from 'src/repositories/user.repository';
 import { CustomerRepository } from 'src/repositories/customer.repository';
 import { UserService } from 'src/services/domains/user.service';
-import { TenantService } from 'src/services/application/tenant.service';
-import { CurrentRequestService } from 'src/services/application/current-request.service';
 import { UserRoleRepository } from 'src/repositories/user-role.repository';
 import { RoleRepository } from 'src/repositories/role.repository';
 import { postgresDataSource } from 'src/infra/data-source';
+import { PassportModule } from '@nestjs/passport';
+import { ApplicationModule } from 'src/services/application/application.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -19,6 +23,8 @@ import { postgresDataSource } from 'src/infra/data-source';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '15d' },
     }),
+    PassportModule,
+    ApplicationModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -29,12 +35,10 @@ import { postgresDataSource } from 'src/infra/data-source';
     CustomerRepository,
     JwtService,
     UserService,
-    TenantService,
-    CurrentRequestService,
     UserRoleRepository,
     RoleRepository,
     {
-      provide: 'DataSource',
+      provide: DataSource,
       useValue: postgresDataSource,
     },
   ],

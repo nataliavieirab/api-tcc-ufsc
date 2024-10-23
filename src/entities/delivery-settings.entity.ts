@@ -12,10 +12,10 @@ export class DeliverySettings extends DefaultEntity {
   @JoinColumn()
   store: Store;
 
-  @Column()
+  @Column({ nullable: true })
   startHour: Date;
 
-  @Column()
+  @Column({ nullable: true })
   endHour: Date;
 
   @Column({

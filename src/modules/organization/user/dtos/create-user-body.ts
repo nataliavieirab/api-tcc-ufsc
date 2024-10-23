@@ -1,4 +1,17 @@
-import { IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
+import { SystemRoles } from 'src/services/permissions/permissions';
+import { HasValidValue } from 'src/validators/has-valid-value.validator';
+
+const modulePermittedSystemRoles: SystemRoles[] = [
+  SystemRoles.ORGANIZATION_ASSISTANT,
+];
 
 export class CreateUserBody {
   @IsString()
@@ -14,6 +27,13 @@ export class CreateUserBody {
   })
   readonly password: string;
 
-  @IsNotEmpty({ message: 'The user role should not be empty.' })
+  @IsArray()
+  @IsOptional()
   readonly roles: string[];
+
+  @IsOptional()
+  @HasValidValue(modulePermittedSystemRoles, {
+    message: 'Invalid roles.',
+  })
+  readonly systemRoles: SystemRoles[];
 }

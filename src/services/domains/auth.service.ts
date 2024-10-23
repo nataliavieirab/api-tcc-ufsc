@@ -1,5 +1,8 @@
+import { config } from 'dotenv';
+config();
+
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserPayload } from 'src/modules/auth/models/UserPayload';
 import { UserToken } from 'src/modules/auth/models/UserToken';
@@ -25,8 +28,12 @@ export class AuthService {
       expt: Date.now() + 1000 * 60 * 60 * 24,
     };
 
+    const options: JwtSignOptions = {
+      secret: process.env.JWT_SECRET,
+    };
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, options),
     };
   }
 
