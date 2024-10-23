@@ -9,7 +9,6 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { DeliverySettings } from 'src/entities/delivery-settings.entity';
 import { DefaultController } from 'src/modules/default.controller';
 import { DeliverySettingsService } from 'src/services/domains/delivery-settings.service';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
@@ -18,6 +17,7 @@ import { UpdateDeliverySettingsBody } from './dtos/update-delivery-settings-body
 import { findAllNeighborhoodsFilters } from './dtos/find-neighborhoods-filters';
 import { DeliveryNeighborhood } from 'src/entities/delivery-neighborhood.entity';
 import { AddNeighborhoodBody } from './dtos/add-neighborhood-body';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('store/:storeId/delivery-settings')
 export class DeliverySettingsController extends DefaultController {
@@ -28,16 +28,8 @@ export class DeliverySettingsController extends DefaultController {
   module = 'store';
 
   @Get()
-  async findAll(
-    @Param('storeId') storeId: string,
-  ): Promise<EntityPagination<DeliverySettings>> {
-    await this.validateAccess('findAllDeliverySettings');
-    return this.deliverySettingsService.findAll({ storeId });
-  }
-
-  @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('findDeliverySettingsById');
+    await this.validateAccess(Actions.findDeliverySettings);
     const deliverySettings = await this.deliverySettingsService.findById(id);
 
     res.status(200).send(deliverySettings);
@@ -49,7 +41,7 @@ export class DeliverySettingsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('updateDeliverySettings');
+    await this.validateAccess(Actions.updateDeliverySettings);
     const deliverySettings = await this.deliverySettingsService.update(
       id,
       body,
@@ -60,7 +52,7 @@ export class DeliverySettingsController extends DefaultController {
 
   @Patch('/:id')
   async openDelivery(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('openDelivery');
+    await this.validateAccess(Actions.openDelivery);
     await this.deliverySettingsService.openDelivery(id);
 
     res.status(200).send();
@@ -68,7 +60,7 @@ export class DeliverySettingsController extends DefaultController {
 
   @Patch('/:id')
   async closeDelivery(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('closeDelivery');
+    await this.validateAccess(Actions.closeDelivery);
     await this.deliverySettingsService.closeDelivery(id);
 
     res.status(200).send();
@@ -80,7 +72,7 @@ export class DeliverySettingsController extends DefaultController {
     @Body() body: AddNeighborhoodBody,
     @Res() res: Response,
   ) {
-    await this.validateAccess('createNeighborhood');
+    await this.validateAccess(Actions.addNeighborhood);
 
     const neighborhood = await this.deliverySettingsService.addNeighborhood(
       deliverySettingsId,
@@ -95,7 +87,7 @@ export class DeliverySettingsController extends DefaultController {
     @Param('id') deliverySettingsId: string,
     @Body() body: findAllNeighborhoodsFilters,
   ): Promise<EntityPagination<DeliveryNeighborhood>> {
-    await this.validateAccess('findAllNeighborhoods');
+    await this.validateAccess(Actions.findNeighborhoods);
     return this.deliverySettingsService.findAllNeighborhoods(
       deliverySettingsId,
       body,
@@ -107,7 +99,7 @@ export class DeliverySettingsController extends DefaultController {
     @Param('neighborhoodId') neighborhoodId: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('deleteNeighborhood');
+    await this.validateAccess(Actions.deleteNeighborhood);
     await this.deliverySettingsService.deleteNeighborhood(neighborhoodId);
 
     res.status(204).send();

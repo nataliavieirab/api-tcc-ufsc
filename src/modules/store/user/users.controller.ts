@@ -16,6 +16,7 @@ import { User } from 'src/entities/user.entity';
 import { UpdateUserBody } from './dtos/update-user-body';
 import { CreateUserBody } from './dtos/create-user-body';
 import { Response } from 'express';
+import { Actions } from 'src/services/permissions/permissions';
 
 @Controller('store/:storeId/users')
 export class UsersController extends DefaultController {
@@ -29,13 +30,13 @@ export class UsersController extends DefaultController {
   async findAll(
     @Body() body: FindUsersFilters,
   ): Promise<EntityPagination<User>> {
-    await this.validateAccess('findAllUsers');
+    await this.validateAccess(Actions.findUsers);
     return this.userService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('findUserById');
+    await this.validateAccess(Actions.findUsers);
     const user = await this.userService.findById(id);
 
     res.status(200).send(user);
@@ -47,7 +48,7 @@ export class UsersController extends DefaultController {
     @Body() body: CreateUserBody,
     @Res() res: Response,
   ) {
-    await this.validateAccess('createUser');
+    await this.validateAccess(Actions.createUser);
     const user = await this.userService.create({ storeId, ...body });
 
     res.status(201).send({ ...user, password: undefined });
@@ -59,7 +60,7 @@ export class UsersController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('updateUser');
+    await this.validateAccess(Actions.updateUser);
     const user = await this.userService.update(id, body);
 
     res.status(200).send({ ...user, password: undefined });
@@ -67,7 +68,7 @@ export class UsersController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('deleteUser');
+    await this.validateAccess(Actions.deleteUser);
     await this.userService.delete(id);
 
     res.status(204).send();

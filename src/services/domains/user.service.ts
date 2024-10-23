@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { UserRoleRepository } from 'src/repositories/user-role.repository';
 import { SystemRoles } from 'src/services/permissions/permissions';
 import { RoleRepository } from 'src/repositories/role.repository';
+import { StoreRepository } from 'src/repositories/store.repository';
 
 @Injectable()
 export class UserService extends EntityDefaultService<User> {
@@ -13,6 +14,7 @@ export class UserService extends EntityDefaultService<User> {
     userRepository: UserRepository,
     private readonly userRoleRepository: UserRoleRepository,
     private readonly roleRepository: RoleRepository,
+    private readonly storeRepository: StoreRepository,
   ) {
     super(userRepository);
   }
@@ -26,10 +28,14 @@ export class UserService extends EntityDefaultService<User> {
   }): Promise<User> {
     input.password = await bcrypt.hash(input.password, 10);
 
+    const store = !input.storeId
+      ? null
+      : await this.storeRepository.find(input.storeId);
+
     const createdUser = await this.repository.create({
       userName: input.userName,
       password: input.password,
-      storeId: input.storeId,
+      store,
     });
 
     for (const role of input.systemRoles || []) {

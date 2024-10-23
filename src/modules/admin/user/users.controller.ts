@@ -15,6 +15,7 @@ import { UserService } from 'src/services/domains/user.service';
 import { User } from 'src/entities/user.entity';
 import { DefaultController } from 'src/modules/default.controller';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
+import { Actions } from 'src/services/permissions/permissions';
 @Controller('admin/users')
 export class UsersController extends DefaultController {
   constructor(private userService: UserService) {
@@ -27,13 +28,13 @@ export class UsersController extends DefaultController {
   async findAll(
     @Body() body: FindUsersFilters,
   ): Promise<EntityPagination<User>> {
-    await this.validateAccess('findAllUsers');
+    await this.validateAccess(Actions.findUsers);
     return this.userService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('findUserById');
+    await this.validateAccess(Actions.findUsers);
     const user = await this.userService.findById(id);
 
     res.status(200).send(user);
@@ -41,7 +42,7 @@ export class UsersController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateUserBody, @Res() res: any) {
-    await this.validateAccess('createUser');
+    await this.validateAccess(Actions.createUser);
 
     const user = await this.userService.create(body);
 
@@ -54,7 +55,7 @@ export class UsersController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    await this.validateAccess('updateUser');
+    await this.validateAccess(Actions.updateUser);
     const user = await this.userService.update(id, body);
 
     res.status(200).send({ ...user, password: undefined });
@@ -62,7 +63,7 @@ export class UsersController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('deleteUser');
+    await this.validateAccess(Actions.deleteUser);
     await this.userService.delete(id);
 
     res.status(204).send();

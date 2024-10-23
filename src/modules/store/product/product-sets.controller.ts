@@ -16,8 +16,9 @@ import { ProductSet } from 'src/entities/product-set.entity';
 import { Response } from 'express';
 import { CreateProductSetBody } from './dtos/create-product-set-body';
 import { UpdateProductSetBody } from './dtos/update-product-set-body';
+import { Actions } from 'src/services/permissions/permissions';
 
-@Controller('store/productsets')
+@Controller('store/:storeId/product-sets')
 export class ProductSetsController extends DefaultController {
   constructor(private productSetService: ProductSetService) {
     super();
@@ -29,13 +30,13 @@ export class ProductSetsController extends DefaultController {
   async findAll(
     @Body() body: FindProductSetsFilters,
   ): Promise<EntityPagination<ProductSet>> {
-    await this.validateAccess('findProductSetsFilters');
+    await this.validateAccess(Actions.findProductSets);
     return this.productSetService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('findProductSetsById');
+    await this.validateAccess(Actions.findProductSets);
     const productSet = await this.productSetService.findById(id);
 
     res.status(200).send(productSet);
@@ -43,7 +44,7 @@ export class ProductSetsController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateProductSetBody, @Res() res: Response) {
-    await this.validateAccess('createProductSet');
+    await this.validateAccess(Actions.createProductSet);
     const productSet = await this.productSetService.create(body);
 
     res
@@ -57,7 +58,7 @@ export class ProductSetsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: Response,
   ) {
-    await this.validateAccess('updateProductSet');
+    await this.validateAccess(Actions.updateProductSet);
     const productSet = await this.productSetService.update(id, body);
 
     res
@@ -67,7 +68,7 @@ export class ProductSetsController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: Response) {
-    await this.validateAccess('deleteProductSet');
+    await this.validateAccess(Actions.deleteProductSet);
     await this.productSetService.delete(id);
 
     res.status(204).send({ message: 'Product Set deleted successfully!' });

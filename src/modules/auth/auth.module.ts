@@ -16,6 +16,7 @@ import { postgresDataSource } from 'src/infra/data-source';
 import { PassportModule } from '@nestjs/passport';
 import { ApplicationModule } from 'src/services/application/application.module';
 import { DataSource } from 'typeorm';
+import { StoreRepository } from 'src/repositories/store.repository';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { DataSource } from 'typeorm';
     JwtService,
     UserService,
     UserRoleRepository,
+    StoreRepository,
     RoleRepository,
     {
       provide: DataSource,

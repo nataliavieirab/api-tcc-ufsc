@@ -15,6 +15,7 @@ import { Organization } from 'src/entities/organization.entity';
 import { findOrgsFilters } from './dtos/find-orgs-filters';
 import { UpdateOrganizationBody } from './dtos/update-organization-body';
 import { CreateOrganizationBody } from './dtos/create-organization-body';
+import { Actions } from 'src/services/permissions/permissions';
 @Controller('admin/organizations')
 export class OrganizationsController extends DefaultController {
   constructor(private organizationService: OrganizationService) {
@@ -27,13 +28,13 @@ export class OrganizationsController extends DefaultController {
   async findAll(
     @Body() body: findOrgsFilters,
   ): Promise<EntityPagination<Organization>> {
-    await this.validateAccess('findAllOrganizations');
+    await this.validateAccess(Actions.findOrganizations);
     return this.organizationService.findAll(body);
   }
 
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('findOrganizationById');
+    await this.validateAccess(Actions.findOrganizations);
     const organization = await this.organizationService.findById(id);
 
     res.status(200).send(organization);
@@ -41,7 +42,7 @@ export class OrganizationsController extends DefaultController {
 
   @Post()
   async create(@Body() body: CreateOrganizationBody, @Res() res: any) {
-    await this.validateAccess('createOrganization');
+    await this.validateAccess(Actions.createOrganization);
 
     const organization = await this.organizationService.create(body);
 
@@ -54,7 +55,7 @@ export class OrganizationsController extends DefaultController {
     @Param('id') id: string,
     @Res() res: any,
   ) {
-    await this.validateAccess('updateOrganization');
+    await this.validateAccess(Actions.updateOrganization);
     const organization = await this.organizationService.update(id, body);
 
     res.status(200).send(organization);
@@ -62,7 +63,7 @@ export class OrganizationsController extends DefaultController {
 
   @Delete('/:id')
   async delete(@Param('id') id: string, @Res() res: any) {
-    await this.validateAccess('deleteOrganization');
+    await this.validateAccess(Actions.updateOrganization);
     await this.organizationService.delete(id);
 
     res.status(204).send();
