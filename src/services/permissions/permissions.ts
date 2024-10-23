@@ -1,46 +1,24 @@
-type roles = {
-  GENERAL_ADM: 'GENERAL_ADM';
-  GENERAL_ASSISTANT: 'GENERAL_ASSISTANT';
-  ORGANIZATION_ADM: 'ORGANIZATION_ADM';
-  ORGANIZATION_ASSISTANT: 'ORGANIZATION_ASSISTANT';
-  BRANCH_ADM: 'BRANCH_ADM';
-};
-
-type actions =
-  | 'createUser'
-  | 'updateUser'
-  | 'deleteUser'
-  | 'findUserById'
-  | 'findAllUsers'
-  | 'createOrganization'
-  | 'updateOrganization'
-  | 'findAllOrganizations'
-  | 'findOrganizationById'
-  | 'deleteOrganization'
-  | 'createStore'
-  | 'updateStore'
-  | 'deleteStore'
-  | 'findAllStore'
-  | 'findStoreById';
-
-export { actions, roles, systemRolesPermissions };
-
-export enum Permissions {
+export enum Actions {
   createUser = 'createUser',
   updateUser = 'updateUser',
   deleteUser = 'deleteUser',
-  findUserById = 'findUserById',
-  findAllUsers = 'findAllUsers',
+  findUsers = 'findUsers',
   createOrganization = 'createOrganization',
   updateOrganization = 'updateOrganization',
-  findAllOrganizations = 'findAllOrganizations',
-  findOrganizationById = 'findOrganizationById',
+  findOrganizations = 'findOrganizations',
   deleteOrganization = 'deleteOrganization',
   createStore = 'createStore',
   updateStore = 'updateStore',
   deleteStore = 'deleteStore',
-  findAllStore = 'findAllStore',
-  findStoreById = 'findStoreById',
+  findStores = 'findStores',
+}
+
+export enum SystemRoles {
+  SYSTEM_ADMIN = 'SYSTEM_ADMIN',
+  SYSTEM_ASSISTANT = 'SYSTEM_ASSISTANT',
+  ORGANIZATION_ADMIN = 'ORGANIZATION_ADMIN',
+  ORGANIZATION_ASSISTANT = 'ORGANIZATION_ASSISTANT',
+  STORE_ADMIN = 'STORE_ADMIN',
 }
 
 export enum Modules {
@@ -50,8 +28,22 @@ export enum Modules {
   customer = 'customer',
 }
 
-const systemRolesPermissions: any = {
+// type systemRolesPermissions = {
+//   [module: moduleIndex]: {
+//     [action: Actions]: SystemRoles[];
+//   };
+// };
+
+export const systemRolesPermissions: any = {
   admin: {
-    createUser: ['GENERAL_ADM', 'GENERAL_ASSISTANT'],
+    createUser: ['SYSTEM_ADMIN', 'SYSTEM_ASSISTANT'],
+    findAllUsers: ['SYSTEM_ADMIN', 'SYSTEM_ASSISTANT'],
+    findAllOrganizations: ['SYSTEM_ADMIN', 'SYSTEM_ASSISTANT'],
+    createOrganization: ['SYSTEM_ADMIN', 'SYSTEM_ASSISTANT'],
+  },
+  organization: {
+    createUser: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADMIN'],
+    findAllUsers: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADMIN'],
+    createStore: ['ORGANIZATION_ASSISTANT', 'ORGANIZATION_ADMIN'],
   },
 };

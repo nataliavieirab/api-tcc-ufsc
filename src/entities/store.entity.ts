@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, Unique } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { CashRegister } from './cash-register.entity';
 import { StoreAddress } from './store-address.entity';
@@ -13,6 +13,7 @@ import { Role } from './role.entity';
 @Entity()
 export class Store extends DefaultEntity {
   @Column()
+  @Unique('name', [])
   name: string;
 
   @OneToOne(

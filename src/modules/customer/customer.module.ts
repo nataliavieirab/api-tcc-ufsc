@@ -20,7 +20,6 @@ import { BagRepository } from 'src/repositories/bag.repository';
 import { AddressRepository } from 'src/repositories/address.repository';
 import { ShippingRepository } from 'src/repositories/shipping.repository';
 import { CashRegisterRepository } from 'src/repositories/cash-register.repository';
-import { CurrentRequestService } from 'src/services/application/current-request.service';
 import { PaymentRepository } from 'src/repositories/payment.repository';
 import { BagItemRepository } from 'src/repositories/bag-item.repository';
 import { BagItemAddOnRepository } from 'src/repositories/bag-item-add-on.repository';
@@ -34,6 +33,11 @@ import { DeliveryNeighborhoodRepository } from 'src/repositories/delivery-neighb
 import { AddOnRepository } from 'src/repositories/add-on.repository';
 import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 import { CustomerAddressRepository } from 'src/repositories/customer-address.repository';
+import { ApplicationModule } from 'src/services/application/application.module';
+import { UserService } from 'src/services/domains/user.service';
+import { UserRepository } from 'src/repositories/user.repository';
+import { UserRoleRepository } from 'src/repositories/user-role.repository';
+import { RoleRepository } from 'src/repositories/role.repository';
 
 @Module({
   controllers: [
@@ -42,6 +46,7 @@ import { CustomerAddressRepository } from 'src/repositories/customer-address.rep
     StoresController,
     AccountsController,
   ],
+  imports: [ApplicationModule],
   providers: [
     OrderService,
     BagService,
@@ -60,7 +65,6 @@ import { CustomerAddressRepository } from 'src/repositories/customer-address.rep
     AddressRepository,
     ShippingRepository,
     CashRegisterRepository,
-    CurrentRequestService,
     PaymentRepository,
     BagItemRepository,
     BagItemAddOnRepository,
@@ -74,6 +78,10 @@ import { CustomerAddressRepository } from 'src/repositories/customer-address.rep
     AddOnRepository,
     ProductCategoryRepository,
     CustomerAddressRepository,
+    UserService,
+    UserRepository,
+    UserRoleRepository,
+    RoleRepository,
   ],
 })
 export class CustomerModule {}

@@ -113,7 +113,7 @@ function clearNestedInput(data: any) {
 
 function getRepository(name: string) {
   const currentRequestService: CurrentRequestService =
-    DependenciesResolver.getResolvedDependency('CurrentRequestService');
+    DependenciesResolver.getResolvedDependency(CurrentRequestService);
 
   const queryRunner = currentRequestService.getCurrentQueryRunner();
 

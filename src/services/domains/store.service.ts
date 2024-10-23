@@ -5,6 +5,8 @@ import { Store } from 'src/entities/store.entity';
 import { DeliverySettingsRepository } from 'src/repositories/delivery-settings.repository';
 import { DeliveryNeighborhoodRepository } from 'src/repositories/delivery-neighborhood.repository';
 import { RecordNotFoundError } from 'src/errors/record-not-found.error';
+import { UserService } from './user.service';
+import { SystemRoles } from '../permissions/permissions';
 
 @Injectable()
 export class StoreService extends EntityDefaultService<Store> {
@@ -12,15 +14,26 @@ export class StoreService extends EntityDefaultService<Store> {
     storeRepository: StoreRepository,
     private deliverySettingsRepository: DeliverySettingsRepository,
     private deliveryNeighborhoodRepository: DeliveryNeighborhoodRepository,
+    private readonly userService: UserService,
   ) {
     super(storeRepository);
   }
 
-  async create(createInput: EntitySearchKeys<Store>): Promise<Store> {
+  async create(createInput: {
+    name: string;
+    userName: string;
+    userPassword: string;
+  }): Promise<Store> {
     const store = await this.repository.create(createInput);
 
     store.deliverySettings = await this.deliverySettingsRepository.create({
       store,
+    });
+
+    await this.userService.create({
+      userName: createInput.userName,
+      password: createInput.userPassword,
+      systemRoles: [SystemRoles.STORE_ADMIN],
     });
 
     return store;

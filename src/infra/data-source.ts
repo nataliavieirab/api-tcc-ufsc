@@ -19,5 +19,3 @@ export const DbConnectionParams: DataSourceOptions = {
 };
 
 export const postgresDataSource = new DataSource(DbConnectionParams);
-
-postgresDataSource.initialize();

@@ -15,22 +15,22 @@ export class PermissionService {
 
   constructor() {
     this.currentRequestService = DependenciesResolver.getResolvedDependency(
-      'CurrentRequestService',
+      CurrentRequestService,
     );
 
     this.rolePermissionRepository = DependenciesResolver.getResolvedDependency(
-      'RolePermissionRepository',
+      RolePermissionRepository,
     );
 
     this.userRoleRepository =
-      DependenciesResolver.getResolvedDependency('UserRoleRepository');
+      DependenciesResolver.getResolvedDependency(UserRoleRepository);
 
     this.roleRepository =
-      DependenciesResolver.getResolvedDependency('RoleRepository');
+      DependenciesResolver.getResolvedDependency(RoleRepository);
   }
 
   async validateAction(action: string, module: string): Promise<boolean> {
-    if (this.validateActionBySystemRole(action, module)) return true;
+    if (await this.validateActionBySystemRole(action, module)) return true;
 
     const rolesPermissionsQuery = this.rolePermissionRepository.getQueryFor({
       conditions: {
@@ -72,7 +72,7 @@ export class PermissionService {
       },
     });
 
-    const permittedSystemRoles = systemRolesPermissions[module][action];
+    const permittedSystemRoles = (systemRolesPermissions[module] || {})[action];
 
     return userSystemRoles.some((userRole) =>
       permittedSystemRoles?.includes(userRole.systemRole),

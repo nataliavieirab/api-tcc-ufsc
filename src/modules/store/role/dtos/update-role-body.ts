@@ -1,23 +1,20 @@
 import { IsString, Length } from 'class-validator';
-import { Permissions } from 'src/services/permissions/permissions';
+import { Actions } from 'src/services/permissions/permissions';
 import { HasValidValue } from 'src/validators/has-valid-value.validator';
 
-const modulePermittedPermissions: Permissions[] = [
-  Permissions.createUser,
-  Permissions.updateUser,
-  Permissions.deleteUser,
-  Permissions.findUserById,
-  Permissions.findAllUsers,
-  Permissions.createOrganization,
-  Permissions.updateOrganization,
-  Permissions.findAllOrganizations,
-  Permissions.findOrganizationById,
-  Permissions.deleteOrganization,
-  Permissions.createStore,
-  Permissions.updateStore,
-  Permissions.deleteStore,
-  Permissions.findAllStore,
-  Permissions.findStoreById,
+const modulePermittedPermissions: Actions[] = [
+  Actions.createUser,
+  Actions.updateUser,
+  Actions.deleteUser,
+  Actions.findUsers,
+  Actions.createOrganization,
+  Actions.updateOrganization,
+  Actions.findOrganizations,
+  Actions.deleteOrganization,
+  Actions.createStore,
+  Actions.updateStore,
+  Actions.deleteStore,
+  Actions.findStores,
 ];
 
 export class UpdateRoleBody {

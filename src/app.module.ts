@@ -9,8 +9,8 @@ import { postgresDataSource } from './infra/data-source';
 import { RequestScopeSetterMiddleware } from './middlewares/request-scope-setter.middleware';
 import { CustomerModule } from './modules/customer/customer.module';
 import { StoreModule } from './modules/store/store.module';
-import { CurrentRequestService } from './services/application/current-request.service';
-import { TenantService } from './services/application/tenant.service';
+import { ApplicationModule } from './services/application/application.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -20,6 +20,7 @@ import { TenantService } from './services/application/tenant.service';
     AdminModule,
     CustomerModule,
     StoreModule,
+    ApplicationModule,
   ],
   providers: [
     {
@@ -27,11 +28,9 @@ import { TenantService } from './services/application/tenant.service';
       useClass: JwtAuthGuard,
     },
     {
-      provide: 'DataSource',
+      provide: DataSource,
       useValue: postgresDataSource,
     },
-    CurrentRequestService,
-    TenantService,
   ],
 })
 export class AppModule {

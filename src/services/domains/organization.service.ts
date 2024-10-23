@@ -4,7 +4,7 @@ import { EntityDefaultService } from './entity-default.service';
 import { Organization } from 'src/entities/organization.entity';
 import { UserService } from './user.service';
 import { TenantService } from '../application/tenant.service';
-import { SystemRole } from 'src/entities/user-role.entity';
+import { SystemRoles } from 'src/services/permissions/permissions';
 
 @Injectable()
 export class OrganizationService extends EntityDefaultService<Organization> {
@@ -32,7 +32,7 @@ export class OrganizationService extends EntityDefaultService<Organization> {
     await this.userService.create({
       userName: input.userName,
       password: input.userPassword,
-      systemRoles: [SystemRole.ORGANIZATION_ADMIN],
+      systemRoles: [SystemRoles.ORGANIZATION_ADMIN],
     });
 
     return createdOrganization;
