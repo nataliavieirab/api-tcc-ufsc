@@ -7,12 +7,13 @@ import { UserRoleRepository } from 'src/repositories/user-role.repository';
 import { RoleRepository } from 'src/repositories/role.repository';
 import { OrganizationService } from 'src/services/domains/organization.service';
 import { OrganizationRepository } from 'src/repositories/organization.repository';
-import { TenantService } from 'src/services/application/tenant.service';
-import { CurrentRequestService } from 'src/services/application/current-request.service';
 import { postgresDataSource } from 'src/infra/data-source';
+import { ApplicationModule } from 'src/services/application/application.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   controllers: [UsersController, OrganizationsController],
+  imports: [ApplicationModule],
   providers: [
     UserService,
     UserRepository,
@@ -20,10 +21,8 @@ import { postgresDataSource } from 'src/infra/data-source';
     RoleRepository,
     OrganizationService,
     OrganizationRepository,
-    TenantService,
-    CurrentRequestService,
     {
-      provide: 'DataSource',
+      provide: DataSource,
       useValue: postgresDataSource,
     },
   ],

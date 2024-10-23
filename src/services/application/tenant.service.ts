@@ -1,17 +1,20 @@
-import { Inject } from '@nestjs/common';
 import { DataSource, MigrationExecutor } from 'typeorm';
-import { CurrentRequestService } from './current-request.service';
+import { CurrentRequestService } from 'src/services/application/current-request.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TenantService {
   constructor(
-    @Inject('DataSource') public dataSource: DataSource,
+    private readonly dataSource: DataSource,
     private readonly currentRequestService: CurrentRequestService,
   ) {}
 
   async createTenant(tenantId: string): Promise<string> {
+    tenantId = this.cleanString(tenantId);
+
     const queryRunner = this.getQueryRunner();
 
-    await queryRunner.query(`CREATE SCHEMA IF NOT EXISTS ${tenantId}`);
+    await queryRunner.query(`CREATE SCHEMA IF NOT EXISTS "${tenantId}"`);
 
     await this.switchTenant(tenantId);
 
@@ -30,6 +33,8 @@ export class TenantService {
   }
 
   async migrateTenant(tenantId: string): Promise<void> {
+    tenantId = this.cleanString(tenantId);
+
     const queryRunner = this.getQueryRunner();
 
     await this.switchTenant(tenantId);
@@ -56,6 +61,12 @@ export class TenantService {
   }
 
   private switchTenantQuery(tenantId: string) {
-    return `SET search_path TO ${tenantId}`;
+    tenantId = this.cleanString(tenantId);
+
+    return `SET search_path TO "${tenantId}"`;
+  }
+
+  private cleanString(str: string): string {
+    return str.replace(/[^a-zA-Z0-9]/g, '');
   }
 }
