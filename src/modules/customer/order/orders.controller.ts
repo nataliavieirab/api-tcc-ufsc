@@ -6,7 +6,7 @@ import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Response } from 'express';
 import { SendOrderBody } from './dtos/send-order-body';
 
-@Controller('customer/orders')
+@Controller('customer/stores/:storeId/orders')
 export class OrdersController {
   constructor(private orderService: OrderService) {}
 
@@ -14,9 +14,10 @@ export class OrdersController {
 
   @Get()
   async findAllOrders(
+    @Param('storeId') storeId: string,
     @Body() body: FindOrdersFilters,
   ): Promise<EntityPagination<Order>> {
-    return this.orderService.findAll(body);
+    return this.orderService.findOrdersByStoreId(storeId, body);
   }
 
   @Get('/:id')
@@ -27,8 +28,12 @@ export class OrdersController {
   }
 
   @Post()
-  async sendOrder(@Body() body: SendOrderBody, @Res() res: Response) {
-    const order = await this.orderService.sendOrder(body);
+  async sendOrder(
+    @Param('storeId') storeId: string,
+    @Body() body: SendOrderBody,
+    @Res() res: Response,
+  ) {
+    const order = await this.orderService.sendOrder({ storeId, ...body });
 
     res.status(201).send(order);
   }

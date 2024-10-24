@@ -11,7 +11,7 @@ import { Response } from 'express';
 import { BagService } from 'src/services/domains/bag.service';
 import { AddItemToBagBody } from './dtos/add-item-to-bag-body';
 
-@Controller('stores/:storeId/bag')
+@Controller('customer/stores/:storeId/bag')
 export class BagsController {
   constructor(private bagService: BagService) {}
 
@@ -22,7 +22,7 @@ export class BagsController {
     res.status(200).send(bag);
   }
 
-  @Post()
+  @Delete()
   async cleanBag(@Param('storeId') storeId: string, @Res() res: Response) {
     await this.bagService.cleanBag(storeId);
 

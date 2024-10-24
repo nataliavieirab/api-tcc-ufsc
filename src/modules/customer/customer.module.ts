@@ -38,6 +38,7 @@ import { UserService } from 'src/services/domains/user.service';
 import { UserRepository } from 'src/repositories/user.repository';
 import { UserRoleRepository } from 'src/repositories/user-role.repository';
 import { RoleRepository } from 'src/repositories/role.repository';
+import { ProductSetRepository } from 'src/repositories/product-set.repository';
 
 @Module({
   controllers: [
@@ -82,6 +83,7 @@ import { RoleRepository } from 'src/repositories/role.repository';
     UserRepository,
     UserRoleRepository,
     RoleRepository,
+    ProductSetRepository,
   ],
 })
 export class CustomerModule {}

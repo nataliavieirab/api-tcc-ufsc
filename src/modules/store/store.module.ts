@@ -44,6 +44,7 @@ import { ProductOptionValueRepository } from 'src/repositories/product-option-va
 import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
 import { UserRoleRepository } from 'src/repositories/user-role.repository';
 import { ApplicationModule } from 'src/services/application/application.module';
+import { ProductSetItemRepository } from 'src/repositories/product-set-item.repository';
 
 @Module({
   controllers: [
@@ -94,6 +95,7 @@ import { ApplicationModule } from 'src/services/application/application.module';
     ProductOptionValueRepository,
     RolePermissionRepository,
     UserRoleRepository,
+    ProductSetItemRepository,
   ],
 })
 export class StoreModule {}

@@ -12,7 +12,7 @@ export class BagItemOption extends DefaultEntity {
   @ManyToOne(() => ProductOption)
   productOption: ProductOption;
 
-  @ManyToOne(() => ProductOptionValue, { nullable: true })
+  @ManyToOne(() => ProductOptionValue, { nullable: true, lazy: true })
   optionValue?: ProductOptionValue;
 
   @Column({ nullable: true })

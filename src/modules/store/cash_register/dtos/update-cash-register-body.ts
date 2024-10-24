@@ -1,11 +1,11 @@
-import { IsDate, IsOptional } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 
 export class UpdateCashRegisterBody {
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly openingDate?: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly closingDate?: Date;
 }

@@ -8,6 +8,9 @@ import { AddOnRepository } from 'src/repositories/add-on.repository';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { CategoryRepository } from 'src/repositories/category.repository';
 import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
+import { ProductSetRepository } from 'src/repositories/product-set.repository';
+import { ProductSetStatus } from 'src/entities/product-set.entity';
+import { ProductSetItemRepository } from 'src/repositories/product-set-item.repository';
 
 interface CreateProductInput {
   name: string;
@@ -23,6 +26,8 @@ export class ProductService extends EntityDefaultService<Product> {
     private addOnRepository: AddOnRepository,
     private categoryRepository: CategoryRepository,
     private productCategoryRepository: ProductCategoryRepository,
+    private productSetRepository: ProductSetRepository,
+    private productSetItemRepository: ProductSetItemRepository,
   ) {
     super(productRepository);
   }
@@ -75,11 +80,12 @@ export class ProductService extends EntityDefaultService<Product> {
 
   async findByCategory(
     categoryId: string,
+    available: boolean,
     findFilters: {
       like_name?: string;
       name?: string;
     },
-  ): Promise<EntityPagination<Product>> {
+  ) {
     const { likeFilters, simpleFilters } = await this.transformDecoratedFilters(
       findFilters,
     );
@@ -89,12 +95,60 @@ export class ProductService extends EntityDefaultService<Product> {
       conditions: { category },
     });
 
-    return await this.repository.where({
+    const products = this.repository.getQueryFor({
       conditions: simpleFilters,
       conditionsLike: likeFilters,
       joins: {
         productCategories,
       },
     });
+
+    const productSetsQuery = available
+      ? {
+          conditions: { status: ProductSetStatus.ACTIVE },
+        }
+      : {};
+
+    const productSets = this.productSetRepository.getQueryFor(productSetsQuery);
+
+    const items = await this.productSetItemRepository.where({
+      joins: {
+        product: products,
+        productSet: productSets,
+      },
+      nestedRelations: [
+        {
+          entity: 'product',
+          nestedEntity: 'productAddOns',
+        },
+        {
+          entity: 'productAddOns',
+          nestedEntity: 'addOn',
+        },
+        {
+          entity: 'product',
+          nestedEntity: 'productOptions',
+        },
+        {
+          entity: 'productOptions',
+          nestedEntity: 'values',
+        },
+      ],
+    });
+
+    return {
+      ...items,
+      content: items.content.map((item) => ({
+        id: item.id,
+        name: item.product.name,
+        price: item.price,
+        addOns: item.product.productAddOns.map((productAddOn) => ({
+          ...productAddOn.addOn,
+          id: productAddOn.id,
+          price: productAddOn.price,
+        })),
+        options: item.product.productOptions,
+      })),
+    };
   }
 }

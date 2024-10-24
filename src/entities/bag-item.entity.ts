@@ -20,7 +20,7 @@ export class BagItem extends DefaultEntity {
   @Column()
   quantity: number;
 
-  @Column()
+  @Column({ type: 'float' })
   unitPrice: number;
 
   @OneToMany(() => BagItemOption, (bag) => bag.bagItem)
@@ -28,4 +28,22 @@ export class BagItem extends DefaultEntity {
 
   @OneToMany(() => BagItemAddOn, (bag) => bag.bagItem)
   bagItemAddOns: BagItemAddOn[];
+
+  async getTotal(): Promise<number> {
+    let itemTotal = this.unitPrice;
+
+    for (const option of await this.bagItemOptions) {
+      const optionValue = await option.optionValue;
+
+      itemTotal += optionValue?.price || 0;
+    }
+
+    for (const itemAddOn of await this.bagItemAddOns) {
+      const productAddOn = await itemAddOn.productAddOn;
+
+      itemTotal += productAddOn.price * itemAddOn.quantity;
+    }
+
+    return itemTotal * this.quantity;
+  }
 }

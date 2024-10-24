@@ -15,7 +15,7 @@ export const DbConnectionParams: DataSourceOptions = {
   entities: ['dist/entities/*{entity.js,entity.ts}'],
   migrations: ['dist/infra/postgres/migrations/*{.js,.ts}'],
   subscribers: [],
-  logging: false,
+  logging: true,
 };
 
 export const postgresDataSource = new DataSource(DbConnectionParams);

@@ -1,15 +1,11 @@
-import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsOptional } from 'class-validator';
 
 export class CreateCashRegisterBody {
-  @IsString()
-  @IsNotEmpty()
-  readonly storeId: string;
-
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly openingDate?: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly closingDate?: Date;
 }

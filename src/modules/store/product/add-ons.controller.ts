@@ -18,7 +18,7 @@ import { CreateAddOnBody } from './dtos/create-add-on-body';
 import { UpdateAddOnBody } from './dtos/update-add-on-body';
 import { Actions } from 'src/services/permissions/permissions';
 
-@Controller('store/add-ons')
+@Controller('store/:storeId/add-ons')
 export class AddOnController extends DefaultController {
   constructor(private addOnService: AddOnService) {
     super();
@@ -43,9 +43,13 @@ export class AddOnController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateAddOnBody, @Res() res: Response) {
+  async create(
+    @Body() body: CreateAddOnBody,
+    @Res() res: Response,
+    @Param('storeId') storeId: string,
+  ) {
     await this.validateAccess(Actions.createAddOn);
-    const addOn = await this.addOnService.create(body);
+    const addOn = await this.addOnService.create({ storeId, ...body });
 
     res.status(201).send(addOn);
   }

@@ -3,7 +3,6 @@ import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { CustomerRepository } from 'src/repositories/customer.repository';
 import { Customer } from 'src/entities/customer.entity';
-import { BagRepository } from 'src/repositories/bag.repository';
 import { AddressRepository } from 'src/repositories/address.repository';
 import { Address } from 'src/entities/address.entity';
 import { CustomerAddressRepository } from 'src/repositories/customer-address.repository';
@@ -22,11 +21,14 @@ interface AddressAttributes {
 export class CustomerService {
   constructor(
     private repository: CustomerRepository,
-    private bagRepository: BagRepository,
     private addressRepository: AddressRepository,
     private customerAddressRepository: CustomerAddressRepository,
     private currentRequestService: CurrentRequestService,
   ) {}
+
+  async findById(id: string) {
+    return await this.repository.findOne({ conditions: { id } });
+  }
 
   async create(input: {
     name: string;
@@ -100,15 +102,20 @@ export class CustomerService {
     await this.customerAddressRepository.delete(customerAddress.id);
   }
 
-  async getAddresses(): Promise<EntityPagination<CustomerAddress>> {
+  async getAddresses() {
     const customer = this.currentRequestService.getCurrentCustomer();
 
     const customerAddresses = await this.customerAddressRepository.where({
       conditions: {
         customerId: customer.id,
       },
+      relations: ['address'],
     });
 
-    return customerAddresses;
+    const addresses = customerAddresses.content.map(
+      (customerAddress) => customerAddress.address,
+    );
+
+    return { ...customerAddresses, content: addresses };
   }
 }

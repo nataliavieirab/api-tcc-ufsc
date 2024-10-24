@@ -20,7 +20,7 @@ import { ProductOptionService } from 'src/services/domains/product-option.servic
 import { AddAddOnToProductBody } from './dtos/add-add-on-to-product-body';
 import { Actions } from 'src/services/permissions/permissions';
 
-@Controller('admin/users')
+@Controller('store/:storeId/products')
 export class ProductsController extends DefaultController {
   constructor(
     private productService: ProductService,
@@ -34,11 +34,12 @@ export class ProductsController extends DefaultController {
   @Get()
   async findAll(
     @Body() body: FindProductsFilters,
+    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<Product>> {
     await this.validateAccess(Actions.findProducts);
 
     return this.productService.findAll(
-      body,
+      { storeId, ...body },
       [],
       [
         {
@@ -56,16 +57,33 @@ export class ProductsController extends DefaultController {
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
     await this.validateAccess(Actions.findProducts);
-    const user = await this.productService.findById(id);
+    const user = await this.productService.findById(
+      id,
+      [],
+      [
+        {
+          entity: 'productAddOns',
+          nestedEntity: 'addOn',
+        },
+        {
+          entity: 'productOptions',
+          nestedEntity: 'values',
+        },
+      ],
+    );
 
     res.status(200).send(user);
   }
 
   @Post()
-  async create(@Body() body: CreateProductBody, @Res() res: any) {
+  async create(
+    @Body() body: CreateProductBody,
+    @Res() res: any,
+    @Param('storeId') storeId: string,
+  ) {
     await this.validateAccess(Actions.createProduct);
 
-    const product = await this.productService.create(body);
+    const product = await this.productService.create({ storeId, ...body });
 
     res.status(201).send(product);
   }
