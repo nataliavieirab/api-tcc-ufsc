@@ -14,7 +14,7 @@ export class Product extends DefaultEntity {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true, type: 'float' })
   defaultPrice: number;
 
   @OneToMany(() => ProductSetItem, (productSetItem) => productSetItem.product)

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Put,
@@ -12,11 +13,13 @@ import { UpdateRegisterBody } from './dtos/update-register-body';
 import { CreateRegisterBody } from './dtos/create-register-body';
 import { CreateAddressBody } from './dtos/create-address-body';
 import { UpdateAddressBody } from './dtos/update-address-body';
+import { IsPublic } from 'src/modules/auth/decorators/is-public.decorator';
 
-@Controller('admin/accounts')
+@Controller('customer/accounts')
 export class AccountsController {
   constructor(private customerService: CustomerService) {}
 
+  @IsPublic()
   @Post()
   async create(@Body() body: CreateRegisterBody, @Res() res: any) {
     const customer = await this.customerService.create(body);
@@ -45,6 +48,13 @@ export class AccountsController {
     res.status(201).send(address);
   }
 
+  @Get('addresses')
+  async listAddress(@Res() res: any) {
+    const addresses = await this.customerService.getAddresses();
+
+    res.status(200).send(addresses);
+  }
+
   @Put('addresses/:id')
   async updateAddress(
     @Param('id') id: string,
@@ -60,6 +70,6 @@ export class AccountsController {
   async deleteAddress(@Param('id') id: string, @Res() res: any) {
     await this.customerService.removeAddress(id);
 
-    res.status(201).send();
+    res.status(204).send();
   }
 }

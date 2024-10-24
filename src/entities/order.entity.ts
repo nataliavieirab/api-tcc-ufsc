@@ -43,13 +43,13 @@ export class Order extends DefaultEntity {
   @Column()
   date: Date;
 
-  @Column()
+  @Column({ type: 'float' })
   bagPrice: number;
 
-  @Column()
+  @Column({ type: 'float' })
   shippingPrice: number;
 
-  @Column()
+  @Column({ type: 'float' })
   totalPrice: number;
 
   @Column({ nullable: true })

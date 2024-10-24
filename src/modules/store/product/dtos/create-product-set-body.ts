@@ -7,7 +7,7 @@ export class CreateProductSetBody {
   @IsNotEmpty()
   name: string;
 
-  @IsNotEmpty({ message: 'The user role should not be empty.' })
+  @IsNotEmpty()
   @HasValidValue(Object.values(ProductSetStatus), {
     message: 'Invalid status.',
   })

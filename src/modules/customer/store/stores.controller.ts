@@ -8,7 +8,6 @@ import { FindStoresFilters } from './dtos/find-stores-filters';
 import { PaymentTypeService } from 'src/services/domains/payment-type.service';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Category } from 'src/entities/category.entity';
-import { Product } from 'src/entities/product.entity';
 import { Store } from 'src/entities/store.entity';
 import { PaymentType } from 'src/entities/payment-type.entity';
 
@@ -37,18 +36,19 @@ export class StoresController {
     return this.categoryService.findAll({ ...body, storeId });
   }
 
-  @Get('/:storeId/products')
+  @Get('/:storeId/categories/:categoryId/products')
   async findAllProducts(
     @Body() body: FindProductsFilters,
-  ): Promise<EntityPagination<Product>> {
-    return this.productService.findByCategory(body.categoryId, body);
+    @Param('categoryId') categoryId: string,
+  ) {
+    return this.productService.findByCategory(categoryId, true, body);
   }
 
   @Get()
   async findAllStores(
     @Body() body: FindStoresFilters,
   ): Promise<EntityPagination<Store>> {
-    return this.storeService.findAll(body);
+    return this.storeService.findAll(body, ['deliverySettings']);
   }
 
   @Get('/:storeId/payment-types')

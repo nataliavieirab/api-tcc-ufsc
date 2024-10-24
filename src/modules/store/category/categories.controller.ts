@@ -15,6 +15,7 @@ import { Response } from 'express';
 import { CreateCategoryBody } from './dtos/create-category-body';
 import { UpdateCategoryBody } from './dtos/update-category-body';
 import { Actions } from 'src/services/permissions/permissions';
+import { AddItemToCategoryBody } from './dtos/add-item-to-category-body';
 
 @Controller('store/:storeId/categories')
 export class CategoriesController extends DefaultController {
@@ -71,5 +72,40 @@ export class CategoriesController extends DefaultController {
     await this.categoryService.delete(id);
 
     res.status(204).send();
+  }
+
+  @Post('/:id/products')
+  async addProduct(
+    @Body() body: AddItemToCategoryBody,
+    @Res() res: Response,
+    @Param('id') categoryId: string,
+  ) {
+    await this.validateAccess(Actions.updateCategory);
+    const addedItem = await this.categoryService.addProduct({
+      categoryId,
+      ...body,
+    });
+
+    res.status(201).send(addedItem);
+  }
+
+  @Delete('/:id/products/:productId')
+  async removeProduct(
+    @Res() res: Response,
+    @Param('id') categoryId: string,
+    @Param('productId') productId: string,
+  ) {
+    await this.validateAccess(Actions.updateCategory);
+    await this.categoryService.removeProduct(categoryId, productId);
+
+    res.status(204).send();
+  }
+
+  @Get('/:id/products')
+  async findProduct(@Res() res: Response, @Param('id') categoryId: string) {
+    await this.validateAccess(Actions.findCategories);
+    const items = await this.categoryService.getItems(categoryId);
+
+    res.status(200).send(items);
   }
 }

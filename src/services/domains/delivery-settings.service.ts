@@ -18,30 +18,48 @@ export class DeliverySettingsService extends EntityDefaultService<DeliverySettin
     super(deliverySettingsRepository);
   }
 
-  async openDelivery(id: string): Promise<void> {
-    await this.repository.update(id, { status: DeliveryStatus.OPEN });
+  async findByStore(storeId: string) {
+    return await this.repository.findOne({
+      conditions: {
+        storeId,
+      },
+    });
   }
 
-  async closeDelivery(id: string): Promise<void> {
-    await this.repository.update(id, { status: DeliveryStatus.CLOSED });
+  async openDelivery(storeId: string): Promise<void> {
+    const deliverySettings = await this.findByStore(storeId);
+
+    await this.repository.update(deliverySettings.id, {
+      status: DeliveryStatus.OPEN,
+    });
+  }
+
+  async closeDelivery(storeId: string): Promise<void> {
+    const deliverySettings = await this.findByStore(storeId);
+
+    await this.repository.update(deliverySettings.id, {
+      status: DeliveryStatus.CLOSED,
+    });
   }
 
   async addNeighborhood(
-    deliverySettingsId: string,
+    storeId: string,
     neighborhood: {
       neighborhoodCode: string;
       neighborhoodName: string;
       deliveryFee: number;
     },
-  ): Promise<void> {
-    await this.deliveryNeighborhoodRepository.create({
-      deliverySettingsId,
+  ) {
+    const deliverySettings = await this.findByStore(storeId);
+
+    return await this.deliveryNeighborhoodRepository.create({
+      deliverySettings,
       ...neighborhood,
     });
   }
 
   async findAllNeighborhoods(
-    deliverySettingsId: string,
+    storeId: string,
     filters: {
       name?: string;
       like_name?: string;
@@ -53,8 +71,10 @@ export class DeliverySettingsService extends EntityDefaultService<DeliverySettin
       filters,
     );
 
+    const deliverySettings = await this.findByStore(storeId);
+
     return this.deliveryNeighborhoodRepository.where({
-      conditions: { deliverySettingsId, ...simpleFilters },
+      conditions: { deliverySettings, ...simpleFilters },
       conditionsLike: likeFilters,
     });
   }

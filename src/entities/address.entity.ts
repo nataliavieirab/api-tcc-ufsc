@@ -9,7 +9,7 @@ export class Address extends DefaultEntity {
   @Column()
   number: string;
 
-  @Column()
+  @Column({ nullable: true })
   complement: string;
 
   @Column()

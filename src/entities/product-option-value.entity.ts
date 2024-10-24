@@ -13,6 +13,6 @@ export class ProductOptionValue extends DefaultEntity {
   @Column()
   value: string;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 }

@@ -85,13 +85,12 @@ export enum Modules {
   customer = 'customer',
 }
 
-// type systemRolesPermissions = {
-//   [module: moduleIndex]: {
-//     [action: Actions]: SystemRoles[];
-//   };
-// };
-
 export const storeAdminPermissions = [
+  Actions.createUser,
+  Actions.updateUser,
+  Actions.deleteUser,
+  Actions.findUsers,
+
   Actions.updateStore,
   Actions.deleteStore,
   Actions.findStores,
@@ -170,3 +169,19 @@ export const systemRolesPermissions: any = {
     return permsObject;
   }, {}),
 };
+
+export function getSystemRolePermissions(systemRole) {
+  return Object.keys(systemRolesPermissions).reduce((permissions, module) => {
+    const modulePermissions = systemRolesPermissions[module];
+
+    Object.keys(modulePermissions).forEach((action) => {
+      const permittedRoles = modulePermissions[action];
+
+      if (permittedRoles.includes(systemRole)) {
+        permissions.push(action);
+      }
+    });
+
+    return permissions;
+  }, []);
+}

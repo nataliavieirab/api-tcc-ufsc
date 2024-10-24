@@ -7,10 +7,6 @@ export class SendOrderBody {
 
   @IsString()
   @IsNotEmpty()
-  bagId: string;
-
-  @IsString()
-  @IsNotEmpty()
   preferredPaymentTypeId: string;
 
   @IsString()

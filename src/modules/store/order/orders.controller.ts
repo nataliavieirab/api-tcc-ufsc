@@ -9,7 +9,7 @@ import { RefuseOrderBody } from './dtos/refuse-order-body';
 import { FinishOrderBody } from './dtos/finish-order-body';
 import { Actions } from 'src/services/permissions/permissions';
 
-@Controller('store/orders')
+@Controller('store/:storeId/orders')
 export class OrdersController extends DefaultController {
   constructor(private orderService: OrderService) {
     super();

@@ -12,10 +12,10 @@ export class CashRegister extends DefaultEntity {
   @ManyToOne(() => User)
   responsibleUser: User;
 
-  @Column()
+  @Column({ nullable: true })
   openingDate: Date;
 
-  @Column()
+  @Column({ nullable: true })
   closingDate: Date;
 
   @OneToMany(() => Order, (order) => order.cashRegister)

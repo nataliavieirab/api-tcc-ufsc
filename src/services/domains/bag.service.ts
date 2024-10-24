@@ -62,14 +62,27 @@ export class BagService extends EntityDefaultService<Bag> {
         customer,
         status: BagStatus.OPENED,
       },
+      nestedRelations: [
+        { entity: 'items', nestedEntity: 'product' },
+        { entity: 'items', nestedEntity: 'bagItemOptions' },
+        { entity: 'bagItemOptions', nestedEntity: 'productOption' },
+        { entity: 'bagItemOptions', nestedEntity: 'optionValue' },
+
+        { entity: 'items', nestedEntity: 'bagItemAddOns' },
+        { entity: 'bagItemAddOns', nestedEntity: 'productAddOn' },
+        { entity: 'productAddOn', nestedEntity: 'addOn' },
+      ],
     });
 
-    if (!bag)
+    if (!bag) {
       bag = await this.repository.create({
         customer: customer,
         store,
         status: BagStatus.OPENED,
       });
+
+      bag.items = [];
+    }
 
     return bag;
   }
@@ -80,12 +93,13 @@ export class BagService extends EntityDefaultService<Bag> {
 
     const productSetItem = await this.productSetItemRepository.find(
       itemEntry.productSetItemId,
+      { relations: ['product'] },
     );
 
     const product = await this.productRepository.findOne({
       conditions: {
         store,
-        id: (await productSetItem.product).id,
+        id: productSetItem.product.id,
       },
     });
 
@@ -105,7 +119,7 @@ export class BagService extends EntityDefaultService<Bag> {
 
         const bagItemAddOn = await this.bagItemAddOnRepository.create({
           bagItem,
-          addOn: await productAddOn.addOn,
+          productAddOn,
           quantity: addOn.quantity,
         });
 
@@ -122,7 +136,7 @@ export class BagService extends EntityDefaultService<Bag> {
         );
 
         const optionValue =
-          productOption.type == ProductOptionType.FIXED_VALUES
+          productOption.type != ProductOptionType.FIXED_VALUES
             ? null
             : await this.productOptionValueRepository.find(
                 option.optionValueId,
@@ -163,6 +177,6 @@ export class BagService extends EntityDefaultService<Bag> {
       },
     });
 
-    await bagItem.delete();
+    await this.bagItemRepository.delete(bagItem.id);
   }
 }

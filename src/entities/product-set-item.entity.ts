@@ -8,9 +8,9 @@ export class ProductSetItem extends DefaultEntity {
   @ManyToOne(() => ProductSet, (productSet) => productSet.items)
   productSet: ProductSet;
 
-  @ManyToOne(() => Product, (productSet) => productSet.setItems, { lazy: true })
+  @ManyToOne(() => Product, (productSet) => productSet.setItems)
   product: Product;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 }
