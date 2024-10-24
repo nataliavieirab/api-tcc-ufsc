@@ -10,13 +10,15 @@ import { UserService } from 'src/services/domains/user.service';
 import { UnauthorizedError } from 'src/errors/unauthorized.error';
 import { TenantService } from 'src/services/application/tenant.service';
 import { CurrentRequestService } from 'src/services/application/current-request.service';
+import { CustomerService } from 'src/services/domains/customer.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private userService: UserService,
+    private readonly userService: UserService,
     private readonly tenantService: TenantService,
     private readonly currentRequestService: CurrentRequestService,
+    private readonly customerService: CustomerService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -28,12 +30,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: UserPayload): Promise<User> {
     if (payload.orgId) this.tenantService.switchTenant(payload.orgId);
 
+    const customer = await this.customerService.findById(payload.sub);
+
+    if (customer) {
+      customer.password = undefined;
+      this.currentRequestService.setCurrentCustomer(customer);
+
+      return customer as unknown as User;
+    }
+
     const user = await this.userService.findById(payload.sub);
 
     if (!user) {
       throw new UnauthorizedError('User not found');
     }
-
+    user.password = undefined;
     this.currentRequestService.setCurrentUser(user);
 
     return user;

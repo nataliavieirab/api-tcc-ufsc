@@ -13,6 +13,6 @@ export class DeliveryNeighborhood extends DefaultEntity {
   @Column()
   neighborhoodName: string;
 
-  @Column()
+  @Column({ type: 'float' })
   deliveryFee: number;
 }

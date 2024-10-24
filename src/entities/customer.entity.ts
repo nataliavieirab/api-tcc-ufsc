@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { DefaultEntity } from './default-entity';
 import { Bag } from './bag.entity';
 import { CustomerAddress } from './customer-address.entity';
@@ -8,6 +8,7 @@ export class Customer extends DefaultEntity {
   @Column()
   name: string;
 
+  @Unique('email', [])
   @Column()
   email: string;
 

@@ -11,6 +11,6 @@ export class Payment extends DefaultEntity {
   @ManyToOne(() => Order, (order) => order.payments)
   order: Order;
 
-  @Column()
+  @Column({ type: 'float' })
   value: number;
 }

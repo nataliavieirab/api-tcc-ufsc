@@ -14,7 +14,7 @@ import { CashRegisterRepository } from 'src/repositories/cash-register.repositor
 import { PaymentRepository } from 'src/repositories/payment.repository';
 
 interface OrderRequestInput {
-  bagId: string;
+  storeId: string;
   addressId: string;
   preferredPaymentTypeId?: string;
   observation?: string;
@@ -41,8 +41,47 @@ export class OrderService extends EntityDefaultService<Order> {
     super(orderRepository);
   }
 
+  async findOrdersByStoreId(
+    storeId: string,
+    filters: {
+      before_date?: Date;
+      after_date?: Date;
+      status?: OrderStatus;
+    },
+  ) {
+    const customer = this.currentRequestService.getCurrentCustomer();
+
+    const bags = this.bagRepository.getQueryFor({
+      conditions: {
+        storeId,
+        customer,
+      },
+    });
+
+    const { simpleFilters, afterFilters, beforeFilters } =
+      await this.transformDecoratedFilters(filters);
+
+    return await this.repository.where({
+      conditions: simpleFilters,
+      conditionsAfter: afterFilters,
+      conditionsBefore: beforeFilters,
+      joins: {
+        bag: bags,
+      },
+    });
+  }
+
   async sendOrder(body: OrderRequestInput): Promise<Order> {
-    const bag = await this.bagRepository.find(body.bagId);
+    const customer = this.currentRequestService.getCurrentCustomer();
+
+    const bag = await this.bagRepository.findOne({
+      conditions: {
+        storeId: body.storeId,
+        customer,
+        status: BagStatus.OPENED,
+      },
+    });
+
     const paymentType = !body.preferredPaymentTypeId
       ? null
       : await this.paymentTypeRepository.find(body.preferredPaymentTypeId);
@@ -51,7 +90,7 @@ export class OrderService extends EntityDefaultService<Order> {
 
     const recipientAddress = await this.addressRepository.find(body.addressId);
     const deliveryFee = await this.storeService.getDeliveryFee(
-      bag.store.id,
+      body.storeId,
       recipientAddress.neighborhoodCode,
     );
 
@@ -64,8 +103,6 @@ export class OrderService extends EntityDefaultService<Order> {
       shippingPrice: deliveryFee,
       totalPrice: bagPrice + deliveryFee,
     });
-
-    const customer = this.currentRequestService.getCurrentCustomer();
 
     const shipping = await this.shippingRepository.create({
       order,
@@ -127,10 +164,15 @@ export class OrderService extends EntityDefaultService<Order> {
 
     const createdPayments = [];
     for (const payment of payments) {
+      const paymentType = await this.paymentTypeRepository.find(
+        payment.paymentTypeId,
+      );
+
       createdPayments.push(
         await this.paymentRepository.create({
           order,
           ...payment,
+          paymentType,
         }),
       );
     }

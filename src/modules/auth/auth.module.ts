@@ -17,6 +17,11 @@ import { PassportModule } from '@nestjs/passport';
 import { ApplicationModule } from 'src/services/application/application.module';
 import { DataSource } from 'typeorm';
 import { StoreRepository } from 'src/repositories/store.repository';
+import { RoleService } from 'src/services/domains/role.service';
+import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
+import { CustomerService } from 'src/services/domains/customer.service';
+import { AddressRepository } from 'src/repositories/address.repository';
+import { CustomerAddressRepository } from 'src/repositories/customer-address.repository';
 
 @Module({
   imports: [
@@ -39,6 +44,11 @@ import { StoreRepository } from 'src/repositories/store.repository';
     UserRoleRepository,
     StoreRepository,
     RoleRepository,
+    RoleService,
+    RolePermissionRepository,
+    CustomerService,
+    AddressRepository,
+    CustomerAddressRepository,
     {
       provide: DataSource,
       useValue: postgresDataSource,

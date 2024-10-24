@@ -17,6 +17,7 @@ import { Response } from 'express';
 import { CreateProductSetBody } from './dtos/create-product-set-body';
 import { UpdateProductSetBody } from './dtos/update-product-set-body';
 import { Actions } from 'src/services/permissions/permissions';
+import { AddItemToProductSetBody } from './dtos/add-item-to-product-set-body';
 
 @Controller('store/:storeId/product-sets')
 export class ProductSetsController extends DefaultController {
@@ -43,13 +44,18 @@ export class ProductSetsController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateProductSetBody, @Res() res: Response) {
+  async create(
+    @Body() body: CreateProductSetBody,
+    @Res() res: Response,
+    @Param('storeId') storeId: string,
+  ) {
     await this.validateAccess(Actions.createProductSet);
-    const productSet = await this.productSetService.create(body);
+    const productSet = await this.productSetService.create({
+      storeId,
+      ...body,
+    });
 
-    res
-      .status(201)
-      .send({ message: 'Product Set created succesfully!', ...productSet });
+    res.status(201).send(productSet);
   }
 
   @Put('/:id')
@@ -72,5 +78,40 @@ export class ProductSetsController extends DefaultController {
     await this.productSetService.delete(id);
 
     res.status(204).send({ message: 'Product Set deleted successfully!' });
+  }
+
+  @Post('/:id/products')
+  async addProduct(
+    @Body() body: AddItemToProductSetBody,
+    @Res() res: Response,
+    @Param('id') productSetId: string,
+  ) {
+    await this.validateAccess(Actions.addProductToSet);
+    const addedItem = await this.productSetService.addProduct({
+      productSetId,
+      ...body,
+    });
+
+    res.status(201).send(addedItem);
+  }
+
+  @Delete('/:id/products/:productId')
+  async removeProduct(
+    @Res() res: Response,
+    @Param('id') productSetId: string,
+    @Param('productId') productId: string,
+  ) {
+    await this.validateAccess(Actions.removeProductFromSet);
+    await this.productSetService.removeProduct(productSetId, productId);
+
+    res.status(204).send();
+  }
+
+  @Get('/:id/products')
+  async findProduct(@Res() res: Response, @Param('id') productSetId: string) {
+    await this.validateAccess(Actions.findProductSets);
+    const items = await this.productSetService.getItems(productSetId);
+
+    res.status(200).send(items);
   }
 }

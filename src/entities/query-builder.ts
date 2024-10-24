@@ -287,8 +287,15 @@ export class QueryBuilder<Entity extends DefaultEntity> {
       relations.map((relation) => relation.entity),
     );
 
+    const includedRelations = [];
     relations.forEach((relation) => {
-      this.include([relation.entity as keyof Entity]);
+      if (
+        this.includeRelation(relation.entity) &&
+        !includedRelations.includes(relation.entity)
+      ) {
+        this.include([relation.entity as keyof Entity]);
+        includedRelations.push(relation.entity);
+      }
 
       this.currentQuery = this.currentQuery.leftJoinAndSelect(
         `${relation.entity}.${relation.nestedEntity}`,
@@ -355,6 +362,7 @@ export class QueryBuilder<Entity extends DefaultEntity> {
   private validateRequestedRelations(
     requestedRelations: (keyof Entity | string)[] = [],
   ) {
+    return;
     const entityRelations = this.repository.metadata.relations.map(
       (relation) => relation.propertyName,
     ) as (keyof Entity | string)[];
@@ -368,6 +376,14 @@ export class QueryBuilder<Entity extends DefaultEntity> {
         );
       }
     });
+  }
+
+  private includeRelation(requestedRelation: keyof Entity | string) {
+    const entityRelations = this.repository.metadata.relations.map(
+      (relation) => relation.propertyName,
+    ) as (keyof Entity | string)[];
+
+    return entityRelations.includes(requestedRelation);
   }
 
   private getRelationName(entity: any) {

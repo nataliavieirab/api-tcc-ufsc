@@ -18,7 +18,7 @@ import { CreateCashRegisterBody } from './dtos/create-cash-register-body';
 import { Response } from 'express';
 import { Actions } from 'src/services/permissions/permissions';
 
-@Controller('store/cash-registers')
+@Controller('store/:storeId/cash-registers')
 export class CashRegistersController extends DefaultController {
   constructor(private cashRegisterService: CashRegisterService) {
     super();
@@ -29,9 +29,10 @@ export class CashRegistersController extends DefaultController {
   @Get()
   async findAll(
     @Body() body: FindCashRegistersFilters,
+    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<CashRegister>> {
     await this.validateAccess(Actions.findCashRegisters);
-    return this.cashRegisterService.findAll(body);
+    return this.cashRegisterService.findAll({ storeId, ...body });
   }
 
   @Get('/:id')
@@ -43,9 +44,16 @@ export class CashRegistersController extends DefaultController {
   }
 
   @Post()
-  async create(@Body() body: CreateCashRegisterBody, @Res() res: Response) {
+  async create(
+    @Param('storeId') storeId: string,
+    @Body() body: CreateCashRegisterBody,
+    @Res() res: Response,
+  ) {
     await this.validateAccess(Actions.createCashRegister);
-    const cashRegister = await this.cashRegisterService.create(body);
+    const cashRegister = await this.cashRegisterService.create({
+      storeId,
+      ...body,
+    });
     res.status(201).send(cashRegister);
   }
 

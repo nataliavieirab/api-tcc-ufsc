@@ -47,9 +47,9 @@ export class RolesController extends DefaultController {
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
     await this.validateAccess(Actions.findRoles);
-    const user = await this.roleService.findById(id);
+    const role = await this.roleService.findById(id, ['rolePermissions']);
 
-    res.status(200).send(user);
+    res.status(200).send(role);
   }
 
   @Post()

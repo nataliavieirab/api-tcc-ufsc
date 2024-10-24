@@ -28,8 +28,12 @@ export class Bag extends DefaultEntity {
   items: BagItem[];
 
   async getTotal(): Promise<number> {
-    return (await this.items).reduce((total, item) => {
-      return total + item.quantity * item.unitPrice;
-    }, 0);
+    let total = 0;
+
+    for (const item of await this.items) {
+      total += await item.getTotal();
+    }
+
+    return total;
   }
 }

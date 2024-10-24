@@ -1,4 +1,4 @@
-import { IsDate, IsOptional, IsString } from 'class-validator';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 
 export class FindCashRegistersFilters {
   @IsOptional()
@@ -6,18 +6,18 @@ export class FindCashRegistersFilters {
   readonly responsibleUserId?: string;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly before_openingDate?: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly after_openingDate?: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly before_closingDate?: Date;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   readonly after_closingDate?: Date;
 }

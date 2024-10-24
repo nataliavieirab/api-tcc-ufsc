@@ -12,7 +12,7 @@ export enum ShippingStatus {
 
 @Entity()
 export class Shipping extends DefaultEntity {
-  @ManyToOne(() => Address, { nullable: true })
+  @ManyToOne(() => Order, { nullable: true })
   order: Order;
 
   @ManyToOne(() => Address)
@@ -24,7 +24,7 @@ export class Shipping extends DefaultEntity {
   @Column({ type: 'enum', enum: ShippingStatus })
   status: ShippingStatus;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 
   @OneToMany(() => BagItem, (item) => item.shipping)

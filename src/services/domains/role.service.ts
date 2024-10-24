@@ -3,8 +3,9 @@ import { RoleRepository } from 'src/repositories/role.repository';
 import { EntityDefaultService } from './entity-default.service';
 import { Role } from 'src/entities/role.entity';
 import { RolePermissionRepository } from 'src/repositories/role-permission.repository';
-import { Modules } from '../permissions/permissions';
+import { getSystemRolePermissions, Modules } from '../permissions/permissions';
 import { StoreRepository } from 'src/repositories/store.repository';
+import { UserRepository } from 'src/repositories/user.repository';
 
 interface CreateRoleInput {
   name: string;
@@ -24,6 +25,7 @@ export class RoleService extends EntityDefaultService<Role> {
     roleRepository: RoleRepository,
     private rolePermissionRepository: RolePermissionRepository,
     private storeRepository: StoreRepository,
+    private userRepository: UserRepository,
   ) {
     super(roleRepository);
   }
@@ -81,5 +83,52 @@ export class RoleService extends EntityDefaultService<Role> {
     }
 
     return updatedRole;
+  }
+
+  async getUserRoles(userId: string): Promise<
+    {
+      role: {
+        id: string | null;
+        name: string;
+      };
+      permissions: string[];
+    }[]
+  > {
+    const user = await this.userRepository.find(userId, {
+      relations: [],
+      nestedRelations: [
+        {
+          entity: 'userRoles',
+          nestedEntity: 'role',
+        },
+        {
+          entity: 'role',
+          nestedEntity: 'rolePermissions',
+        },
+      ],
+    });
+
+    const roles = user.userRoles.map((ur) => {
+      if (ur.role) {
+        const role = ur.role;
+
+        return {
+          role: {
+            id: role.id,
+            name: role.name,
+          },
+          permissions: role.rolePermissions.map((rp) => rp.action),
+        };
+      } else {
+        const systemRole = ur.systemRole;
+
+        return {
+          role: { id: null, name: systemRole },
+          permissions: getSystemRolePermissions(systemRole),
+        };
+      }
+    });
+
+    return roles;
   }
 }
