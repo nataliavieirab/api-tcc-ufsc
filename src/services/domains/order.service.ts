@@ -47,15 +47,15 @@ export class OrderService extends EntityDefaultService<Order> {
       before_date?: Date;
       after_date?: Date;
       status?: OrderStatus;
+      cashRegisterId?: string;
     },
   ) {
     const customer = this.currentRequestService.getCurrentCustomer();
 
+    const bagFilter = customer ? { customer, storeId } : { storeId };
+
     const bags = this.bagRepository.getQueryFor({
-      conditions: {
-        storeId,
-        customer,
-      },
+      conditions: bagFilter,
     });
 
     const { simpleFilters, afterFilters, beforeFilters } =
@@ -69,6 +69,17 @@ export class OrderService extends EntityDefaultService<Order> {
         bag: bags,
       },
       relations: ['payments', 'shippings'],
+      nestedRelations: [
+        { entity: 'bag', nestedEntity: 'items' },
+        { entity: 'items', nestedEntity: 'product' },
+        { entity: 'items', nestedEntity: 'bagItemOptions' },
+        { entity: 'bagItemOptions', nestedEntity: 'productOption' },
+        { entity: 'bagItemOptions', nestedEntity: 'optionValue' },
+
+        { entity: 'items', nestedEntity: 'bagItemAddOns' },
+        { entity: 'bagItemAddOns', nestedEntity: 'productAddOn' },
+        { entity: 'productAddOn', nestedEntity: 'addOn' },
+      ],
     });
   }
 
