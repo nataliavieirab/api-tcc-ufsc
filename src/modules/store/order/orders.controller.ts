@@ -20,17 +20,10 @@ export class OrdersController extends DefaultController {
   @Get()
   async findAll(
     @Body() body: FindOrdersFilters,
+    @Param('storeId') storeId: string,
   ): Promise<EntityPagination<Order>> {
     await this.validateAccess(Actions.findOrders);
-    return this.orderService.findAll(
-      body,
-      ['payments'],
-      [
-        { entity: 'bag', nestedEntity: 'customer' },
-        { entity: 'bag', nestedEntity: 'items' },
-        { entity: 'shippings', nestedEntity: 'recipientAddress' },
-      ],
-    );
+    return await this.orderService.findOrdersByStoreId(storeId, body);
   }
 
   @Get('/:id')
