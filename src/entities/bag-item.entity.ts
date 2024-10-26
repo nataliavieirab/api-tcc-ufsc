@@ -23,10 +23,10 @@ export class BagItem extends DefaultEntity {
   @Column({ type: 'float' })
   unitPrice: number;
 
-  @OneToMany(() => BagItemOption, (bag) => bag.bagItem)
+  @OneToMany(() => BagItemOption, (bag) => bag.bagItem, { lazy: true })
   bagItemOptions: BagItemOption[];
 
-  @OneToMany(() => BagItemAddOn, (bag) => bag.bagItem)
+  @OneToMany(() => BagItemAddOn, (bag) => bag.bagItem, { lazy: true })
   bagItemAddOns: BagItemAddOn[];
 
   async getTotal(): Promise<number> {
