@@ -5,7 +5,6 @@ import { Product } from 'src/entities/product.entity';
 import { StoreRepository } from 'src/repositories/store.repository';
 import { ProductAddOnRepository } from 'src/repositories/product-add-on.repository';
 import { AddOnRepository } from 'src/repositories/add-on.repository';
-import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { CategoryRepository } from 'src/repositories/category.repository';
 import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 import { ProductSetRepository } from 'src/repositories/product-set.repository';
@@ -80,7 +79,7 @@ export class ProductService extends EntityDefaultService<Product> {
 
   async findByCategory(
     categoryId: string,
-    available: boolean,
+    forceAvailable: boolean,
     findFilters: {
       like_name?: string;
       name?: string;
@@ -103,7 +102,7 @@ export class ProductService extends EntityDefaultService<Product> {
       },
     });
 
-    const productSetsQuery = available
+    const productSetsQuery = forceAvailable
       ? {
           conditions: { status: ProductSetStatus.ACTIVE },
         }

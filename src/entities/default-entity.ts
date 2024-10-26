@@ -38,7 +38,7 @@ export class DefaultEntity {
     const repository = getRepository(this.name);
 
     let newData = clearNestedInput(data);
-    newData = removeUnknownFields(data, repository);
+    newData = removeUnknownFields(newData, repository);
 
     const entity = repository.create(newData);
     const savedEntity = repository.save(entity);
@@ -104,13 +104,26 @@ function clearNestedInput(data: any) {
   const newData = { ...data };
   Object.keys(newData).forEach((key) => {
     const value = newData[key];
-    if (value && value.id) {
+
+    if (value?.id) {
       newData[key] = { id: value.id };
+    }
+
+    if (key.includes('Id')) {
+      newData['store'] = { id: value };
     }
   });
   return newData;
 }
 
+// entra = {
+//   storeId: 'vgjgcv,fj.x,njg',
+// }
+
+// sai = {
+//   storeId: 'vgjgcv,fj.x,njg',
+//   store: { id: 'vgjgcv,fj.x,njg' },
+// }
 function getRepository(name: string) {
   const currentRequestService: CurrentRequestService =
     DependenciesResolver.getResolvedDependency(CurrentRequestService);
