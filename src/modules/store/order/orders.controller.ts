@@ -22,7 +22,15 @@ export class OrdersController extends DefaultController {
     @Body() body: FindOrdersFilters,
   ): Promise<EntityPagination<Order>> {
     await this.validateAccess(Actions.findOrders);
-    return this.orderService.findAll(body);
+    return this.orderService.findAll(
+      body,
+      ['payments'],
+      [
+        { entity: 'bag', nestedEntity: 'customer' },
+        { entity: 'bag', nestedEntity: 'items' },
+        { entity: 'shippings', nestedEntity: 'recipientAddress' },
+      ],
+    );
   }
 
   @Get('/:id')
