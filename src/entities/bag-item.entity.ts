@@ -14,7 +14,7 @@ export class BagItem extends DefaultEntity {
   @ManyToOne(() => Product)
   product: Product;
 
-  @ManyToOne(() => Bag, (bag) => bag.items)
+  @ManyToOne(() => Shipping, (shipping) => shipping.items)
   shipping: Shipping;
 
   @Column()
@@ -38,7 +38,8 @@ export class BagItem extends DefaultEntity {
       itemTotal += optionValue?.price || 0;
     }
 
-    for (const itemAddOn of await this.bagItemAddOns) {
+    const bagItemAddOns = await this.bagItemAddOns;
+    for (const itemAddOn of bagItemAddOns) {
       const productAddOn = await itemAddOn.productAddOn;
 
       itemTotal += productAddOn.price * itemAddOn.quantity;

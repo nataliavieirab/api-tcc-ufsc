@@ -68,6 +68,7 @@ export class OrderService extends EntityDefaultService<Order> {
       joins: {
         bag: bags,
       },
+      relations: ['payments', 'shippings'],
     });
   }
 
