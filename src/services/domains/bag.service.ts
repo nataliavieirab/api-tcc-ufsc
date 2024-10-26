@@ -110,11 +110,16 @@ export class BagService extends EntityDefaultService<Bag> {
       unitPrice: productSetItem.price,
     });
 
+    bagItem.product = product;
+
     const bagAddOns: BagItemAddOn[] = [];
     if (itemEntry.addOns) {
       for (const addOn of itemEntry.addOns) {
         const productAddOn = await this.productAddOnRepository.find(
           addOn.productAddOnId,
+          {
+            relations: ['addOn'],
+          },
         );
 
         const bagItemAddOn = await this.bagItemAddOnRepository.create({
@@ -122,6 +127,7 @@ export class BagService extends EntityDefaultService<Bag> {
           productAddOn,
           quantity: addOn.quantity,
         });
+        bagItemAddOn.productAddOn = productAddOn;
 
         bagAddOns.push(bagItemAddOn);
       }

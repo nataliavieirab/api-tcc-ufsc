@@ -6,6 +6,7 @@ import { ProductRepository } from 'src/repositories/product.repository';
 import { ProductCategoryRepository } from 'src/repositories/product-category.repository';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
 import { Product } from 'src/entities/product.entity';
+import { StoreRepository } from 'src/repositories/store.repository';
 
 @Injectable()
 export class CategoryService extends EntityDefaultService<Category> {
@@ -13,6 +14,7 @@ export class CategoryService extends EntityDefaultService<Category> {
     categoryRepository: CategoryRepository,
     private productRepository: ProductRepository,
     private productCategoryRepository: ProductCategoryRepository,
+    private storeRepository: StoreRepository,
   ) {
     super(categoryRepository);
   }
