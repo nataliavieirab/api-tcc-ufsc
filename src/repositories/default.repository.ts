@@ -229,6 +229,8 @@ export class UniqueEntityWithFiltersQueryOptions<
     this.conditions = options.conditions || null;
     this.conditionsNot = options.conditionsNot || null;
     this.conditionsLike = options.conditionsLike || null;
+    this.conditionsAfter = options.conditionsAfter || null;
+    this.conditionsBefore = options.conditionsBefore || null;
     this.joins = options.joins || null;
   }
 }
