@@ -5,4 +5,8 @@ export class RoleRepository extends DefaultRepository<Role> {
   constructor() {
     super(Role);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

@@ -1,5 +1,7 @@
 import { DefaultEntity } from 'src/entities/default-entity';
 import { QueryBuilder } from 'src/entities/query-builder';
+import { Store } from 'src/entities/store.entity';
+import { User } from 'src/entities/user.entity';
 import { CurrentRequestService } from 'src/services/application/current-request.service';
 import { DependenciesResolver } from 'src/utils/dependencies-resolver';
 import { EntityPagination } from 'src/utils/entity-pagination.type';
@@ -151,7 +153,18 @@ export abstract class DefaultRepository<EntityType extends DefaultEntity> {
   protected accessibleBy(
     query: QueryBuilder<EntityType>,
   ): QueryBuilder<EntityType> {
-    return query;
+    const currentRequestService: CurrentRequestService =
+      DependenciesResolver.getResolvedDependency(CurrentRequestService);
+
+    const user = currentRequestService.getCurrentUser();
+
+    if (!user || !user.store) return query;
+
+    return query.where(this.accessibilityQuery(user.store));
+  }
+
+  protected accessibilityQuery(store: Store): EntitySearchKeys<EntityType> {
+    return {};
   }
 
   protected or(queries: QueryBuilder<EntityType>[]): QueryBuilder<EntityType> {

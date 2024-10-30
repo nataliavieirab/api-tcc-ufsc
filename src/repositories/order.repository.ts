@@ -5,4 +5,8 @@ export class OrderRepository extends DefaultRepository<Order> {
   constructor() {
     super(Order);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

@@ -5,4 +5,8 @@ export class CategoryRepository extends DefaultRepository<Category> {
   constructor() {
     super(Category);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

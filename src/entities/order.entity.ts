@@ -12,6 +12,7 @@ import { CashRegister } from './cash-register.entity';
 import { Payment } from './payment.entity';
 import { PaymentType } from './payment-type.entity';
 import { Shipping } from './shipping.entity';
+import { Store } from './store.entity';
 
 export enum OrderStatus {
   PENDING = 'PENDING',
@@ -22,6 +23,9 @@ export enum OrderStatus {
 }
 @Entity()
 export class Order extends DefaultEntity {
+  @ManyToOne(() => Store, { lazy: true })
+  store: Store;
+
   @OneToOne(() => Bag, (bag) => bag.order)
   @JoinColumn()
   bag: Bag;
