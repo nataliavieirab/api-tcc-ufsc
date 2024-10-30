@@ -5,4 +5,8 @@ export class AddOnRepository extends DefaultRepository<AddOn> {
   constructor() {
     super(AddOn);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

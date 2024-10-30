@@ -5,4 +5,8 @@ export class CashRegisterRepository extends DefaultRepository<CashRegister> {
   constructor() {
     super(CashRegister);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

@@ -5,4 +5,8 @@ export class PaymentTypeRepository extends DefaultRepository<PaymentType> {
   constructor() {
     super(PaymentType);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

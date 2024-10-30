@@ -5,4 +5,8 @@ export class DeliverySettingsRepository extends DefaultRepository<DeliverySettin
   constructor() {
     super(DeliverySettings);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }

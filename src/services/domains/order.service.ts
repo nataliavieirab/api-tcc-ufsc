@@ -164,6 +164,7 @@ export class OrderService extends EntityDefaultService<Order> {
     );
 
     const order = await this.repository.create({
+      storeId: body.storeId,
       bag,
       date: new Date(),
       preferredPaymentType: paymentType,
