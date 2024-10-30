@@ -68,7 +68,12 @@ export class OrderService extends EntityDefaultService<Order> {
       joins: {
         bag: bags,
       },
-      relations: ['payments', 'shippings'],
+    });
+  }
+
+  async findOrder(orderId: string) {
+    const order = await this.repository.find(orderId, {
+      relations: ['payments', 'shippings', 'preferredPaymentType'],
       nestedRelations: [
         { entity: 'bag', nestedEntity: 'items' },
         { entity: 'items', nestedEntity: 'product' },
@@ -81,6 +86,52 @@ export class OrderService extends EntityDefaultService<Order> {
         { entity: 'productAddOn', nestedEntity: 'addOn' },
       ],
     });
+
+    const items = [];
+    for (const bagItem of await order.bag.items) {
+      const options = [];
+      for (const bagItemOption of await bagItem.bagItemOptions) {
+        const optionValue = await bagItemOption.optionValue;
+        options.push({
+          id: bagItemOption.productOption.id,
+          name: bagItemOption.productOption.name,
+          value: {
+            id: optionValue.id,
+            name: optionValue.name,
+            price: optionValue.price,
+          },
+        });
+      }
+      const addOns = [];
+      for (const bagItemAddOn of await bagItem.bagItemAddOns) {
+        const productAddOn = await bagItemAddOn.productAddOn;
+        addOns.push({
+          id: productAddOn.id,
+          quantity: bagItemAddOn.quantity,
+          name: (await productAddOn.addOn).name,
+        });
+      }
+
+      items.push({
+        id: bagItem.product.id,
+        name: bagItem.product.name,
+        quantity: bagItem.quantity,
+        unitPrice: bagItem.unitPrice,
+        options,
+        addOns,
+      });
+    }
+
+    return {
+      id: order.id,
+      bagPrice: order.bagPrice,
+      shippingPrice: order.shippingPrice,
+      totalPrice: order.totalPrice,
+      observation: order.observation,
+      status: order.status,
+      paymentType: order.preferredPaymentType.name,
+      items,
+    };
   }
 
   async sendOrder(body: OrderRequestInput): Promise<Order> {
