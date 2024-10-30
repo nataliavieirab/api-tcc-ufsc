@@ -22,7 +22,7 @@ export class OrdersController {
 
   @Get('/:id')
   async findOrderById(@Param('id') id: string, @Res() res: Response) {
-    const order = await this.orderService.findById(id);
+    const order = await this.orderService.findOrder(id);
 
     res.status(200).send(order);
   }

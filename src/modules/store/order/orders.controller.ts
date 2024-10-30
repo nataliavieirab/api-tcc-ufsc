@@ -29,7 +29,7 @@ export class OrdersController extends DefaultController {
   @Get('/:id')
   async findById(@Param('id') id: string, @Res() res: any) {
     await this.validateAccess(Actions.findOrders);
-    const order = await this.orderService.findById(id);
+    const order = await this.orderService.findOrder(id);
 
     res.status(200).send(order);
   }
