@@ -73,9 +73,14 @@ export abstract class DefaultRepository<EntityType extends DefaultEntity> {
 
     if (!queryOptions.skipAccessFilter) query = this.accessibleBy(query);
 
+    const currentRequestService: CurrentRequestService =
+      DependenciesResolver.getResolvedDependency(CurrentRequestService);
+
+    const requestPagination = currentRequestService.getCurrentPagination();
+
     const data = await query.getPaginated(
-      queryOptions.pagination.page,
-      queryOptions.pagination.pageSize,
+      queryOptions.pagination?.page || requestPagination.page,
+      queryOptions.pagination?.pageSize || requestPagination.pageSize,
     );
 
     return data;
@@ -238,13 +243,13 @@ export class UniqueEntityWithFiltersQueryOptions<
 export class ManyEntitiesQueryOptions<
   entityType extends DefaultEntity,
 > extends UniqueEntityWithFiltersQueryOptions<entityType> {
-  pagination: { page: number; pageSize: number } = { page: 1, pageSize: 10 };
+  pagination: { page: number; pageSize: number };
 
   constructor(options: ManyEntitiesQueryOptionsType<entityType>) {
     super(options);
     if (options.pagination) {
-      this.pagination.page = options.pagination.page || 1;
-      this.pagination.pageSize = options.pagination.pageSize || 10;
+      this.pagination.page = options.pagination.page;
+      this.pagination.pageSize = options.pagination.pageSize;
     }
   }
 }

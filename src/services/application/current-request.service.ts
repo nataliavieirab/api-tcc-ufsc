@@ -54,4 +54,17 @@ export class CurrentRequestService {
 
     return stored['customer'];
   }
+
+  setCurrentPagination(pagination: { pageSize: number; page: number }) {
+    const stored = this.storage.getStore() || {};
+    stored['pagination'] = pagination;
+
+    return this.storage.enterWith(stored);
+  }
+
+  getCurrentPagination(): { pageSize: number; page: number } {
+    const stored = this.storage.getStore();
+
+    return stored['pagination'];
+  }
 }
