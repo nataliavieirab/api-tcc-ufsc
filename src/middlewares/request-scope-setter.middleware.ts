@@ -23,7 +23,18 @@ export class RequestScopeSetterMiddleware implements NestMiddleware {
 
       if (orgId) this.tenantService.switchTenant(orgId);
 
+      this.setPagination(req);
+
       next();
+    });
+  }
+
+  private setPagination(req: any) {
+    const { pageSize, page } = req.query;
+
+    this.currentRequestService.setCurrentPagination({
+      pageSize: +pageSize || 10,
+      page: +page || 1,
     });
   }
 }
