@@ -39,7 +39,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       return customer as unknown as User;
     }
 
-    const user = await this.userService.findById(payload.sub);
+    const user = await this.userService.findById(payload.sub, ['store']);
 
     if (!user) {
       throw new UnauthorizedError('User not found');

@@ -5,4 +5,8 @@ export class ProductRepository extends DefaultRepository<Product> {
   constructor() {
     super(Product);
   }
+
+  accessibilityQuery(store) {
+    return { store };
+  }
 }
