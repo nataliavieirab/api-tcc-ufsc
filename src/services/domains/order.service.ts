@@ -12,6 +12,7 @@ import { ShippingStatus } from 'src/entities/shipping.entity';
 import { BagStatus } from 'src/entities/bag.entity';
 import { CashRegisterRepository } from 'src/repositories/cash-register.repository';
 import { PaymentRepository } from 'src/repositories/payment.repository';
+import { UnprocessableEntityError } from 'src/errors/unprocessable-entity.error';
 
 interface OrderRequestInput {
   storeId: string;
@@ -143,7 +144,12 @@ export class OrderService extends EntityDefaultService<Order> {
         customer,
         status: BagStatus.OPENED,
       },
+      relations: ['items'],
     });
+
+    if (!bag || !(await bag.items).length) {
+      throw new UnprocessableEntityError('Empty bag!');
+    }
 
     const paymentType = !body.preferredPaymentTypeId
       ? null
