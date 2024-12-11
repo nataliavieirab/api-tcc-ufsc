@@ -135,19 +135,29 @@ export class ProductService extends EntityDefaultService<Product> {
       ],
     });
 
-    return {
-      ...items,
-      content: items.content.map((item) => ({
+    const formattedContent = [];
+    for (const item of items.content) {
+      const addOns = [];
+      for (const productAddOn of await item.product.productAddOns) {
+        addOns.push({
+          ...(await productAddOn.addOn),
+          id: productAddOn.id,
+          price: productAddOn.price,
+        });
+      }
+
+      formattedContent.push({
         id: item.id,
         name: item.product.name,
         price: item.price,
-        addOns: item.product.productAddOns.map((productAddOn) => ({
-          ...productAddOn.addOn,
-          id: productAddOn.id,
-          price: productAddOn.price,
-        })),
+        addOns,
         options: item.product.productOptions,
-      })),
+      });
+    }
+
+    return {
+      ...items,
+      content: formattedContent,
     };
   }
 }
