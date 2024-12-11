@@ -173,6 +173,8 @@ export class OrderService extends EntityDefaultService<Order> {
       shippingPrice: deliveryFee,
       totalPrice: bagPrice + deliveryFee,
     });
+    order.preferredPaymentType = paymentType;
+
 
     const shipping = await this.shippingRepository.create({
       order,
@@ -238,13 +240,15 @@ export class OrderService extends EntityDefaultService<Order> {
         payment.paymentTypeId,
       );
 
-      createdPayments.push(
-        await this.paymentRepository.create({
-          order,
-          ...payment,
-          paymentType,
-        }),
-      );
+      const createdPayment = await this.paymentRepository.create({
+        order,
+        ...payment,
+        paymentType,
+      })
+
+      createdPayment.paymentType = paymentType;
+
+      createdPayments.push(createdPayment);
     }
 
     await order.update({ status: OrderStatus.FINISHED });

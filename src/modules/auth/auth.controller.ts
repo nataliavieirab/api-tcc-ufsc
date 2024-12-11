@@ -14,7 +14,7 @@ import { IsPublic } from './decorators/is-public.decorator';
 import { CurrentRequestService } from 'src/services/application/current-request.service';
 import { RoleService } from 'src/services/domains/role.service';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
